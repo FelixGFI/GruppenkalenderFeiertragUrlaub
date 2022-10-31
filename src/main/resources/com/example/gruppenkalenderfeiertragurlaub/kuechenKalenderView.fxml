@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.KuechenKalenderController">
    <top>
       <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
@@ -46,12 +46,12 @@
          <children>
             <FlowPane alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox prefWidth="120.0" promptText="Monat">
+                  <ComboBox fx:id="comboBoxMonatAuswahl" prefWidth="120.0" promptText="Monat">
                      <FlowPane.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </ComboBox>
-                  <ComboBox layoutX="15.0" layoutY="15.0" prefWidth="100.0" promptText="Jahr">
+                  <ComboBox fx:id="comboBoxJahrAuswahl" layoutX="15.0" layoutY="15.0" prefWidth="100.0" promptText="Jahr">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
@@ -61,23 +61,23 @@
             <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
                   <Label text="von" />
-                  <DatePicker prefWidth="110.0">
+                  <DatePicker fx:id="dpVon" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </DatePicker>
                   <Label text="bis" />
-                  <DatePicker layoutX="10.0" layoutY="10.0" prefWidth="110.0">
+                  <DatePicker fx:id="dpBis" layoutX="10.0" layoutY="10.0" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </DatePicker>
-                  <Button mnemonicParsing="false" prefWidth="77.0" text="Offen">
+                  <Button fx:id="btOffen" mnemonicParsing="false" onAction="#onBtOffenClick" prefWidth="77.0" text="Offen">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                      </FlowPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="85.0" text="Geschlossen">
+                  <Button fx:id="btGeschlossen" mnemonicParsing="false" onAction="#onBtGeschlossenClick" prefWidth="85.0" text="Geschlossen">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                      </FlowPane.margin>
@@ -86,8 +86,8 @@
             </FlowPane>
             <TableView GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="175.0" text="Datum" />
-                  <TableColumn prefWidth="175.0" text="Küche ist Offen" />
+                  <TableColumn prefWidth="225.0" text="Datum" />
+                  <TableColumn prefWidth="225.0" text="Küche ist Offen" />
                </columns>
             </TableView>
             <GridPane GridPane.rowIndex="2">
@@ -101,7 +101,7 @@
                <children>
                   <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" text="&lt;---">
+                        <Button fx:id="btVorigerMonat" mnemonicParsing="false" onAction="#onBtVorherigerMonatClick" text="&lt;---">
                            <FlowPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </FlowPane.margin>
@@ -110,7 +110,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <Button mnemonicParsing="false" text="---&gt;">
+                        <Button fx:id="btNaechsterMonat" mnemonicParsing="false" onAction="#onBtNaechsterMonatClick" text="---&gt;">
                            <FlowPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </FlowPane.margin>
@@ -125,12 +125,12 @@
    <bottom>
       <FlowPane alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER_RIGHT">
          <children>
-            <Button mnemonicParsing="false" prefWidth="77.0" text="Speichern">
+            <Button fx:id="btSpeichern" mnemonicParsing="false" onAction="#onBtSpeichernClick" prefWidth="77.0" text="Speichern">
                <FlowPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </FlowPane.margin>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="85.0" text="Abbrechen">
+            <Button fx:id="btAbbrechen" mnemonicParsing="false" onAction="#onBtAbbrechenClick" prefWidth="85.0" text="Abbrechen">
                <FlowPane.margin>
                   <Insets bottom="5.0" right="26.0" top="5.0" />
                </FlowPane.margin>

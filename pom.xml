@@ -67,7 +67,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.gruppenkalenderfeiertragurlaub/com.example.gruppenkalenderfeiertragurlaub.GruppenKalenderApp
+                                com.example.gruppenkalenderfeiertragurlaub/com.example.gruppenkalenderfeiertragurlaub.HauptmenueApp
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

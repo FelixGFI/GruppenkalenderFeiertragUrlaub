@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.HauptMenueController">
    <top>
       <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="[Programmname Einfügen]">
+            <Label text="Verpflegungsgeldverwaltung">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -23,7 +22,10 @@
       </FlowPane>
    </top>
    <bottom>
-      <FlowPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER" />
+      <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btProgrammSchliessen" mnemonicParsing="false" onAction="#onBtProgrammSchliessenClick" text="Programm schließen" />
+         </children></FlowPane>
    </bottom>
    <left>
       <FlowPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" BorderPane.alignment="CENTER" />
@@ -49,52 +51,52 @@
          <children>
             <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Forderungen Verwalten" />
+                  <Button fx:id="btForderungenverwaltung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtForderungenverwaltungClick" prefWidth="150.0" text="Forderungenverwaltung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Küchenplanung" />
+                  <Button fx:id="btBetriebsurlaubsplanung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtBetriebsurlaubsplanungClick" prefWidth="150.0" text="Betriebsurlaubsplanug" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Teilnehmerverwaltung" />
+                  <Button fx:id="btKalenderplanug" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtKalenderplanungClick" prefWidth="150.0" text="Kalenderplanung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Gruppenverwaltung" />
+                  <Button fx:id="btTeilnehmerverwaltung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtTeilnehmerverwaltungClick" prefWidth="150.0" text="Teilnehmerverwaltung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Platzhalte" />
+                  <Button fx:id="btPlatzhalterKnopf2" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtPlatzhalterKnopf2Click" prefWidth="150.0" text="Platzhalter" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Platzhalte" />
+                  <Button fx:id="btPlatzhalterKnopf1" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtPlatzhalterKnopf1Click" prefWidth="150.0" text="Platzhalter" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Kalenderplanung" />
+                  <Button fx:id="btKuechenplanung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtKuechenplanungClick" prefWidth="150.0" text="Küchenplanung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Kostenstellenverwaltung" />
+                  <Button fx:id="btKostenstellenverwaltung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtKostenstellenverwaltungClick" prefWidth="150.0" text="Kostenstellenverwaltung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Anwesneheit" />
+                  <Button fx:id="btAnwesenheit" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtAnwesneheitClick" prefWidth="150.0" text="Anwesenheit" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Platzhalte" />
+                  <Button fx:id="btPlatzhalterKnopf3" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtPlatzhalterKnopf3Click" prefWidth="150.0" text="Platzhalter" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0">
@@ -117,12 +119,12 @@
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="185.0" layoutY="157.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Platzhalter" />
+                  <Button fx:id="btGruppenverwaltung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtGruppenverwaltungClick" prefWidth="150.0" text="Gruppenverwaltung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="185.0" layoutY="157.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Platzhalte" />
+                  <Button fx:id="btPlatzhalterKnopf4" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtPlatzhalterKnopf4Click" prefWidth="150.0" text="Platzhalter" />
                </children>
             </FlowPane>
          </children>
