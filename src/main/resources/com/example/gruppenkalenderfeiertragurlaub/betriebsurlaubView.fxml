@@ -83,7 +83,7 @@
             <TableView fx:id="tbTabelle" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="tcDatum" prefWidth="190.0" text="Datum" />
-                <TableColumn fx:id="tcBetriebsurlaub" prefWidth="190.0" text="Betriebsurlaub" />
+                <TableColumn fx:id="tcIstBetriebsurlaub" prefWidth="190.0" text="Betriebsurlaub" />
               </columns>
             </TableView>
             <GridPane GridPane.rowIndex="2">
