@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.HauptMenueController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

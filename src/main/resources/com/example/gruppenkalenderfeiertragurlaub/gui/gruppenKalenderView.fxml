@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.GruppenKalenderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.gui.GruppenKalenderController">
    <top>
       <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
@@ -41,11 +41,11 @@
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <TableView fx:id="tbTabelle" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
-                <TableColumn prefWidth="160.0" text="Datum" />
-                <TableColumn prefWidth="250.0" text="Gruppenstatus" />
-                  <TableColumn prefWidth="160.0" text="Essensangebot" />
+                <TableColumn fx:id="tcDatum" prefWidth="160.0" text="Datum" />
+                <TableColumn fx:id="tcGruppenStatus" prefWidth="250.0" text="Gruppenstatus" />
+                  <TableColumn fx:id="tcEssenVerfuegbar" prefWidth="160.0" text="Essensangebot" />
               </columns>
             </TableView>
             <GridPane GridPane.rowIndex="2">

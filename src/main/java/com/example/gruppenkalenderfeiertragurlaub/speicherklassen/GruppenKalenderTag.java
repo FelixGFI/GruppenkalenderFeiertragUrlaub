@@ -5,10 +5,10 @@ import java.time.LocalDate;
 public class GruppenKalenderTag {
     int gruppenID;
     LocalDate datum;
-    char gruppenstatus;
+    Character gruppenstatus;
     Boolean essenFuerGruppeVerfügbar;
 
-    public GruppenKalenderTag(int gruppenID, LocalDate datum, char gruppenstatus, Boolean essenFuerGruppeVerfügbar) {
+    public GruppenKalenderTag(int gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfügbar) {
         this.gruppenID = gruppenID;
         this.datum = datum;
         this.gruppenstatus = gruppenstatus;
@@ -31,11 +31,11 @@ public class GruppenKalenderTag {
         this.datum = datum;
     }
 
-    public char getGruppenstatus() {
+    public Character getGruppenstatus() {
         return gruppenstatus;
     }
 
-    public void setGruppenstatus(char gruppenstatus) {
+    public void setGruppenstatus(Character gruppenstatus) {
         this.gruppenstatus = gruppenstatus;
     }
 

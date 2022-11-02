@@ -1,5 +1,6 @@
-package com.example.gruppenkalenderfeiertragurlaub;
+package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.HauptmenueApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
