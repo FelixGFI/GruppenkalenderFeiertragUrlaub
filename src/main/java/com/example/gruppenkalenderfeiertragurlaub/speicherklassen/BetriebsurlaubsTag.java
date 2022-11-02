@@ -4,27 +4,27 @@ import java.time.LocalDate;
 
 public class BetriebsurlaubsTag {
 
-    String datum;
-    String isBetriebsurlaub;
+    LocalDate datum;
+    Boolean isBetriebsurlaub;
 
-    public BetriebsurlaubsTag(String datum, String isBetriebsurlaub) {
+    public BetriebsurlaubsTag(LocalDate datum, Boolean isBetriebsurlaub) {
         this.datum = datum;
         this.isBetriebsurlaub = isBetriebsurlaub;
     }
 
-    public String getDatum() {
+    public LocalDate getDatum() {
         return datum;
     }
 
-    public void setDatum(String datum) {
+    public void setDatum(LocalDate datum) {
         this.datum = datum;
     }
 
-    public String getIsBetriebsurlaub() {
+    public Boolean getIsBetriebsurlaub() {
         return isBetriebsurlaub;
     }
 
-    public void setIsBetriebsurlaub(String isBetriebsurlaub) {
+    public void setIsBetriebsurlaub(Boolean isBetriebsurlaub) {
         this.isBetriebsurlaub = isBetriebsurlaub;
     }
 }
