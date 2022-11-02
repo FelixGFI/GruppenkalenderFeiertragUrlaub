@@ -6,4 +6,6 @@ module com.example.gruppenkalenderfeiertragurlaub {
 
     opens com.example.gruppenkalenderfeiertragurlaub to javafx.fxml;
     exports com.example.gruppenkalenderfeiertragurlaub;
+    exports com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
+    opens com.example.gruppenkalenderfeiertragurlaub.speicherklassen to javafx.fxml;
 }

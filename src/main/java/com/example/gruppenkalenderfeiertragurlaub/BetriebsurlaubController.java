@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub;
 
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -31,6 +32,9 @@ public class BetriebsurlaubController {
 
  public void initialize() {
 
+     //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
+     //Weil das FXML object im code ja schon ein UI element referenziert.
+
         tcDatum.setCellValueFactory(
                 new PropertyValueFactory<>("datum"));
 
@@ -49,8 +53,6 @@ public class BetriebsurlaubController {
         //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue()-1);
         comboBoxJahrAuswahl.getSelectionModel().select(LocalDate.now().getYear()-jahre[0]);
-
-
     }
 
     @FXML protected void onBtVorherigerMonatClick() {

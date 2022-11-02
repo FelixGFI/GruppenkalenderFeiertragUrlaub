@@ -1,4 +1,4 @@
-package com.example.gruppenkalenderfeiertragurlaub;
+package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 import java.time.LocalDate;
 
