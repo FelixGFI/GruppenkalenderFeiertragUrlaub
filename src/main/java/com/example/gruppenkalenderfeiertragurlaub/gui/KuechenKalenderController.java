@@ -1,11 +1,11 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -54,50 +54,9 @@ public class KuechenKalenderController {
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
 
-        configureCBMonatAuswahl();
-        configureCBJahrAuswahl();
-    }
-
-    private void configureCBJahrAuswahl() {
-        comboBoxJahrAuswahl.getItems().addAll(jahreList);
-        comboBoxJahrAuswahl.getSelectionModel().select(jahreList.indexOf(LocalDate.now().getYear()));
-    }
-
-    private void configureCBMonatAuswahl() {
-        //fügt Alle benötigten Items den Comboxboxen Hinzu
-        comboBoxMonatAuswahl.getItems().addAll(monateListInLocalDateFormat);
-
-        comboBoxMonatAuswahl.setCellFactory(colum -> {
-            ListCell<String> cell = new ListCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    cell.setText(getAnzeigeMonatString(newVal));
-                }
-            });
-            return cell;
-        });
-        comboBoxMonatAuswahl.setConverter(new StringConverter<String>() {
-            @Override
-            public String toString(String localDateMonat) {
-                String anzeigeMonat = "";
-                if(localDateMonat != null) {
-                    anzeigeMonat = getAnzeigeMonatString(localDateMonat);
-                }
-                return anzeigeMonat;
-            }
-
-            @Override
-            public String fromString(String string) {
-                return null;
-            }
-        });
-        //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
-        comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
-    }
-
-    private String getAnzeigeMonatString(String localDateMonat) {
-        int monatsIndex = monateListInLocalDateFormat.indexOf(localDateMonat);
-        return (monatsIndex != -1) ? monatListAsDisplayText.get(monatsIndex) : "";
+        ComboboxConfigurater comboboxCreater = new ComboboxConfigurater();
+        comboboxCreater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        comboboxCreater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
     }
 
     private void configureTableView() {

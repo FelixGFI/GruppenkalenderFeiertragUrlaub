@@ -1,13 +1,11 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxCreater;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.StringConverter;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class GruppenKalenderController {
         tbTabelle.getItems().add(new GruppenKalenderTag(2, LocalDate.now(), 'P', true));
         tbTabelle.getItems().add(new GruppenKalenderTag(3, LocalDate.now().plusDays(1), 'U', false));
         tbTabelle.getItems().add(new GruppenKalenderTag(3,LocalDate.now().plusDays(2), 'A', false));
-        ComboboxCreater comboboxCreater = new ComboboxCreater();
+        ComboboxConfigurater comboboxCreater = new ComboboxConfigurater();
         comboboxCreater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
         comboboxCreater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
 

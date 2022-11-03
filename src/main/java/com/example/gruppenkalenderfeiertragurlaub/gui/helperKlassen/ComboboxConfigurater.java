@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ComboboxCreater {
+public class ComboboxConfigurater {
 
     final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
     final ArrayList<String> monateListInLocalDateFormat = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
@@ -57,5 +57,5 @@ public class ComboboxCreater {
         return (monatsIndex != -1) ? monatListAsDisplayText.get(monatsIndex) : "";
     }
 
-    public ComboboxCreater() {}
+    public ComboboxConfigurater() {}
 }
