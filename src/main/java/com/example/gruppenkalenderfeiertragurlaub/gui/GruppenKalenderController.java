@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
@@ -33,10 +34,8 @@ public class GruppenKalenderController {
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
-    final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
-    ArrayList<String> statusListDisplayFormat = new ArrayList<>(Arrays.asList("Present Anwesend", "Online Anwesend", "Auswärts", "Berufssschule", "Urlaub"));
-    ArrayList<Character> statusListCharacterFormat = new ArrayList<>(Arrays.asList('P', 'O', 'A', 'B', 'U'));
 
+    final ArrayListStorage arrayListStorage = new ArrayListStorage();
     public void initialize() {
 
         configureTableView();
@@ -51,7 +50,7 @@ public class GruppenKalenderController {
         comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
         comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
-        comboBoxStatusAuswahl.getItems().addAll(statusListDisplayFormat);
+        comboBoxStatusAuswahl.getItems().addAll(arrayListStorage.getStatusListDisplayFormat());
 
     }
     private void configureTableView() {
@@ -97,8 +96,8 @@ public class GruppenKalenderController {
             TableCell<GruppenKalenderTag, Character> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if(newVal != null) {
-                    int statusIndex = statusListCharacterFormat.indexOf(newVal);
-                    cell.setText((statusIndex != -1) ? statusListDisplayFormat.get(statusIndex) : "");
+                    int statusIndex = arrayListStorage.getStatusListCharacterFormat().indexOf(newVal);
+                    cell.setText((statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "");
                 }
             });
             return cell;

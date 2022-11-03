@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
@@ -42,7 +43,8 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
-    final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
+    final ArrayListStorage arrayListStorage = new ArrayListStorage();
+
     public void initialize() {
 
         configureTableView();

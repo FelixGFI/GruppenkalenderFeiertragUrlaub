@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class ArrayListStorage {
 
+    final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
     final ArrayList<String> statusListDisplayFormat = new ArrayList<>(Arrays.asList("Present Anwesend", "Online Anwesend", "Auswärts", "Berufssschule", "Urlaub"));
     final ArrayList<Character> statusListCharacterFormat = new ArrayList<>(Arrays.asList('P', 'O', 'A', 'B', 'U'));
     final ArrayList<String> monateListInLocalDateFormat = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
@@ -31,5 +32,9 @@ public class ArrayListStorage {
 
     public ArrayList<Integer> getJahreList() {
         return jahreList;
+    }
+
+    public ArrayList<String> getTageListInLocalDateFormat() {
+        return tageListInLocalDateFormat;
     }
 }

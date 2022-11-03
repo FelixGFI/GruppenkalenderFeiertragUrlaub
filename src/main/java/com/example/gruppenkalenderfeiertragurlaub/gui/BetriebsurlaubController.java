@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
@@ -29,17 +30,18 @@ public class BetriebsurlaubController {
 
     @FXML TableView<BetriebsurlaubsTag> tbTabelle;
 
- public void initialize() {
+    final ArrayListStorage arrayListStorage = new ArrayListStorage();
 
-     configureTableView();
+    public void initialize() {
 
+        configureTableView();
 
-     tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now(), false));
-     tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
+        tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now(), false));
+        tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
 
-     ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
-     comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
-     comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
+        comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+        comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
     }
 
     private void configureTableView() {
