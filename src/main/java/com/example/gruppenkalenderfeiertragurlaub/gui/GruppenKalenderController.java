@@ -31,7 +31,7 @@ public class GruppenKalenderController {
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
     String monate[] = { "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
-    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 20229, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
+    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
     String statusStringArray[] = {"Present Anwesend", "Online Anwesend", "Auswärts", "Berufssschule", "Urlaub"};
     Character statusCharacterArray[] = {'P', 'O', 'A', 'B', 'U'};
 
@@ -120,7 +120,7 @@ public class GruppenKalenderController {
     }
 
     @FXML protected void onBtSpeichernClick() {
-        System.out.println(comboBoxMonatAuswahl.getSelectionModel().getSelectedItem());
+
         System.out.println("Klick Speichern");
     }
 

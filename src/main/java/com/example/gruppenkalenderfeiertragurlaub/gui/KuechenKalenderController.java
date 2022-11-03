@@ -5,6 +5,7 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalende
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,16 +40,77 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
-    String monate[] = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
-    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 20229, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
+    final String fifeLocalDateDaysOfWeekArray[] = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"};
+    final String twelveLocalDateMonths[] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",};
+    final String twelvMonateDisplayText[] = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
 
     public void initialize() {
 
+        configureTableView();
+
+        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
+        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
+
+        configureCBMonatAuswahl();
+
+        configureCBJahrAuswahl();
+
+    }
+
+    private void configureCBJahrAuswahl() {
+        comboBoxJahrAuswahl.getSelectionModel().select(LocalDate.now().getYear() - jahre[0]);
+    }
+
+    private void configureCBMonatAuswahl() {
+        //fügt Alle benötigten Items den Comboxboxen Hinzu
+        comboBoxMonatAuswahl.getItems().addAll(twelveLocalDateMonths);
+
+        comboBoxMonatAuswahl.setCellFactory(colum -> {
+            ListCell<String> cell = new ListCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    cell.setText(getAnzeigeMonatString(newVal));
+                }
+            });
+            return cell;
+        });
+        comboBoxMonatAuswahl.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String localDateMonat) {
+                String anzeigeMonat = "";
+                if(localDateMonat != null) {
+                    anzeigeMonat = getAnzeigeMonatString(localDateMonat);
+                }
+                return anzeigeMonat;
+            }
+
+            @Override
+            public String fromString(String string) {
+                return null;
+            }
+        });
+        comboBoxJahrAuswahl.getItems().addAll(jahre);
+
+
+        //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
+        comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
+    }
+
+    private String getAnzeigeMonatString(String localDateMonat) {
+        String anzeigeMonat = "";
+        for (int i = 0; i < twelveLocalDateMonths.length; i++) {
+            if(localDateMonat.equals(twelveLocalDateMonths[i])) {
+                anzeigeMonat = twelvMonateDisplayText[i];
+                break;
+            }
+        }
+        return anzeigeMonat;
+    }
+
+    private void configureTableView() {
         tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        tcKuecheOffen.setCellValueFactory(new PropertyValueFactory<>("kuecheGeoeffnet"));
-
-
-        //for Documentation on CellFactory ussage see BetriebsurlaubController
+        //for Documentation on CellFactory usage see BetriebsurlaubController
         tcDatum.setCellFactory(colum -> {
             TableCell<BetriebsurlaubsTag, LocalDate> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -60,31 +122,18 @@ public class KuechenKalenderController {
             return cell;
         });
 
+        tcKuecheOffen.setCellValueFactory(new PropertyValueFactory<>("kuecheGeoeffnet"));
         tcKuecheOffen.setCellFactory(colum -> {
             TableCell<BetriebsurlaubsTag, Boolean> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if(newVal != null) {
-                    if(newVal == true) {
-                        cell.setText("Ja");
-                    } else {
-                        cell.setText("Nein");
-                    }
+                    //Ternärer Ausdruck
+                    //TODO add Ternärer Ausdruck into Other Controller Classes
+                    cell.setText( (newVal == true) ? "Ja" : "Nein");
                 }
             });
             return cell;
         });
-
-        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
-        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
-
-        //fügt Alle benötigten Items den Comboxboxen Hinzu
-        comboBoxMonatAuswahl.getItems().addAll(monate);
-        comboBoxJahrAuswahl.getItems().addAll(jahre);
-
-        //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
-        comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
-        comboBoxJahrAuswahl.getSelectionModel().select(LocalDate.now().getYear() - jahre[0]);
-
     }
 
     @FXML
