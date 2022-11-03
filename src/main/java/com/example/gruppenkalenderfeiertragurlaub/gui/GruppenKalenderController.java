@@ -34,9 +34,6 @@ public class GruppenKalenderController {
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
     final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
-    final ArrayList<String> monateListInLocalDateFormat = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
-    final ArrayList<String> monatListAsDisplayText = new ArrayList<>(Arrays.asList("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"));
-    ArrayList<Integer> jahreList = new ArrayList<>(Arrays.asList(2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040));
     ArrayList<String> statusListDisplayFormat = new ArrayList<>(Arrays.asList("Present Anwesend", "Online Anwesend", "Auswärts", "Berufssschule", "Urlaub"));
     ArrayList<Character> statusListCharacterFormat = new ArrayList<>(Arrays.asList('P', 'O', 'A', 'B', 'U'));
 
@@ -49,9 +46,10 @@ public class GruppenKalenderController {
         tbTabelle.getItems().add(new GruppenKalenderTag(2, LocalDate.now(), 'P', true));
         tbTabelle.getItems().add(new GruppenKalenderTag(3, LocalDate.now().plusDays(1), 'U', false));
         tbTabelle.getItems().add(new GruppenKalenderTag(3,LocalDate.now().plusDays(2), 'A', false));
-        ComboboxConfigurater comboboxCreater = new ComboboxConfigurater();
-        comboboxCreater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
-        comboboxCreater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+
+        ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
+        comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
         comboBoxStatusAuswahl.getItems().addAll(statusListDisplayFormat);
 

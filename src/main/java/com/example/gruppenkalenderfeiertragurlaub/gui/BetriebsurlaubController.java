@@ -1,5 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,13 +29,22 @@ public class BetriebsurlaubController {
 
     @FXML TableView<BetriebsurlaubsTag> tbTabelle;
 
-    String monate[] = { "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
-    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
-
  public void initialize() {
 
-     //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
-     //Weil das FXML object im code ja schon ein UI element referenziert.
+     configureTableView();
+
+
+     tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now(), false));
+     tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
+
+     ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
+     comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+     comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+    }
+
+    private void configureTableView() {
+        //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
+        //Weil das FXML object im code ja schon ein UI element referenziert.
 
         tcDatum.setCellValueFactory(
                 new PropertyValueFactory<>("datum"));
@@ -92,20 +102,6 @@ public class BetriebsurlaubController {
 
             return cell;
         });
-
-
-        tbTabelle.getItems().add(
-                new BetriebsurlaubsTag(LocalDate.now(), false));
-        tbTabelle.getItems().add(
-                new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
-
-        //fügt Alle benötigten Items den Comboxboxen Hinzu
-        comboBoxMonatAuswahl.getItems().addAll(monate);
-        comboBoxJahrAuswahl.getItems().addAll(jahre);
-
-        //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
-        comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue()-1);
-        comboBoxJahrAuswahl.getSelectionModel().select(LocalDate.now().getYear()-jahre[0]);
     }
 
     @FXML protected void onBtVorherigerMonatClick() {
