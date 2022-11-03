@@ -2,6 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
@@ -10,8 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class KuechenKalenderController {
 
@@ -58,31 +57,9 @@ public class KuechenKalenderController {
     }
 
     private void configureTableView() {
-        tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        //for Documentation on CellFactory usage see BetriebsurlaubController
-        tcDatum.setCellFactory(colum -> {
-            TableCell<BetriebsurlaubsTag, LocalDate> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    cell.setText(newVal.format(DateTimeFormatter
-                            .ofPattern("dd.MM.yyy")));
-                }
-            });
-            return cell;
-        });
-
-        tcKuecheOffen.setCellValueFactory(new PropertyValueFactory<>("kuecheGeoeffnet"));
-        tcKuecheOffen.setCellFactory(colum -> {
-            TableCell<BetriebsurlaubsTag, Boolean> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    //Ternärer Ausdruck
-                    //TODO add Ternärer Ausdruck into Other Controller Classes
-                    cell.setText( (newVal == true) ? "Ja" : "Nein");
-                }
-            });
-            return cell;
-        });
+        TableConfigurator tableConfigurator = new TableConfigurator();
+        tableConfigurator.configureBooleanTableColum(tcKuecheOffen);
+        tableConfigurator.configureLocalDateTableColum(tcDatum);
     }
 
     @FXML

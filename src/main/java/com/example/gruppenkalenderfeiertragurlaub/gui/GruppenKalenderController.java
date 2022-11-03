@@ -54,36 +54,14 @@ public class GruppenKalenderController {
 
     }
     private void configureTableView() {
-        tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        //for Documantation see BetriebsurlaubController
-        tcDatum.setCellFactory(colum -> {
-            TableCell<GruppenKalenderTag, LocalDate> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    cell.setText(newVal.format(DateTimeFormatter
-                            .ofPattern("dd.MM.yyy")));
-                }
-            });
+        configureLocalDateTableColum();
 
-            return cell;
-        });
+        configureBooleanTableColum();
 
-        tcEssenVerfuegbar.setCellValueFactory(new PropertyValueFactory<>("essenFuerGruppeVerfügbar"));
-        //for Documantation see BetriebsurlaubController
-        tcEssenVerfuegbar.setCellFactory(colum -> {
-            TableCell<GruppenKalenderTag, Boolean> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    if(newVal == true) {
-                        cell.setText("Ja");
-                    } else {
-                        cell.setText("Nein");
-                    }
-                }
-            });
-            return cell;
-        });
+        configureGruppenStatusTableColum();
+    }
 
+    private void configureGruppenStatusTableColum() {
         tcGruppenStatus.setCellValueFactory(new PropertyValueFactory<>("gruppenstatus"));
         /*for Documentation to CellFactory see BetriebsurlaubController
         here the only diffrence is that depending on the carracter the full word it is suposed to
@@ -100,6 +78,40 @@ public class GruppenKalenderController {
                     cell.setText((statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "");
                 }
             });
+            return cell;
+        });
+    }
+
+    private void configureBooleanTableColum() {
+        tcEssenVerfuegbar.setCellValueFactory(new PropertyValueFactory<>("essenFuerGruppeVerfügbar"));
+        //for Documantation see BetriebsurlaubController
+        tcEssenVerfuegbar.setCellFactory(colum -> {
+            TableCell<GruppenKalenderTag, Boolean> cell = new TableCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    if(newVal == true) {
+                        cell.setText("Ja");
+                    } else {
+                        cell.setText("Nein");
+                    }
+                }
+            });
+            return cell;
+        });
+    }
+
+    private void configureLocalDateTableColum() {
+        tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        //for Documantation see BetriebsurlaubController
+        tcDatum.setCellFactory(colum -> {
+            TableCell<GruppenKalenderTag, LocalDate> cell = new TableCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    cell.setText(newVal.format(DateTimeFormatter
+                            .ofPattern("dd.MM.yyy")));
+                }
+            });
+
             return cell;
         });
     }
