@@ -6,13 +6,13 @@ public class GruppenKalenderTag {
     int gruppenID;
     LocalDate datum;
     Character gruppenstatus;
-    Boolean essenFuerGruppeVerfügbar;
+    Boolean essenFuerGruppeVerfuegbar;
 
-    public GruppenKalenderTag(int gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfügbar) {
+    public GruppenKalenderTag(int gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar) {
         this.gruppenID = gruppenID;
         this.datum = datum;
         this.gruppenstatus = gruppenstatus;
-        this.essenFuerGruppeVerfügbar = essenFuerGruppeVerfügbar;
+        this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
     }
 
     public int getGruppenID() {
@@ -39,11 +39,11 @@ public class GruppenKalenderTag {
         this.gruppenstatus = gruppenstatus;
     }
 
-    public Boolean getEssenFuerGruppeVerfügbar() {
-        return essenFuerGruppeVerfügbar;
+    public Boolean getEssenFuerGruppeVerfuegbar() {
+        return essenFuerGruppeVerfuegbar;
     }
 
-    public void setEssenFuerGruppeVerfügbar(Boolean essenFuerGruppeVerfügbar) {
-        this.essenFuerGruppeVerfügbar = essenFuerGruppeVerfügbar;
+    public void setEssenFuerGruppeVerfuegbar(Boolean essenFuerGruppeVerfuegbar) {
+        this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
     }
 }

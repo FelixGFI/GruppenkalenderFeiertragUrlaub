@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,9 +14,9 @@ public class TableConfigurator {
 
     public TableConfigurator() {}
 
-    public void configureBooleanTableColum(TableColumn tableColumnBoolean) {
+    public void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName ) {
 
-        tableColumnBoolean.setCellValueFactory(new PropertyValueFactory<>("kuecheGeoeffnet"));
+        tableColumnBoolean.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
          /* sets the CellFactory (not to be confused with the CellValueFactory) which is responseble
         for determening the format in which the data (which are set using CellVlaueFactory) is displayed
          */
@@ -39,8 +40,8 @@ public class TableConfigurator {
         });
     }
 
-    public void configureLocalDateTableColum(TableColumn tableColumnLocalDate) {
-        tableColumnLocalDate.setCellValueFactory(new PropertyValueFactory<>("datum"));
+    public void configureLocalDateTableColum(TableColumn tableColumnLocalDate, String columAttributeName) {
+        tableColumnLocalDate.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
         /*
         This works in a much simmular manner then mentiond above. The only diffrence beeing
         that instead of setting a text directly based on conditions, this time, once the
@@ -58,6 +59,26 @@ public class TableConfigurator {
                 if(newVal != null) {
                     cell.setText(newVal.format(DateTimeFormatter
                             .ofPattern("dd.MM.yyy")));
+                }
+            });
+            return cell;
+        });
+    }
+    public void configureGruppenStatusTableColum(TableColumn gruppenStatusColum, String columnAttributeName) {
+        gruppenStatusColum.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
+        /*for Documentation to CellFactory see BetriebsurlaubController
+        here the only diffrence is that depending on the carracter the full word it is suposed to
+        represent is displayed in the cell instead of just the Character. For this it uses the
+        statusCharacterArray which contains all the Possible Chars as well as the statusStringArray which
+        contains all the possible equivalents as Strings in each with the same index as the coresponding
+        Character in the statusCharacterArray
+         */
+        gruppenStatusColum.setCellFactory(colum -> {
+            TableCell<GruppenKalenderTag, Character> cell = new TableCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    int statusIndex = arrayListStorage.getStatusListCharacterFormat().indexOf(newVal);
+                    cell.setText((statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "");
                 }
             });
             return cell;

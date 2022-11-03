@@ -2,6 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -54,66 +55,10 @@ public class GruppenKalenderController {
 
     }
     private void configureTableView() {
-        configureLocalDateTableColum();
-
-        configureBooleanTableColum();
-
-        configureGruppenStatusTableColum();
-    }
-
-    private void configureGruppenStatusTableColum() {
-        tcGruppenStatus.setCellValueFactory(new PropertyValueFactory<>("gruppenstatus"));
-        /*for Documentation to CellFactory see BetriebsurlaubController
-        here the only diffrence is that depending on the carracter the full word it is suposed to
-        represent is displayed in the cell instead of just the Character. For this it uses the
-        statusCharacterArray which contains all the Possible Chars as well as the statusStringArray which
-        contains all the possible equivalents as Strings in each with the same index as the coresponding
-        Character in the statusCharacterArray
-         */
-        tcGruppenStatus.setCellFactory(colum -> {
-            TableCell<GruppenKalenderTag, Character> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    int statusIndex = arrayListStorage.getStatusListCharacterFormat().indexOf(newVal);
-                    cell.setText((statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "");
-                }
-            });
-            return cell;
-        });
-    }
-
-    private void configureBooleanTableColum() {
-        tcEssenVerfuegbar.setCellValueFactory(new PropertyValueFactory<>("essenFuerGruppeVerfügbar"));
-        //for Documantation see BetriebsurlaubController
-        tcEssenVerfuegbar.setCellFactory(colum -> {
-            TableCell<GruppenKalenderTag, Boolean> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    if(newVal == true) {
-                        cell.setText("Ja");
-                    } else {
-                        cell.setText("Nein");
-                    }
-                }
-            });
-            return cell;
-        });
-    }
-
-    private void configureLocalDateTableColum() {
-        tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
-        //for Documantation see BetriebsurlaubController
-        tcDatum.setCellFactory(colum -> {
-            TableCell<GruppenKalenderTag, LocalDate> cell = new TableCell<>();
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if(newVal != null) {
-                    cell.setText(newVal.format(DateTimeFormatter
-                            .ofPattern("dd.MM.yyy")));
-                }
-            });
-
-            return cell;
-        });
+        TableConfigurator tableConfigurator = new TableConfigurator();
+        tableConfigurator.configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
+        tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
+        tableConfigurator.configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
     }
 
     @FXML protected void onBtVorherigerMonatClick() {

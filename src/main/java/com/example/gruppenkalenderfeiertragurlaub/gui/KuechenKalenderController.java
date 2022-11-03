@@ -58,8 +58,8 @@ public class KuechenKalenderController {
 
     private void configureTableView() {
         TableConfigurator tableConfigurator = new TableConfigurator();
-        tableConfigurator.configureBooleanTableColum(tcKuecheOffen);
-        tableConfigurator.configureLocalDateTableColum(tcDatum);
+        tableConfigurator.configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
+        tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
     }
 
     @FXML
