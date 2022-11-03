@@ -9,6 +9,8 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class KuechenKalenderController {
 
@@ -41,8 +43,8 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
     final String fifeLocalDateDaysOfWeekArray[] = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"};
-    final String twelveLocalDateMonths[] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",};
-    final String twelvMonateDisplayText[] = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+    final ArrayList<String> twelveLocalDateMonths = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
+    final ArrayList<String> twelvMonateDisplayText = new ArrayList<>(Arrays.asList("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"));
     Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
 
     public void initialize() {
@@ -98,14 +100,8 @@ public class KuechenKalenderController {
     }
 
     private String getAnzeigeMonatString(String localDateMonat) {
-        String anzeigeMonat = "";
-        for (int i = 0; i < twelveLocalDateMonths.length; i++) {
-            if(localDateMonat.equals(twelveLocalDateMonths[i])) {
-                anzeigeMonat = twelvMonateDisplayText[i];
-                break;
-            }
-        }
-        return anzeigeMonat;
+        int monatsIndex = twelveLocalDateMonths.indexOf(localDateMonat);
+        return (monatsIndex != -1) ? twelvMonateDisplayText.get(monatsIndex) : "";
     }
 
     private void configureTableView() {
