@@ -42,10 +42,10 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
-    final String fifeLocalDateDaysOfWeekArray[] = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"};
-    final ArrayList<String> twelveLocalDateMonths = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
-    final ArrayList<String> twelvMonateDisplayText = new ArrayList<>(Arrays.asList("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"));
-    Integer jahre[] = {2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040};
+    final ArrayList<String> tageListInLocalDateFormat = new ArrayList<>(Arrays.asList("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"));
+    final ArrayList<String> monateListInLocalDateFormat = new ArrayList<>(Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"));
+    final ArrayList<String> monatListAsDisplayText = new ArrayList<>(Arrays.asList("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"));
+    ArrayList<Integer> jahreList = new ArrayList<>(Arrays.asList(2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2031, 2034, 2035, 2036, 2037, 2038, 2039, 2040));
 
     public void initialize() {
 
@@ -55,18 +55,17 @@ public class KuechenKalenderController {
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
 
         configureCBMonatAuswahl();
-
         configureCBJahrAuswahl();
-
     }
 
     private void configureCBJahrAuswahl() {
-        comboBoxJahrAuswahl.getSelectionModel().select(LocalDate.now().getYear() - jahre[0]);
+        comboBoxJahrAuswahl.getItems().addAll(jahreList);
+        comboBoxJahrAuswahl.getSelectionModel().select(jahreList.indexOf(LocalDate.now().getYear()));
     }
 
     private void configureCBMonatAuswahl() {
         //fügt Alle benötigten Items den Comboxboxen Hinzu
-        comboBoxMonatAuswahl.getItems().addAll(twelveLocalDateMonths);
+        comboBoxMonatAuswahl.getItems().addAll(monateListInLocalDateFormat);
 
         comboBoxMonatAuswahl.setCellFactory(colum -> {
             ListCell<String> cell = new ListCell<>();
@@ -92,16 +91,13 @@ public class KuechenKalenderController {
                 return null;
             }
         });
-        comboBoxJahrAuswahl.getItems().addAll(jahre);
-
-
         //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
     }
 
     private String getAnzeigeMonatString(String localDateMonat) {
-        int monatsIndex = twelveLocalDateMonths.indexOf(localDateMonat);
-        return (monatsIndex != -1) ? twelvMonateDisplayText.get(monatsIndex) : "";
+        int monatsIndex = monateListInLocalDateFormat.indexOf(localDateMonat);
+        return (monatsIndex != -1) ? monatListAsDisplayText.get(monatsIndex) : "";
     }
 
     private void configureTableView() {
