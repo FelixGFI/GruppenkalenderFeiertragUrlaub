@@ -1,4 +1,4 @@
-package com.example.gruppenkalenderfeiertragurlaub;
+package com.example.gruppenkalenderfeiertragurlaub.playground;
 import java.sql.*;
 public class Playground {
     public static void main(String[] args) throws SQLException {

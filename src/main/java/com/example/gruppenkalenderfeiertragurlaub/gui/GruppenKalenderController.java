@@ -6,12 +6,8 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigu
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GruppenKalenderController {
 
@@ -24,7 +20,7 @@ public class GruppenKalenderController {
     @FXML ComboBox<String> comboBoxMonatAuswahl;
     @FXML ComboBox<Integer> comboBoxJahrAuswahl;
     @FXML ComboBox<String> comboBoxGruppenAuswahl;
-    @FXML ComboBox<String> comboBoxStatusAuswahl;
+    @FXML ComboBox<Character> comboBoxStatusAuswahl;
 
     @FXML DatePicker dpVon;
     @FXML DatePicker dpBis;
@@ -51,7 +47,7 @@ public class GruppenKalenderController {
         comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
         comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
-        comboBoxStatusAuswahl.getItems().addAll(arrayListStorage.getStatusListDisplayFormat());
+        comboboxConfigurater.configureCBStatusauswahl(comboBoxStatusAuswahl);
 
     }
     private void configureTableView() {

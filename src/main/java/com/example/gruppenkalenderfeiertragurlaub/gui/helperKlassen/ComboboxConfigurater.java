@@ -5,8 +5,6 @@ import javafx.scene.control.ListCell;
 import javafx.util.StringConverter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ComboboxConfigurater {
     final ArrayListStorage arrayListStorage = new ArrayListStorage();
@@ -47,10 +45,43 @@ public class ComboboxConfigurater {
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
     }
 
+    public void configureCBStatusauswahl(ComboBox<Character> comboBoxStatusAuswahl) {
+        comboBoxStatusAuswahl.getItems().addAll(arrayListStorage.getStatusListCharacterFormat());
+        comboBoxStatusAuswahl.setCellFactory(colum -> {
+            ListCell<Character> cell = new ListCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    cell.setText(getDisplayStatusString(newVal));
+                }
+            });
+            return cell;
+        });
+        comboBoxStatusAuswahl.setConverter(new StringConverter<Character>() {
+            @Override
+            public String toString(Character statusCharacter) {
+                String statusDisplayString = "";
+                if(statusCharacter != null) {
+                    statusDisplayString = getDisplayStatusString(statusCharacter);
+                }
+                return statusDisplayString;
+            }
+
+            @Override
+            public Character fromString(String string) {
+                return null;
+            }
+        });
+    }
+
+    private String getDisplayStatusString(Character newVal) {
+        int statusIndex = arrayListStorage.getStatusListCharacterFormat().indexOf(newVal);
+        String displayStatus = (statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "";
+        return displayStatus;
+    }
+
     private String getAnzeigeMonatString(String localDateMonat) {
         int monatsIndex = arrayListStorage.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? arrayListStorage.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
-
     public ComboboxConfigurater() {}
 }

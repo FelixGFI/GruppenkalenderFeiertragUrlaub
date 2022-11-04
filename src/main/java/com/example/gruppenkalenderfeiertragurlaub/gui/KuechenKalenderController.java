@@ -7,10 +7,8 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.Betriebsurlaub
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class KuechenKalenderController {
 
