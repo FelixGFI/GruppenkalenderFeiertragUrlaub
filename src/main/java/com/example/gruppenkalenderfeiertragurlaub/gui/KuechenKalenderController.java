@@ -2,7 +2,6 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
@@ -57,9 +56,9 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     }
 
     private void configureTableView() {
-        TableColumnConfigurator tcConfigurator = new TableColumnConfigurator();
-        tcConfigurator.configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
-        tcConfigurator.configureLocalDateTableColum(tcDatum, "datum");
+
+        configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
+        configureLocalDateTableColum(tcDatum, "datum");
     }
 
     @FXML

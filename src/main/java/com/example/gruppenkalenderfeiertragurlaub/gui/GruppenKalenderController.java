@@ -1,7 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -49,10 +48,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     }
     private void configureTableView() {
-        TableColumnConfigurator tableConfigurator = new TableColumnConfigurator();
-        tableConfigurator.configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
-        tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
-        tableConfigurator.configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
+
+        configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
+        configureLocalDateTableColum(tcDatum, "datum");
+        configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
     }
 
     @FXML protected void onBtVorherigerMonatClick() {

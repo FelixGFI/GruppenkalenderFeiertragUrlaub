@@ -1,7 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -46,9 +45,8 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
 
-        TableColumnConfigurator tableConfigurator = new TableColumnConfigurator();
-        tableConfigurator.configureBooleanTableColum(tcIstBetriebsurlaub, "isBetriebsurlaub");
-        tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
+        configureBooleanTableColum(tcIstBetriebsurlaub, "isBetriebsurlaub");
+        configureLocalDateTableColum(tcDatum, "datum");
     }
 
     @FXML protected void onBtVorherigerMonatClick() {
