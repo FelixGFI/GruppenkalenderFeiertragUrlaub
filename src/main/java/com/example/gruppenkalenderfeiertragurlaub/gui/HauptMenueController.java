@@ -26,7 +26,7 @@ public class HauptMenueController {
     @FXML Button btPlatzhalterKnopf3;
     @FXML Button btPlatzhalterKnopf4;
 
-    Stage stage = new Stage();
+    Stage stage;
 
     public void initialize() {
 
@@ -96,6 +96,12 @@ public class HauptMenueController {
         System.out.println("Klick Programm schließen");
     }
 
+    /**
+     * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
+     * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
+     * @param titel
+     * @param fxmlReccouse
+     */
     private void openSubwindowFromButtonClick(String titel, String fxmlReccouse) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
         Scene newScene;
@@ -113,10 +119,17 @@ public class HauptMenueController {
         inputStage.initModality(Modality.APPLICATION_MODAL);
         inputStage.showAndWait();
     }
+
+    /**
+     * zeigt das Hauptmenü Fenster als neues Fenster an. Initialisiert und speichert die stage des Hauptfensters (von welchem diese Klasse
+     * die Controller Classe ist) als globale Variable um diese später als parent für Subfenster zu verwenden.
+     * @throws IOException
+     */
     public void showDialog() throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HauptmenueApp.class.getResource("UeberMenueView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        stage = new Stage();
         stage.setTitle("Hauptmenü");
         stage.setScene(scene);
         stage.show();

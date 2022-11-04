@@ -14,12 +14,26 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ControllerBasisKlasse {
+
+    /**
+     * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
+     * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
+     * Standard vorauswahl aus.
+     * @param comboBoxJahrAuswahl
+     */
     public static void configureCBJahrAuswahl(ComboBox<Integer> comboBoxJahrAuswahl) {
 
         comboBoxJahrAuswahl.getItems().addAll(UsefulConstants.getJahreList());
         comboBoxJahrAuswahl.getSelectionModel().select(UsefulConstants.getJahreList().indexOf(LocalDate.now().getYear()));
     }
 
+    /**
+     * Fügt alle Zwölf Monat in dem Format wie die Klasse LocalDate diese Verwendet (englisch und Capslock "JANUARY") in
+     * die übergebene Combobox<String> hinzu.
+     * Sorgt dafür das für Jeden Monat sowohl wenn augewählt als auch wenn in der Auswahlliste angezeigt,
+     * String mit dem Deutschen Monatsnamen angezeigt wird. (Januar). Wählt den Akktulen Monat als default aus.
+     * @param comboBoxMonatAuswahl
+     */
     public static void configureCBMonatAuswahl(ComboBox<String> comboBoxMonatAuswahl) {
 
         //fügt Alle benötigten Items den Comboxboxen Hinzu
@@ -53,6 +67,13 @@ public class ControllerBasisKlasse {
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
     }
 
+    /**
+     * fügt der übergbenen Combobox<Character> Character hinzu welche die auswählbaren Gruppenstatuse representieren
+     * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut). Legt fest das für jeden
+     * Character ein Entsprchender String welcher den gruppenstatus beschreibt in der Gui angezeigt wird, sohwohl
+     * wenn ausgewählt als auch in er Auswahl liste der Combobox
+     * @param comboBoxStatusAuswahl
+     */
     public static void configureCBStatusauswahl(ComboBox<Character> comboBoxStatusAuswahl) {
 
         comboBoxStatusAuswahl.getItems().addAll(UsefulConstants.getStatusListCharacterFormat());
@@ -104,6 +125,14 @@ public class ControllerBasisKlasse {
         int monatsIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? UsefulConstants.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
+
+    /**
+     * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
+     * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
+     * Boolean wert "true" der String "Ja" und für den Boolean wert "false" der String "Nein" angezeigt wird
+     * @param tableColumnBoolean
+     * @param columAttributeName
+     */
     public static void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName) {
 
         tableColumnBoolean.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
@@ -132,6 +161,13 @@ public class ControllerBasisKlasse {
         });
     }
 
+    /**
+     * Konfiguriert für die Übergebene tabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
+     * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
+     * üblichen Format (dd.MM.yyyy) so das es in diesem Format in der Gui angezeigt wird.
+     * @param tableColumnLocalDate
+     * @param columAttributeName
+     */
     public static void configureLocalDateTableColum(TableColumn tableColumnLocalDate, String columAttributeName) {
         tableColumnLocalDate.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
         /*
@@ -157,6 +193,14 @@ public class ControllerBasisKlasse {
         });
     }
 
+    /**
+     * Konfiguriert die Übergebene TableColum<Klassenname, Character>. Setzt den Übergebenen String als anzuzeigendes
+     * Attribut und findet für Jeden angezeigten Character, welcher den Gruppenstatus definiert
+     * (Was die Gruppe an einem Tag gemacht hat) den Entsprechenden String der in der Gui angezeigt werden soll.
+     * Dieser String wird statt des Characters in der jeweiligen Zelle angezeigt.
+     * @param gruppenStatusColum
+     * @param columnAttributeName
+     */
     public static void configureGruppenStatusTableColum(TableColumn gruppenStatusColum, String columnAttributeName) {
         gruppenStatusColum.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
         /*for Documentation to CellFactory see BetriebsurlaubController
