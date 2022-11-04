@@ -8,28 +8,21 @@ import javafx.scene.control.*;
 import java.time.LocalDate;
 
 public class GruppenKalenderController extends ControllerBasisKlasse{
-
     @FXML Button btSpeichern;
     @FXML Button btAbbrechen;
     @FXML Button btUebernehmen;
     @FXML Button btVorherigerMonat;
     @FXML Button btNaechsterMonat;
-
     @FXML ComboBox<String> comboBoxMonatAuswahl;
     @FXML ComboBox<Integer> comboBoxJahrAuswahl;
     @FXML ComboBox<String> comboBoxGruppenAuswahl;
     @FXML ComboBox<Character> comboBoxStatusAuswahl;
-
     @FXML DatePicker dpVon;
     @FXML DatePicker dpBis;
-
     @FXML TableView<GruppenKalenderTag> tbTabelle;
-
     @FXML TableColumn<GruppenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
-
-
 
     @FXML protected void onBtVorherigerMonatClick() {
         System.out.println("Klick Vorheriger Monat");

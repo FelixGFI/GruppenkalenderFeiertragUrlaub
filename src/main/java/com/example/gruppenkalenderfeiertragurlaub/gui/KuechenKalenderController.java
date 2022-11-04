@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import java.time.LocalDate;
 
 public class KuechenKalenderController extends ControllerBasisKlasse {
-
     @FXML
     Button btSpeichern;
     @FXML
@@ -21,19 +20,15 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     Button btNaechsterMonat;
     @FXML
     Button btVorigerMonat;
-
     @FXML
     ComboBox<String> comboBoxMonatAuswahl;
     @FXML
     ComboBox<Integer> comboBoxJahrAuswahl;
-
     @FXML
     DatePicker dpVon;
     @FXML
     DatePicker dpBis;
-
     @FXML TableView<KuechenKalenderTag> tbTabelle;
-
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
