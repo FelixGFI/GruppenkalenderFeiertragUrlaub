@@ -9,10 +9,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TableConfigurator {
+public class TableColumnConfigurator {
     final ArrayListStorage arrayListStorage = new ArrayListStorage();
 
-    public TableConfigurator() {}
+    public TableColumnConfigurator() {}
 
     public void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName ) {
 

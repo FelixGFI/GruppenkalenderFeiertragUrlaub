@@ -6,7 +6,7 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 
-public class ComboboxConfigurater {
+public class ComboboxConfigurator {
     final ArrayListStorage arrayListStorage = new ArrayListStorage();
     public void configureCBJahrAuswahl(ComboBox<Integer> comboBoxJahrAuswahl) {
         comboBoxJahrAuswahl.getItems().addAll(arrayListStorage.getJahreList());
@@ -83,5 +83,5 @@ public class ComboboxConfigurater {
         int monatsIndex = arrayListStorage.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? arrayListStorage.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
-    public ComboboxConfigurater() {}
+    public ComboboxConfigurator() {}
 }

@@ -1,8 +1,8 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -38,16 +38,16 @@ public class BetriebsurlaubController {
         tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now(), false));
         tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
 
-        ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
-        comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
-        comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        ComboboxConfigurator comboboxConfigurator = new ComboboxConfigurator();
+        comboboxConfigurator.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+        comboboxConfigurator.configureCBMonatAuswahl(comboBoxMonatAuswahl);
     }
 
     private void configureTableView() {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
 
-        TableConfigurator tableConfigurator = new TableConfigurator();
+        TableColumnConfigurator tableConfigurator = new TableColumnConfigurator();
         tableConfigurator.configureBooleanTableColum(tcIstBetriebsurlaub, "isBetriebsurlaub");
         tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
     }

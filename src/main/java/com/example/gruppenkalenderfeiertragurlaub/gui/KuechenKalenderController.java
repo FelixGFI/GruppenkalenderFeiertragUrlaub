@@ -1,8 +1,9 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
@@ -41,23 +42,26 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
     final ArrayListStorage arrayListStorage = new ArrayListStorage();
+    final DatenbankCommunicator datenbankCommunicator = new DatenbankCommunicator();
 
     public void initialize() {
 
         configureTableView();
 
+        //TODO boolean connectionEstablished = datenbankCommunicator.establishConnection();
+
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
 
-        ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
-        comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
-        comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+        ComboboxConfigurator cbConfigurator = new ComboboxConfigurator();
+        cbConfigurator.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        cbConfigurator.configureCBJahrAuswahl(comboBoxJahrAuswahl);
     }
 
     private void configureTableView() {
-        TableConfigurator tableConfigurator = new TableConfigurator();
-        tableConfigurator.configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
-        tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
+        TableColumnConfigurator tcConfigurator = new TableColumnConfigurator();
+        tcConfigurator.configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
+        tcConfigurator.configureLocalDateTableColum(tcDatum, "datum");
     }
 
     @FXML

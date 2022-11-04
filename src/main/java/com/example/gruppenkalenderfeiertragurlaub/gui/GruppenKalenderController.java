@@ -1,8 +1,8 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurater;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -43,15 +43,15 @@ public class GruppenKalenderController {
         tbTabelle.getItems().add(new GruppenKalenderTag(3, LocalDate.now().plusDays(1), 'U', false));
         tbTabelle.getItems().add(new GruppenKalenderTag(3,LocalDate.now().plusDays(2), 'A', false));
 
-        ComboboxConfigurater comboboxConfigurater = new ComboboxConfigurater();
-        comboboxConfigurater.configureCBMonatAuswahl(comboBoxMonatAuswahl);
-        comboboxConfigurater.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+        ComboboxConfigurator comboboxConfigurator = new ComboboxConfigurator();
+        comboboxConfigurator.configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        comboboxConfigurator.configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
-        comboboxConfigurater.configureCBStatusauswahl(comboBoxStatusAuswahl);
+        comboboxConfigurator.configureCBStatusauswahl(comboBoxStatusAuswahl);
 
     }
     private void configureTableView() {
-        TableConfigurator tableConfigurator = new TableConfigurator();
+        TableColumnConfigurator tableConfigurator = new TableColumnConfigurator();
         tableConfigurator.configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
         tableConfigurator.configureLocalDateTableColum(tcDatum, "datum");
         tableConfigurator.configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
