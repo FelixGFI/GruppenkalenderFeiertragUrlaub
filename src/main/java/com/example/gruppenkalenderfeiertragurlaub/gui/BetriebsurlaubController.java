@@ -27,8 +27,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
 
     @FXML TableView<BetriebsurlaubsTag> tbTabelle;
 
-    final UsefulConstants usefulConstants = new UsefulConstants();
-
     public void initialize() {
 
         configureTableView();
@@ -44,7 +42,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     private void configureTableView() {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
-
         configureBooleanTableColum(tcIstBetriebsurlaub, "isBetriebsurlaub");
         configureLocalDateTableColum(tcDatum, "datum");
     }
