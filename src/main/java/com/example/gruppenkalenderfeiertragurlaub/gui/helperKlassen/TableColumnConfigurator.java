@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class TableColumnConfigurator {
-    final ArrayListStorage arrayListStorage = new ArrayListStorage();
+    final UsefulConstants usefulConstants = new UsefulConstants();
 
     public TableColumnConfigurator() {}
 
@@ -77,8 +77,8 @@ public class TableColumnConfigurator {
             TableCell<GruppenKalenderTag, Character> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if(newVal != null) {
-                    int statusIndex = arrayListStorage.getStatusListCharacterFormat().indexOf(newVal);
-                    cell.setText((statusIndex != -1) ? arrayListStorage.getStatusListDisplayFormat().get(statusIndex) : "");
+                    int statusIndex = usefulConstants.getStatusListCharacterFormat().indexOf(newVal);
+                    cell.setText((statusIndex != -1) ? usefulConstants.getStatusListDisplayFormat().get(statusIndex) : "");
                 }
             });
             return cell;

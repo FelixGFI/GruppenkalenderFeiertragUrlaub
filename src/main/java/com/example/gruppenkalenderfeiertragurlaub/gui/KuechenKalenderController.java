@@ -1,7 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ArrayListStorage;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.ComboboxConfigurator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.TableColumnConfigurator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
@@ -11,7 +10,7 @@ import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
-public class KuechenKalenderController {
+public class KuechenKalenderController extends ControllerBasisKlasse {
 
     @FXML
     Button btSpeichern;
@@ -41,7 +40,7 @@ public class KuechenKalenderController {
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
 
-    final ArrayListStorage arrayListStorage = new ArrayListStorage();
+    final UsefulConstants usefulConstants = new UsefulConstants();
     final DatenbankCommunicator datenbankCommunicator = new DatenbankCommunicator();
 
     public void initialize() {
@@ -53,9 +52,8 @@ public class KuechenKalenderController {
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
         tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
 
-        ComboboxConfigurator cbConfigurator = new ComboboxConfigurator();
-        cbConfigurator.configureCBMonatAuswahl(comboBoxMonatAuswahl);
-        cbConfigurator.configureCBJahrAuswahl(comboBoxJahrAuswahl);
+        configureCBMonatAuswahl(comboBoxMonatAuswahl);
+        configureCBJahrAuswahl(comboBoxJahrAuswahl);
     }
 
     private void configureTableView() {
