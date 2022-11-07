@@ -1,11 +1,14 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML Button btSpeichern;
@@ -23,6 +26,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
+
+    ArrayList<GruppenKalenderTag> tageListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
         System.out.println("Klick Vorheriger Monat");
@@ -43,8 +48,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Klick Übernehmen");
     }
-
-    public void initialize() {
+    public void initialize() throws SQLException {
         configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
         configureLocalDateTableColum(tcDatum, "datum");
         configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
@@ -53,7 +57,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
 
-        createTestdata();
+        DatenbankCommunicator.establishConnection();
+        tageListe = DatenbankCommunicator.readGruppenKalenderTage();
+        tbTabelle.getItems().addAll(tageListe);
+
     }
 
     private void createTestdata() {

@@ -1,11 +1,14 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML
@@ -31,7 +34,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
-
+    ArrayList<KuechenKalenderTag> kuechenListe;
     //TODO improve Printed Strings on Button Click
     @FXML
     protected void onBtVorherigerMonatClick() {
@@ -60,7 +63,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         System.out.println("Called onBtOffenClick()");
     }
 
-    public void initialize() {
+    public void initialize() throws SQLException {
 
         configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
         configureLocalDateTableColum(tcDatum, "datum");
@@ -68,12 +71,9 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
-        createTestData();
-    }
-
-    private void createTestData() {
-        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now().plusDays(10), true));
-        tbTabelle.getItems().add(new KuechenKalenderTag(LocalDate.now(), false));
+        DatenbankCommunicator.establishConnection();
+        kuechenListe = DatenbankCommunicator.readKuechenKalenderTage();
+        tbTabelle.getItems().addAll(kuechenListe);
     }
 }
 

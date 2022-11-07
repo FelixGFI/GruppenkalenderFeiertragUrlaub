@@ -1,10 +1,13 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class BetriebsurlaubController extends ControllerBasisKlasse{
     @FXML Button btSpeichern;
@@ -19,7 +22,9 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcIstBetriebsurlaub;
     @FXML TableView<BetriebsurlaubsTag> tbTabelle;
-    
+
+    ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage;
+
     @FXML protected void onBtVorherigerMonatClick() {
         System.out.println("Klick Vorheriger Monat");
     }
@@ -46,7 +51,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Klick Übernehmen");
     }
-    public void initialize() {
+    public void initialize() throws SQLException {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
         configureBooleanTableColum(tcIstBetriebsurlaub, "isBetriebsurlaub");
@@ -55,11 +60,9 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
 
-        createTestData();
-    }
-
-    private void createTestData() {
-        tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now(), false));
-        tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().minusMonths(1), true));
+        DatenbankCommunicator.establishConnection();
+        betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage();
+        tbTabelle.getItems().addAll(betriebsurlaubsTage
+        );
     }
 }
