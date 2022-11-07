@@ -82,30 +82,16 @@ public class DatenbankCommunicator {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("essensangebot");
-                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen);
+                    Integer gruppen_id =  rs.getInt("gruppe_id");
+                    Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
+                    System.out.println(datum);
+                    System.out.println(gruppen_id);
                     System.out.println(kuecheOffen);
+                    System.out.println(gruppenstatus);
+                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen));
                 }
             }
         }
-
-
-        /*try(Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT * FROM gruppenkalender;")) {
-                System.out.println("start");
-                Integer gruppenID = rs.getInt("gruppe_id");
-                System.out.println(gruppenID);
-
-                LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
-                System.out.println(datum);
-
-                Boolean essenVerfuegbar = rs.getBoolean("essensangebot");
-                System.out.println(essenVerfuegbar);
-                Character gruppenStatus = rs.getString("gruppenstatus").toCharArray()[0];
-                System.out.println(gruppenStatus);
-                GruppenKalenderTag kalenderTag = new GruppenKalenderTag(gruppenID, datum, gruppenStatus, essenVerfuegbar);
-                kalenderTagListe.add(kalenderTag);
-            }
-        }*/
 
         return kalenderTagListe;
     }
