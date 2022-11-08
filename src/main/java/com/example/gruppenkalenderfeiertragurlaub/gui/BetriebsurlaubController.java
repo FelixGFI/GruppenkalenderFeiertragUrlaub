@@ -26,15 +26,15 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage;
 
     @FXML protected void onBtVorherigerMonatClick() {
-        System.out.println("Klick Vorheriger Monat");
+        System.out.println("Called onBtVorigerMonatClick()");
     }
 
     @FXML protected void onBtNaechsterMonatClick() {
-        System.out.println("Klick Naechster Monat");
+        System.out.println("Called onBtNaechsterMonatClick()");
     }
 
     @FXML protected void onBtAbbrechenClick() {
-        System.out.println("Klick Abbrechen");
+        System.out.println("Called onBtAbbrechenClick()");
     }
 
     @FXML protected void onBtSpeichernClick() {
@@ -46,10 +46,10 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
         }
 
         tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().plusDays(5), true));
-        System.out.println("Klick Speichern");
+        System.out.println("Called onBtSpeichernClick()");
     }
     @FXML protected void onBtUebernehmenClick() {
-        System.out.println("Klick Übernehmen");
+        System.out.println("Called onBtUebernehmenClick()");
     }
     public void initialize() throws SQLException {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben

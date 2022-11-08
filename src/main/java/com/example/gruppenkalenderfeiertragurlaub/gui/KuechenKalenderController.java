@@ -38,12 +38,12 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     //TODO improve Printed Strings on Button Click
     @FXML
     protected void onBtVorherigerMonatClick() {
-        System.out.println("Klick Vorheriger Monat");
+        System.out.println("Called onBtVorigerMonatClick()");
     }
 
     @FXML
     protected void onBtNaechsterMonatClick() {
-        System.out.println("Klick Naechster Monat");
+        System.out.println("Called onBtNaechsterMonatClick()");
     }
 
     @FXML
@@ -63,6 +63,10 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         System.out.println("Called onBtOffenClick()");
     }
 
+    @FXML protected void onComboboxJahrAuswahlAction() {
+        System.out.println("Called onComboboxJahresAuswahlAction()");
+    }
+
     public void initialize() throws SQLException {
 
         configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
@@ -70,6 +74,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
+
+
 
         DatenbankCommunicator.establishConnection();
         kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());

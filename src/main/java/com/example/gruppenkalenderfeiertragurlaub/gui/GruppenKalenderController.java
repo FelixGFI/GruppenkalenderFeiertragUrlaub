@@ -30,23 +30,23 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     ArrayList<GruppenKalenderTag> tageListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
-        System.out.println("Klick Vorheriger Monat");
+        System.out.println("Called onBtVorigerMonatClick()");
     }
 
     @FXML protected void onBtNaechsterMonatClick() {
-        System.out.println("Klick Naechster Monat");
+        System.out.println("Called onBtNaechsterMonatClick()");
     }
 
     @FXML protected void onBtAbbrechenClick() {
-        System.out.println("Klick Abbrechen");
+        System.out.println("Called onBAbbrechenClick()");
     }
 
     @FXML protected void onBtSpeichernClick() {
 
-        System.out.println("Klick Speichern");
+        System.out.println("Called onBtSpeichernClick()");
     }
     @FXML protected void onBtUebernehmenClick() {
-        System.out.println("Klick Übernehmen");
+        System.out.println("Called onBtuebernehmenClick()");
     }
     public void initialize() throws SQLException {
         configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
