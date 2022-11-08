@@ -11,6 +11,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
 
 import java.sql.SQLException;
@@ -235,6 +241,48 @@ public class ControllerBasisKlasse {
                 comboBoxGruppenAuswahl.getItems().add(gr);
             }
         }
+
+        comboBoxGruppenAuswahl.setCellFactory(colum -> {
+            ListCell<Object> cell = new ListCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if(newVal != null) {
+                    if(newVal.getClass() == GruppeFuerKalender.class) {
+                        cell.setText(((GruppeFuerKalender) newVal).getGruppeName());
+                        cell.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.NORMAL, Font.getDefault().getSize()));
+                    } else {
+                        cell.setText(((GruppenFamilieFuerKalender) newVal).getFamilieName());
+                        cell.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
+                    }
+
+                }
+            });
+            return cell;
+        });
+        comboBoxGruppenAuswahl.setConverter(new StringConverter<Object>() {
+            @Override
+            public String toString(Object gruppeOrGruppenFamilie) {
+                String gruppeNameString = "";
+                if(gruppeOrGruppenFamilie != null) {
+                    if(gruppeOrGruppenFamilie.getClass() == GruppeFuerKalender.class) {
+                        gruppeNameString = ((GruppeFuerKalender) gruppeOrGruppenFamilie).getGruppeName();
+
+                    } else {
+                        gruppeNameString = ((GruppenFamilieFuerKalender) gruppeOrGruppenFamilie).getFamilieName();
+
+                    }
+                }
+
+                return gruppeNameString;
+            }
+
+            @Override
+            public Character fromString(String string) {
+                return null;
+            }
+        });
+        System.out.println(comboBoxGruppenAuswahl.getStyle());
+
+
         return gruppenFamilienListe;
     }
 }
