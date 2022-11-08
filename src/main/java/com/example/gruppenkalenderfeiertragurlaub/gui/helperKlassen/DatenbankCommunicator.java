@@ -1,9 +1,6 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -120,9 +117,37 @@ public class DatenbankCommunicator {
         return kalenderTagListe;
     }
 
-    public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienAndGruppen() {
-        ArrayList<GruppenFamilieFuerKalender> gruppenFamilien = new ArrayList<>();
+    public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienUndGruppen() throws SQLException {
+        ArrayList<GruppenFamilieFuerKalender> gruppenFamilieListe = new ArrayList<>();
 
-        return gruppenFamilien;
+        try(Statement stmt = conn.createStatement()) {
+            try(ResultSet rs = stmt.executeQuery("select f.id as 'familienId', f.name as 'familienName', g.id 'gruppeId', g.name as 'gruppeName' \n" +
+                    "from gruppenfamilie f inner join gruppe g on f.id = g.gruppenfamilie_id;")){
+                while (rs.next()){
+                    Integer familienId = rs.getInt("familienId");
+                    String familienName = rs.getString("familienName");
+                    Integer gruppeId = rs.getInt("gruppeId");
+                    String gruppeName = rs.getString("gruppeName");
+
+                    GruppeFuerKalender neueGruppe = new GruppeFuerKalender(gruppeId, gruppeName, familienId);
+
+                    Boolean gruppeExists = false;
+                    for (GruppenFamilieFuerKalender familie : gruppenFamilieListe) {
+                        if(familie.getFamilieId() == familienId) {
+                            gruppeExists = true;
+                            familie.getGruppenDerFamilie().add(neueGruppe);
+                            break;
+                        }
+                    }
+                    if(!gruppeExists) {
+                        GruppenFamilieFuerKalender neueFamilie = new GruppenFamilieFuerKalender(familienId, familienName, new ArrayList<>());
+                        neueFamilie.getGruppenDerFamilie().add(neueGruppe);
+                        gruppenFamilieListe.add(neueFamilie);
+                    }
+                }
+            }
+        }
+
+        return gruppenFamilieListe;
     }
 }

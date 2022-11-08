@@ -1,9 +1,27 @@
 package com.example.gruppenkalenderfeiertragurlaub.playground;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
+
 import java.sql.*;
+import java.util.ArrayList;
+
 public class Playground {
     public static void main(String[] args) throws SQLException {
         // launch();
         //create connection for a server installed in localhost, with a user "root" with no password
+        //dataBaseReadDeleteInsertUpdateTest();
+        DatenbankCommunicator.establishConnection();
+        ArrayList<GruppenFamilieFuerKalender> grFaList = DatenbankCommunicator.getAllGruppenFamilienUndGruppen();
+        for (GruppenFamilieFuerKalender grFa:grFaList) {
+            System.out.println(grFa.getFamilieId() + " ," + grFa.getFamilieName());
+            for(GruppeFuerKalender gr : grFa.getGruppenDerFamilie()) {
+                System.out.println("--" + gr.getGruppeId() + ", " + gr.getGruppeName() + ": " + gr.getFamilienId());
+            }
+        }
+    }
+
+    private static void dataBaseReadDeleteInsertUpdateTest() throws SQLException {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mariadb://localhost/verpflegungsgeld",
                 "root",
