@@ -58,7 +58,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureCBStatusauswahl(comboBoxStatusAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        tageListe = DatenbankCommunicator.readGruppenKalenderTage();
+        tageListe = DatenbankCommunicator.readGruppenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().addAll(tageListe);
 
     }

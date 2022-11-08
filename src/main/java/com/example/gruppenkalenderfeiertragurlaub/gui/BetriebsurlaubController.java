@@ -61,7 +61,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage();
+        betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().addAll(betriebsurlaubsTage
         );
     }

@@ -72,7 +72,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        kuechenListe = DatenbankCommunicator.readKuechenKalenderTage();
+        kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().addAll(kuechenListe);
     }
 }

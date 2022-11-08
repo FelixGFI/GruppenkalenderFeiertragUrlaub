@@ -32,13 +32,23 @@ public class DatenbankCommunicator {
             return false;
         }
     }
-    public static ArrayList<KuechenKalenderTag> readKuechenKalenderTage() throws SQLException {
+
+    /**
+     * Liest alle werte aus der Tabelle kuechenplanung für das übergebene Jahr und speichert diese in eine ArrayList von KüchenkalenderTag objekten
+     * @param jahr
+     * @return Liste aller datenbankeinträge in kuechenplanung für das übergebene jahr als
+     * @throws SQLException
+     */
+    public static ArrayList<KuechenKalenderTag> readKuechenKalenderTage(Integer jahr) throws SQLException {
         ArrayList<KuechenKalenderTag> kuechenKalenderTagListe = new ArrayList<>();
 
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT * FROM kuechenplanung")) {
+            try(ResultSet rs = stmt.executeQuery("SELECT * FROM kuechenplanung WHERE kuechenplanung.datum >= '"
+                    + jahr + "-01-01' AND kuechenplanung.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
+
+                    //TODO change columnLabel below to new and corrected Colum name
                     Boolean kuecheOffen = rs.getBoolean("gooeffnet");
                     KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen);
                     kuechenKalenderTagListe.add(kuechenTag);
@@ -48,7 +58,17 @@ public class DatenbankCommunicator {
         return kuechenKalenderTagListe;
     }
 
-    public static ArrayList<BetriebsurlaubsTag> readBetriebsurlaubTage() throws SQLException {
+    /**
+     * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
+     * betriebsurlaub nach einem identischen datum. Wenn ein datum gefunden wird ist klar das es sich bie dem gelesenen Datum um einen bereits festgelgten
+     * Betriebsurlaubstag handelt, (ein objekt Betriebsurlaubstag wird erstellt mit dem Booleanwert istBetriebsurlaubstag auf true)
+     * wird kein entsprechendes Datum gefunden so ist der Tag kein betriebsurlaubstag (Betriebsulraubstag wird mit Boolean wert auf False erstellt)
+     * die Estellten Betriebsurlaubstagsobjekte werden in einer Arraylist zurückgegeben.
+     * @param jahr
+     * @return Liste aller datenbankeinträge datum aus kuechenplanung und betriebsurlaub für das übergebene jahr
+     * @throws SQLException
+     */
+    public static ArrayList<BetriebsurlaubsTag> readBetriebsurlaubTage(Integer jahr) throws SQLException {
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTagListe = new ArrayList<>();
 
         try (Statement stmt = conn.createStatement()) {
@@ -56,16 +76,15 @@ public class DatenbankCommunicator {
                     "\tk.datum as 'normalDatum',\n" +
                     "\tb.datum as 'betiebsurlaubsDatum'\n" +
                     "FROM \n" +
-                    "\tkuechenplanung k left join betriebsurlaub b on k.datum = b.datum;")) {
+                    "\tkuechenplanung k left join betriebsurlaub b on k.datum = b.datum\n" +
+                    "\tWHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("normalDatum").toString());
                     boolean isBetiebsurlaub = false;
                     if(rs.getDate("betiebsurlaubsDatum") != null) {
                         isBetiebsurlaub = true;
                     }
-
                     BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetiebsurlaub);
-                    System.out.println(betriebsurlaub);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
 
                 }
@@ -74,20 +93,24 @@ public class DatenbankCommunicator {
         return betriebsurlaubsTagListe;
     }
 
-    public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage() throws SQLException {
+    /**
+     * Liest alle Einträge aus der Datenbanktabelle Gruppenkalender und speichert diese in einer ArrayListe von
+     * GruppenKalenderTag objekten.
+     * @param jahr
+     * @return Liste aller datenbankeinträge in gruppenkalender für das übergebene jahr
+     * @throws SQLException
+     */
+    public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr) throws SQLException {
 
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT * FROM gruppenkalender")) {
+            try(ResultSet rs = stmt.executeQuery("SELECT * FROM gruppenkalender WHERE gruppenkalender.datum >= '"
+                    + jahr + "-01-01' AND gruppenkalender.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("essensangebot");
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
-                    System.out.println(datum);
-                    System.out.println(gruppen_id);
-                    System.out.println(kuecheOffen);
-                    System.out.println(gruppenstatus);
                     kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen));
                 }
             }
