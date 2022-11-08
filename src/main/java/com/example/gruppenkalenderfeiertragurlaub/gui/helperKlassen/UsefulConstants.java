@@ -11,7 +11,7 @@ public class UsefulConstants {
      * TageListeInLocalDateFormat:  die Fünf Arbeitstage der Woche in dem Format wie sie die Klasse LocalDate verwendet
      * statusListCharacterFormat:   Liste der möglichen Gruppenstatuse (Was eine bestimmte Gruppe/Gruppenfamilie dem Klander
      *                              entsprechend an einem Tag tut) im Character Format, zur verwendung in Objekten der Klasse
-     *                              GruppenKalender Tagsowie in der Datenbank. (status 'N' is not intended to be used in the Database)
+     *                              GruppenKalender Tagsowie in der Datenbank.
      * statusListDisplayFormat:     liste von Strings zur Anzeige in der Gui welche den Gruppenstatus verständlich beschrieben
      * monateListInLocalDateFormat: Enthält die Zwölf Monate in dem Format wie sie die Klasse LocalDate verwendet
      * monatListAsDisplayText:      Enthält die Zwölf Monate wie sie in der Gui angezeigt werden sollen
