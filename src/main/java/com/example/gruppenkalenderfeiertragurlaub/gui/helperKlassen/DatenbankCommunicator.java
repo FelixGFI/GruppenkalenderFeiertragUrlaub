@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 
@@ -117,5 +118,11 @@ public class DatenbankCommunicator {
         }
 
         return kalenderTagListe;
+    }
+
+    public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienAndGruppen() {
+        ArrayList<GruppenFamilieFuerKalender> gruppenFamilien = new ArrayList<>();
+
+        return gruppenFamilien;
     }
 }
