@@ -1,7 +1,10 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -10,8 +13,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ControllerBasisKlasse {
 
@@ -219,5 +224,17 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
+    }
+
+    public static ArrayList<GruppenFamilieFuerKalender> configureGruppenCombobox(ComboBox comboBoxGruppenAuswahl) throws SQLException {
+        DatenbankCommunicator.establishConnection();
+        ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe = DatenbankCommunicator.getAllGruppenFamilienUndGruppen();
+        for (GruppenFamilieFuerKalender grFa : gruppenFamilienListe) {
+            comboBoxGruppenAuswahl.getItems().add(grFa);
+            for (GruppeFuerKalender gr : grFa.getGruppenDerFamilie()) {
+                comboBoxGruppenAuswahl.getItems().add(gr);
+            }
+        }
+        return gruppenFamilienListe;
     }
 }

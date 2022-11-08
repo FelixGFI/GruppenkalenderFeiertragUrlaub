@@ -120,6 +120,7 @@ public class DatenbankCommunicator {
     public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienUndGruppen() throws SQLException {
         ArrayList<GruppenFamilieFuerKalender> gruppenFamilieListe = new ArrayList<>();
 
+
         try(Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("select f.id as 'familienId', f.name as 'familienName', g.id 'gruppeId', g.name as 'gruppeName' \n" +
                     "from gruppenfamilie f inner join gruppe g on f.id = g.gruppenfamilie_id;")){

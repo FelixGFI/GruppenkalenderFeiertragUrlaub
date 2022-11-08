@@ -1,7 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,7 +18,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML Button btNaechsterMonat;
     @FXML ComboBox<String> comboBoxMonatAuswahl;
     @FXML ComboBox<Integer> comboBoxJahrAuswahl;
-    @FXML ComboBox<String> comboBoxGruppenAuswahl;
+    @FXML ComboBox<Object> comboBoxGruppenAuswahl;
     @FXML ComboBox<Character> comboBoxStatusAuswahl;
     @FXML DatePicker dpVon;
     @FXML DatePicker dpBis;
@@ -28,6 +28,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
     ArrayList<GruppenKalenderTag> tageListe;
+    ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
         System.out.println("Called onBtVorigerMonatClick()");
@@ -56,6 +57,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
+        gruppenFamilienListe = configureGruppenCombobox(comboBoxGruppenAuswahl);
 
         DatenbankCommunicator.establishConnection();
         tageListe = DatenbankCommunicator.readGruppenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
