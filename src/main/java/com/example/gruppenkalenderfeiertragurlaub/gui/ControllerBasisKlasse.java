@@ -164,7 +164,6 @@ public class ControllerBasisKlasse {
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
                     //Ternärer Ausdruck
-                    //TODO add Ternärer Ausdruck into Other Controller Classes
                     cell.setText((newVal == true) ? "Ja" : "Nein");
                 }
             });
@@ -258,6 +257,8 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
+
+        //TODO write Documentation
         comboBoxGruppenAuswahl.setConverter(new StringConverter<Object>() {
             @Override
             public String toString(Object gruppeOrGruppenFamilie) {

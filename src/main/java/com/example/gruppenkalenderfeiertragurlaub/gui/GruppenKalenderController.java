@@ -27,7 +27,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
-    ArrayList<GruppenKalenderTag> tageListe;
+    ArrayList<GruppenKalenderTag> tageListe = new ArrayList<>();
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
@@ -48,6 +48,21 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtuebernehmenClick()");
+        tbTabelle.getItems().clear();
+    }
+
+    @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
+        System.out.println("Called onComboboxGruppenAuswahlAction()");
+        //TODO Implement Save or Discard Changes warning, Implement Save if selected.
+
+        tbTabelle.getItems().clear();
+        tageListe = new ArrayList<>();
+
+
+        tageListe = DatenbankCommunicator.readGruppenKalenderTage(
+                comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(), comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
+        tbTabelle.getItems().addAll(tageListe);
+
     }
     public void initialize() throws SQLException {
         configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
@@ -58,10 +73,9 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
         gruppenFamilienListe = configureGruppenCombobox(comboBoxGruppenAuswahl);
+        //TODO Default sort Table by datum
 
         DatenbankCommunicator.establishConnection();
-        tageListe = DatenbankCommunicator.readGruppenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
-        tbTabelle.getItems().addAll(tageListe);
 
     }
 
