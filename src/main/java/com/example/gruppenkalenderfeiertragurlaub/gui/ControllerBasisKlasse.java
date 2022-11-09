@@ -11,10 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
@@ -241,7 +237,7 @@ public class ControllerBasisKlasse {
      * @return
      * @throws SQLException
      */
-    public static ArrayList<GruppenFamilieFuerKalender> configureGruppenCombobox(ComboBox comboBoxGruppenAuswahl) throws SQLException {
+    public static ArrayList<GruppenFamilieFuerKalender> configureCBGruppenAuswahl(ComboBox comboBoxGruppenAuswahl) throws SQLException {
         DatenbankCommunicator.establishConnection();
         ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe = DatenbankCommunicator.getAllGruppenFamilienUndGruppen();
         for (GruppenFamilieFuerKalender grFa : gruppenFamilienListe) {
@@ -292,5 +288,8 @@ public class ControllerBasisKlasse {
         });
 
         return gruppenFamilienListe;
+    }
+    public static void configureIntegerTableColum(TableColumn tcGruppeID) {
+
     }
 }

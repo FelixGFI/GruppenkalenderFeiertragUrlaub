@@ -1,9 +1,11 @@
 package com.example.gruppenkalenderfeiertragurlaub.playground;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Playground {
@@ -11,14 +13,11 @@ public class Playground {
         // launch();
         //create connection for a server installed in localhost, with a user "root" with no password
         //dataBaseReadDeleteInsertUpdateTest();
-        DatenbankCommunicator.establishConnection();
-        ArrayList<GruppenFamilieFuerKalender> grFaList = DatenbankCommunicator.getAllGruppenFamilienUndGruppen();
-        for (GruppenFamilieFuerKalender grFa:grFaList) {
-            System.out.println(grFa.getFamilieId() + " ," + grFa.getFamilieName());
-            for(GruppeFuerKalender gr : grFa.getGruppenDerFamilie()) {
-                System.out.println("--" + gr.getGruppeId() + ", " + gr.getGruppeName() + ": " + gr.getFamilienId());
-            }
-        }
+        Integer jahr = 2022;
+        LocalDate datum = LocalDate.parse(jahr + "-01-02");
+        System.out.println(UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString()));
+        System.out.println(datum.getDayOfWeek());
+
     }
 
     private static void dataBaseReadDeleteInsertUpdateTest() throws SQLException {

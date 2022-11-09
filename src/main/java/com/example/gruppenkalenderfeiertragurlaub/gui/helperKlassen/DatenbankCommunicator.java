@@ -179,18 +179,32 @@ public class DatenbankCommunicator {
     }
 
     //TODO Write Dokumentation
-    static boolean generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
 
-        Boolean tageNeedToBeGenerated = checkIfTageNeedToBegenerated(gr, jahr);
+    static void generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
 
-        if(tageNeedToBeGenerated) {
+
+        System.out.println("generateTageIfMissing()");
+        if(!tagDatenSatzVorhanden(gr, jahr)) {
+            System.out.println("tageNeedToBeGenerated true");
             try(Statement stmt = conn.createStatement()) {
+                ArrayList<LocalDate> generierteTageListe = new ArrayList<>();
+                LocalDate upcountDatum = LocalDate.parse(jahr + "-01-01");
+                while(upcountDatum.getYear() == jahr) {
+                    if(datumIstWerktag(upcountDatum)) {
+                        generierteTageListe.add(upcountDatum);
+                        System.out.println(upcountDatum + " " + upcountDatum.getDayOfWeek().toString());
+                    }
+                    upcountDatum = upcountDatum.plusDays(1);
+                }
+
+                for (LocalDate dat : generierteTageListe) {
+                    stmt.execute("INSERT INTO gruppenkalender (gruppe_id, datum, essensangebot, gruppenstatus)" +
+                            " VALUES (" + gr.getGruppeId() + ", '" + dat.toString() + "', true, '" + UsefulConstants.getDefaultStatus() +"');");
+                }
+
                 //TODO create code to generate all work days for given year and insert them into the datbase;
             }
         }
-
-        return tageNeedToBeGenerated;
-
     }
 
     /**
@@ -202,15 +216,29 @@ public class DatenbankCommunicator {
      * @return true wenn der Tag in der Datenbank vorhanden ist, False wenn er nicht vorhanden ist
      * @throws SQLException
      */
-    private static Boolean checkIfTageNeedToBegenerated(GruppeFuerKalender gr, Integer jahr) throws SQLException {
-        //TODO Implement method to find the first Werktag of a year and check for it instead of for 01-01-20YY
+    private static Boolean tagDatenSatzVorhanden(GruppeFuerKalender gr, Integer jahr) throws SQLException {
+        LocalDate datum = LocalDate.parse(jahr + "-01-01");
+        while(!datumIstWerktag(datum)){
+            datum = datum.plusDays(1);
+        }
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM gruppenkalender g WHERE g.datum = '" + jahr +
-                    "-01-01' AND g.gruppe_id = " + gr.getGruppeId() +") as dayExists;")) {
-                System.out.println("got this far");
+            try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM gruppenkalender g WHERE g.datum = '" + datum.toString() + "' AND g.gruppe_id = " + gr.getGruppeId() +") as dayExists;")) {
                 rs.next();
+                System.out.println(rs.getBoolean("dayExists"));
                 return rs.getBoolean("dayExists");
+
             }
         }
+
+    }
+
+    /**
+     * ermittelt ob es sich beim Übergebenen LocalDate datum um einen Werktag (tag von Montag bis Freitag) handelt. (Feiertage werden nicht
+     * berücksichtigt, nur Wochenende)
+     * @param datum
+     * @return true wenn es sich beim Übergebenen LocalDate um einen Werktag handelt (ausgenommen feiertag) False wenn nicht
+     */
+    private static Boolean datumIstWerktag(LocalDate datum) {
+        return UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString());
     }
 }

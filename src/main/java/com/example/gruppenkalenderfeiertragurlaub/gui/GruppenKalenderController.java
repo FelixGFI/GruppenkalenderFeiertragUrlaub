@@ -27,7 +27,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
 
-    ArrayList<GruppenKalenderTag> tageListe = new ArrayList<>();
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
@@ -55,15 +54,17 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         System.out.println("Called onComboboxGruppenAuswahlAction()");
         //TODO Implement Save or Discard Changes warning, Implement Save if selected.
 
-        tbTabelle.getItems().clear();
-        tageListe = new ArrayList<>();
-
-
-        tageListe = DatenbankCommunicator.readGruppenKalenderTage(
-                comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(), comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
-        tbTabelle.getItems().addAll(tageListe);
+        update();
 
     }
+
+    private void update() throws SQLException {
+        ArrayList<GruppenKalenderTag> tageListe = DatenbankCommunicator.readGruppenKalenderTage(
+                comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(),
+                comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
+        tbTabelle.getItems().setAll(tageListe);
+    }
+
     public void initialize() throws SQLException {
         configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
         configureLocalDateTableColum(tcDatum, "datum");
@@ -72,7 +73,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
-        gruppenFamilienListe = configureGruppenCombobox(comboBoxGruppenAuswahl);
+        gruppenFamilienListe = configureCBGruppenAuswahl(comboBoxGruppenAuswahl);
         //TODO Default sort Table by datum
 
         DatenbankCommunicator.establishConnection();
