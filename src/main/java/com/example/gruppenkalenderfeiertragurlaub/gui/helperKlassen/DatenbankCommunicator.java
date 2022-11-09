@@ -136,7 +136,13 @@ public class DatenbankCommunicator {
 
         return kalenderTagListe;
     }
-    //TODO write Documentation
+
+    /**
+     * Fragt aus der Datenabnk alle Gruppenfamilien und Dazu Gehörigen Gruppen ab, Erstellt aus ihnen GruppenFamilieFuerKalender und GruppeFuerKalender
+     * Objekte, schreibt die Gruppen in die Gruppenliste ihrer jeweiligen Familie und die Familien in die Arraylist gruppenFamilieListe
+     * @return eine ArrayListe aller in der Datenbank Vorhandenen Gruppenfamilien (welche die Zugehörigen Gruppen enthalten)
+     * @throws SQLException
+     */
     public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienUndGruppen() throws SQLException {
         ArrayList<GruppenFamilieFuerKalender> gruppenFamilieListe = new ArrayList<>();
 
@@ -171,6 +177,8 @@ public class DatenbankCommunicator {
 
         return gruppenFamilieListe;
     }
+
+    //TODO Write Dokumentation
     static boolean generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
 
         Boolean tageNeedToBeGenerated = checkIfTageNeedToBegenerated(gr, jahr);

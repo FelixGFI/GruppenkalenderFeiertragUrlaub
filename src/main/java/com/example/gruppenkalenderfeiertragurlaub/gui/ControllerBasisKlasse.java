@@ -231,6 +231,16 @@ public class ControllerBasisKlasse {
         });
     }
 
+    /**
+     * Erhält eine Combobox<Object>. Ruft die Nötigen Methoden des DatenbankComunicators auf um alle Vorhandenen Gruppenfamileien und die zu ihnen
+     * Gehördenden Gruppen zu erhalten. Fügt der Combobox alle Gruppenfamilien sowie die zugehörigen Gruppen hinzo wobei die Gruppenfamilien stets in der Liste
+     * über den Gruppen stehen die zu Ihnen gehören. Stellt sicher das in der Liste für Jede Gruppe/Gruppenfamilie dernen Name dem Nutzer Angeziegt wird, sowohl
+     * in der Liste als auch wenn Ausgewählt. Stellt sicher das in der Liste die Gruppenfamilien Fett Gedruckt geschrieben sind sodas sie von Gruppen leicht zu
+     * unterscheiden sind.
+     * @param comboBoxGruppenAuswahl
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<GruppenFamilieFuerKalender> configureGruppenCombobox(ComboBox comboBoxGruppenAuswahl) throws SQLException {
         DatenbankCommunicator.establishConnection();
         ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe = DatenbankCommunicator.getAllGruppenFamilienUndGruppen();
@@ -258,7 +268,6 @@ public class ControllerBasisKlasse {
             return cell;
         });
 
-        //TODO write Documentation
         comboBoxGruppenAuswahl.setConverter(new StringConverter<Object>() {
             @Override
             public String toString(Object gruppeOrGruppenFamilie) {
@@ -281,8 +290,6 @@ public class ControllerBasisKlasse {
                 return null;
             }
         });
-        System.out.println(comboBoxGruppenAuswahl.getStyle());
-
 
         return gruppenFamilienListe;
     }
