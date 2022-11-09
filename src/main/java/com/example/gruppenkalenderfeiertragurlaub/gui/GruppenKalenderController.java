@@ -52,13 +52,23 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         System.out.println("Called onComboboxGruppenAuswahlAction()");
-        //TODO Implement Save or Discard Changes warning, Implement Save if selected.
-
         update();
-
     }
 
+    @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+        System.out.println("Called onComboboxJahrAuswahlAction()");
+        update();
+    }
+
+    //TODO add Documentation
     private void update() throws SQLException {
+        //wenn die ComboboxGruppenAuswahl kein Ausgewähltes Item hat dann wird die Methode
+        //mit Return abgebrochen. Durch die Verwendung von Return im If Statment wird die Komplexität
+        //von zahllosen Verschachtelten if Statments vermieden.
+        if(comboBoxGruppenAuswahl.getSelectionModel().isEmpty() || comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
+            return;
+        }
+        //TODO Implement Save or Discard Changes warning, Implement Save if selected.
         ArrayList<GruppenKalenderTag> tageListe = DatenbankCommunicator.readGruppenKalenderTage(
                 comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(),
                 comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
