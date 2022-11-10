@@ -94,7 +94,6 @@ public class DatenbankCommunicator {
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM kuechenplanung k WHERE k.datum = '" + datum.toString() + "') as kuechenEintragVorhanden;")) {
                 rs.next();
-                System.out.println(rs.getBoolean("kuechenEintragVorhanden"));
                 return rs.getBoolean("kuechenEintragVorhanden");
 
             }
@@ -237,11 +236,7 @@ public class DatenbankCommunicator {
      */
 
     static void generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
-
-
-        System.out.println("generateTageIfMissing()");
         if(!tagDatenSatzVorhanden(gr, jahr)) {
-            System.out.println("tageNeedToBeGenerated true");
             try(Statement stmt = conn.createStatement()) {
                 ArrayList<LocalDate> generierteTageListe = getListOfLocalDatesForAllWerktageOfGivenYear(jahr);
 
@@ -264,7 +259,6 @@ public class DatenbankCommunicator {
         while(upcountDatum.getYear() == jahr) {
             if(datumIstWerktag(upcountDatum)) {
                 generierteTageListe.add(upcountDatum);
-                System.out.println(upcountDatum + " " + upcountDatum.getDayOfWeek().toString());
             }
             upcountDatum = upcountDatum.plusDays(1);
         }
@@ -288,9 +282,7 @@ public class DatenbankCommunicator {
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM gruppenkalender g WHERE g.datum = '" + datum.toString() + "' AND g.gruppe_id = " + gr.getGruppeId() +") as dayExists;")) {
                 rs.next();
-                System.out.println(rs.getBoolean("dayExists"));
                 return rs.getBoolean("dayExists");
-
             }
         }
 

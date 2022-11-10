@@ -48,7 +48,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtuebernehmenClick()");
-        tbTabelle.getItems().clear();
     }
 
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {

@@ -40,7 +40,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         update();
-        System.out.println("Called onComboboxJahresAuswahlAction()");
     }
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtUebernehmenClick()");

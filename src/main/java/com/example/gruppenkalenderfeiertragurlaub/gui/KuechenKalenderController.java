@@ -52,7 +52,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
     @FXML
     protected void onBtSpeichernClick() {
-        System.out.println(comboBoxMonatAuswahl.getSelectionModel().getSelectedItem());
         System.out.println("Klick Speichern");
     }
     @FXML protected void onBtGeschlossenClick() {
@@ -65,7 +64,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     //TODO connect with GUI and implement
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         update();
-        System.out.println("Called onComboboxJahresAuswahlAction()");
     }
 
     public void initialize() throws SQLException {

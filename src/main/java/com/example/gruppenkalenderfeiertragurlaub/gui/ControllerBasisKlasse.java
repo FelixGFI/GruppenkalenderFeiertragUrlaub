@@ -308,7 +308,6 @@ public class ControllerBasisKlasse {
                 if (newVal != null) {
                     cell.setText("");
                     for (GruppeFuerKalender gr : gruppenListe) {
-                        //System.out.println(gr.getGruppeId() + ", " + gr.getGruppeName());
                         if(gr.getGruppeId() == newVal) {
                             cell.setText(gr.getGruppeName());
                             break;
