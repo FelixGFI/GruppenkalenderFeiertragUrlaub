@@ -92,14 +92,5 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         //TODO Default sort Table by datum
 
         DatenbankCommunicator.establishConnection();
-
-    }
-
-    private void createTestdata() {
-        tbTabelle.getItems().add(new GruppenKalenderTag(1, LocalDate.now(), 'B', false));
-        tbTabelle.getItems().add(new GruppenKalenderTag(1, LocalDate.now().minusDays(5), 'O', false));
-        tbTabelle.getItems().add(new GruppenKalenderTag(2, LocalDate.now(), 'P', true));
-        tbTabelle.getItems().add(new GruppenKalenderTag(3, LocalDate.now().plusDays(1), 'U', false));
-        tbTabelle.getItems().add(new GruppenKalenderTag(3,LocalDate.now().plusDays(2), 'A', false));
     }
 }

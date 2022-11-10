@@ -289,6 +289,9 @@ public class ControllerBasisKlasse {
 
         return gruppenFamilienListe;
     }
+
+    //TODO write Documentation
+
     public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
 
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
@@ -296,10 +299,13 @@ public class ControllerBasisKlasse {
             TableCell<BetriebsurlaubsTag, Integer> cell = new TableCell<>();
 
             cell.itemProperty().addListener((obs, old, newVal) -> {
+                System.out.println("___" + newVal + "___");
                 if (newVal != null) {
                     cell.setText("");
                     for (GruppeFuerKalender gr : gruppenListe) {
+                        //System.out.println(gr.getGruppeId() + ", " + gr.getGruppeName());
                         if(gr.getGruppeId() == newVal) {
+                            System.out.println("---" + gr.getGruppeName() + "---");
                             cell.setText(gr.getGruppeName());
                             break;
                         }
