@@ -242,8 +242,6 @@ public class DatenbankCommunicator {
         return UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString());
     }
 
-    //TODO Add Documentation
-
     /**
      * Erhält eine ArrayList<GruppenFamilieFuerKalender. Jedes GruppenFamilieFuerKalender Object enthält eine ArrayList
      * welche alle zu diser Gruppenfamilie gehörenden Gruppen enthält. Liest all diese Arraylisten aus den Gruppenfamilien
