@@ -31,6 +31,8 @@ public class DatenbankCommunicator {
         }
     }
 
+
+    //TODO Update Doku
     /**
      * Liest alle werte aus der Tabelle kuechenplanung für das übergebene Jahr und speichert diese in eine ArrayList von KüchenkalenderTag objekten
      * @param jahr
@@ -38,8 +40,11 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<KuechenKalenderTag> readKuechenKalenderTage(Integer jahr) throws SQLException {
+
+        generateKuechenDatensaetzeIfMissing(jahr);
         ArrayList<KuechenKalenderTag> kuechenKalenderTagListe = new ArrayList<>();
 
+        kuechenDatenSatzVorhanden(jahr);
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("SELECT * FROM kuechenplanung WHERE kuechenplanung.datum >= '"
                     + jahr + "-01-01' AND kuechenplanung.datum <= '" + jahr + "-12-31'")) {
@@ -55,7 +60,39 @@ public class DatenbankCommunicator {
         }
         return kuechenKalenderTagListe;
     }
+    //TODO add Dokumentation
+    private static void generateKuechenDatensaetzeIfMissing(Integer jahr) throws SQLException {
+        if(kuechenDatenSatzVorhanden(jahr)) {
+             return;
+        }
+        try(Statement stmt = conn.createStatement()) {
+            ArrayList<LocalDate> generatedWerktagsdatumListe = getListOfLocalDatesForAllWerktageOfGivenYear(jahr);
+            for (LocalDate dat : generatedWerktagsdatumListe) {
+                //TODO replace gooeffnet mit geoeffnet
+                stmt.execute("INSERT INTO kuechenplanung (datum, gooeffnet)" +
+                        " VALUES ('" + dat.toString() + "', true);");
+            }
+        }
+    }
 
+    //TODO add Dokumentation
+    private static Boolean kuechenDatenSatzVorhanden(Integer jahr) throws SQLException {
+        LocalDate datum = LocalDate.parse(jahr + "-01-01");
+        while(!datumIstWerktag(datum)){
+            datum = datum.plusDays(1);
+        }
+        try (Statement stmt = conn.createStatement()) {
+            try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM kuechenplanung k WHERE k.datum = '" + datum.toString() + "') as kuechenEintragVorhanden;")) {
+                rs.next();
+                System.out.println(rs.getBoolean("kuechenEintragVorhanden"));
+                return rs.getBoolean("kuechenEintragVorhanden");
+
+            }
+        }
+
+    }
+
+    //TODO Update Doku
     /**
      * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
      * betriebsurlaub nach einem identischen datum. Wenn ein datum gefunden wird ist klar das es sich bie dem gelesenen Datum um einen bereits festgelgten
@@ -67,6 +104,7 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<BetriebsurlaubsTag> readBetriebsurlaubTage(Integer jahr) throws SQLException {
+        generateKuechenDatensaetzeIfMissing(jahr);
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTagListe = new ArrayList<>();
 
         try (Statement stmt = conn.createStatement()) {
@@ -187,24 +225,28 @@ public class DatenbankCommunicator {
         if(!tagDatenSatzVorhanden(gr, jahr)) {
             System.out.println("tageNeedToBeGenerated true");
             try(Statement stmt = conn.createStatement()) {
-                ArrayList<LocalDate> generierteTageListe = new ArrayList<>();
-                LocalDate upcountDatum = LocalDate.parse(jahr + "-01-01");
-                while(upcountDatum.getYear() == jahr) {
-                    if(datumIstWerktag(upcountDatum)) {
-                        generierteTageListe.add(upcountDatum);
-                        System.out.println(upcountDatum + " " + upcountDatum.getDayOfWeek().toString());
-                    }
-                    upcountDatum = upcountDatum.plusDays(1);
-                }
+                ArrayList<LocalDate> generierteTageListe = getListOfLocalDatesForAllWerktageOfGivenYear(jahr);
 
                 for (LocalDate dat : generierteTageListe) {
                     stmt.execute("INSERT INTO gruppenkalender (gruppe_id, datum, essensangebot, gruppenstatus)" +
                             " VALUES (" + gr.getGruppeId() + ", '" + dat.toString() + "', true, '" + UsefulConstants.getDefaultStatus() +"');");
                 }
-
-                //TODO create code to generate all work days for given year and insert them into the datbase;
             }
         }
+    }
+
+    //TODO add Documentation
+    private static ArrayList<LocalDate> getListOfLocalDatesForAllWerktageOfGivenYear(Integer jahr) {
+        ArrayList<LocalDate> generierteTageListe = new ArrayList<>();
+        LocalDate upcountDatum = LocalDate.parse(jahr + "-01-01");
+        while(upcountDatum.getYear() == jahr) {
+            if(datumIstWerktag(upcountDatum)) {
+                generierteTageListe.add(upcountDatum);
+                System.out.println(upcountDatum + " " + upcountDatum.getDayOfWeek().toString());
+            }
+            upcountDatum = upcountDatum.plusDays(1);
+        }
+        return generierteTageListe;
     }
 
     /**

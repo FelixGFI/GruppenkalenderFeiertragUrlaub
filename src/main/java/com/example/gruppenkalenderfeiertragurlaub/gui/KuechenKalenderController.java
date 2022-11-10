@@ -32,8 +32,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML
     DatePicker dpBis;
     @FXML TableView<KuechenKalenderTag> tbTabelle;
-    @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
-    @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
+    @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
+    @FXML TableColumn<KuechenKalenderTag, Boolean> tcKuecheOffen;
     ArrayList<KuechenKalenderTag> kuechenListe;
     @FXML
     protected void onBtVorherigerMonatClick() {
@@ -63,7 +63,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     }
 
     //TODO connect with GUI and implement
-    @FXML protected void onComboboxJahrAuswahlAction() {
+    @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+        update();
         System.out.println("Called onComboboxJahresAuswahlAction()");
     }
 
@@ -76,8 +77,19 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
-        tbTabelle.getItems().addAll(kuechenListe);
+        update();
+    }
+
+    //TODO write documentation
+    private void update() throws SQLException {
+        if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
+            return;
+        }
+        //TODO add save and warning window and code
+        ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
+        tbTabelle.getItems().setAll(kuechenListe);
+        tbTabelle.getSortOrder().clear();
+        tbTabelle.getSortOrder().add(tcDatum);
     }
 }
 

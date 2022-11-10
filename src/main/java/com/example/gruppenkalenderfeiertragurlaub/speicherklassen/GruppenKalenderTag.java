@@ -3,12 +3,10 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 import java.time.LocalDate;
 
 public class GruppenKalenderTag {
-    Integer gruppenID;
-    LocalDate datum;
-    Character gruppenstatus;
-    Boolean essenFuerGruppeVerfuegbar;
-
-
+    private Integer gruppenID;
+    private LocalDate datum;
+    private Character gruppenstatus;
+    private Boolean essenFuerGruppeVerfuegbar;
 
     public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar) {
         this.gruppenID = gruppenID;
@@ -17,13 +15,7 @@ public class GruppenKalenderTag {
         this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
     }
 
-    public Integer getGruppenID() {
-        return gruppenID;
-    }
-
-    public void setGruppenID(Integer gruppenID) {
-        this.gruppenID = gruppenID;
-    }
+    public Integer getGruppenID() {return gruppenID;}
 
     public LocalDate getDatum() {
         return datum;

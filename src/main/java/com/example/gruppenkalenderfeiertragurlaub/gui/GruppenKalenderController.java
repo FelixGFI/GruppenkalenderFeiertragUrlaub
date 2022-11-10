@@ -52,12 +52,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
 
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
-        System.out.println("Called onComboboxGruppenAuswahlAction()");
         update();
     }
 
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-        System.out.println("Called onComboboxJahrAuswahlAction()");
         update();
     }
 
@@ -74,6 +72,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
                 comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(),
                 comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(tageListe);
+        tbTabelle.getSortOrder().clear();
+        tbTabelle.getSortOrder().add(tcDatum);
     }
 
     public void initialize() throws SQLException {

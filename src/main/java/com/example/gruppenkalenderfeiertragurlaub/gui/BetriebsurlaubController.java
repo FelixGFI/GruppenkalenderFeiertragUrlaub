@@ -23,8 +23,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcIstBetriebsurlaub;
     @FXML TableView<BetriebsurlaubsTag> tbTabelle;
 
-    ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage;
-
     @FXML protected void onBtVorherigerMonatClick() {
         System.out.println("Called onBtVorigerMonatClick()");
     }
@@ -38,15 +36,11 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
     }
 
     @FXML protected void onBtSpeichernClick() {
-        try {
-            System.out.println(tbTabelle.getSelectionModel().getSelectedItem().getIsBetriebsurlaub());
-            System.out.println(tbTabelle.getSelectionModel().getSelectedItem().getDatum());
-        } catch (Exception e) {
-
-        }
-
-        tbTabelle.getItems().add(new BetriebsurlaubsTag(LocalDate.now().plusDays(5), true));
         System.out.println("Called onBtSpeichernClick()");
+    }
+    @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+        update();
+        System.out.println("Called onComboboxJahresAuswahlAction()");
     }
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtUebernehmenClick()");
@@ -61,8 +55,22 @@ public class BetriebsurlaubController extends ControllerBasisKlasse{
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
-        tbTabelle.getItems().addAll(betriebsurlaubsTage
-        );
+
+
+        update();
+
+    }
+
+    //TODO write documentation
+    private void update() throws SQLException {
+        if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
+            return;
+        }
+
+        //TODO add save and warning window and code
+        ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
+        tbTabelle.getItems().setAll(betriebsurlaubsTage);
+        tbTabelle.getSortOrder().clear();
+        tbTabelle.getSortOrder().add(tcDatum);
     }
 }

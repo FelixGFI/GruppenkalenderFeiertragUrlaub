@@ -290,8 +290,14 @@ public class ControllerBasisKlasse {
         return gruppenFamilienListe;
     }
 
-    //TODO write Documentation
-
+    /**
+     * erhält eine TableColumn<GruppenKalenderTag, Integer> und configuriert diese sodas sie die GruppeID enthält
+     * verwendet außerdem eine CellFactory um für Jede gruppenID, aus der Übergebenen ArrayList, den Richtigen
+     * Gruppennamen auszulesen und besagten in der Tabelle anzuzeigen.
+     * @param tcGruppenBezeichung
+     * @param columnAttributeName
+     * @param gruppenListe
+     */
     public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
 
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
@@ -299,13 +305,11 @@ public class ControllerBasisKlasse {
             TableCell<BetriebsurlaubsTag, Integer> cell = new TableCell<>();
 
             cell.itemProperty().addListener((obs, old, newVal) -> {
-                System.out.println("___" + newVal + "___");
                 if (newVal != null) {
                     cell.setText("");
                     for (GruppeFuerKalender gr : gruppenListe) {
                         //System.out.println(gr.getGruppeId() + ", " + gr.getGruppeName());
                         if(gr.getGruppeId() == newVal) {
-                            System.out.println("---" + gr.getGruppeName() + "---");
                             cell.setText(gr.getGruppeName());
                             break;
                         }
