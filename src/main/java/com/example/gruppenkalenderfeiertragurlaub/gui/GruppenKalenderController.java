@@ -26,6 +26,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
+    @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppe;
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
