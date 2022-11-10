@@ -241,4 +241,23 @@ public class DatenbankCommunicator {
     private static Boolean datumIstWerktag(LocalDate datum) {
         return UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString());
     }
+
+    //TODO Add Documentation
+
+    /**
+     * Erhält eine ArrayList<GruppenFamilieFuerKalender. Jedes GruppenFamilieFuerKalender Object enthält eine ArrayList
+     * welche alle zu diser Gruppenfamilie gehörenden Gruppen enthält. Liest all diese Arraylisten aus den Gruppenfamilien
+     * aus und fügt alle gruppen aller Familien zu einer ArrayList<GruppeFuerKalender> hinzu.
+     * @param gruppenFamilienListe
+     * @return ArrayList<GruppeFuerKalender> welche alle gruppen aller Familien in der übergebnen ArrayList enthält.
+     */
+    public static ArrayList<GruppeFuerKalender> getAlleGruppenAusFamilien(ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe) {
+        ArrayList<GruppeFuerKalender> gruppenListe = new ArrayList<>();
+        for (GruppenFamilieFuerKalender grFa : gruppenFamilienListe) {
+            for (GruppeFuerKalender gr : grFa.getGruppenDerFamilie()) {
+                gruppenListe.add(gr);;
+            }
+        }
+        return gruppenListe;
+    }
 }

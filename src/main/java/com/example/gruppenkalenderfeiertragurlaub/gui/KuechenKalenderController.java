@@ -2,7 +2,6 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -35,7 +34,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
     @FXML TableColumn<BetriebsurlaubsTag, Boolean> tcKuecheOffen;
-    @FXML TableColumn<BetriebsurlaubsTag, Integer> tcGruppeID;
     ArrayList<KuechenKalenderTag> kuechenListe;
     @FXML
     protected void onBtVorherigerMonatClick() {
@@ -73,7 +71,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
         configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
         configureLocalDateTableColum(tcDatum, "datum");
-        configureIntegerTableColum(tcGruppeID);
+
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
 

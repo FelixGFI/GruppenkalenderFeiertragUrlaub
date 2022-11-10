@@ -26,7 +26,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
-    @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppe;
+    @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppenBezeichnung;
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
@@ -77,14 +77,18 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
 
     public void initialize() throws SQLException {
-        configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
-        configureLocalDateTableColum(tcDatum, "datum");
-        configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
+        //IMPORTANT!: gruppenFamilenListe =  configureCBGruppenAuswahl MUST BE CALLED FIRST before configure tcGruppenBeziechnung!
+        //Otherwise the needed gruppenFamilienListe will  be empty"!
 
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
         gruppenFamilienListe = configureCBGruppenAuswahl(comboBoxGruppenAuswahl);
+
+        configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
+        configureLocalDateTableColum(tcDatum, "datum");
+        configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
+        configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
         //TODO Default sort Table by datum
 
         DatenbankCommunicator.establishConnection();

@@ -43,7 +43,7 @@
          <children>
             <TableView fx:id="tbTabelle" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
-                  <TableColumn fx:id="tcGruppe" prefWidth="140.0" text="Grupppe" />
+                  <TableColumn fx:id="tcGruppenBezeichnung" prefWidth="140.0" text="Grupppe" />
                 <TableColumn fx:id="tcDatum" prefWidth="140.0" text="Datum" />
                 <TableColumn fx:id="tcGruppenStatus" prefWidth="140.0" text="Gruppenstatus" />
                   <TableColumn fx:id="tcEssenVerfuegbar" prefWidth="140.0" text="Essensangebot" />

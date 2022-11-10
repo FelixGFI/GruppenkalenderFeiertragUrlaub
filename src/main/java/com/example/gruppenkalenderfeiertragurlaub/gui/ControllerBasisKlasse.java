@@ -289,7 +289,11 @@ public class ControllerBasisKlasse {
 
         return gruppenFamilienListe;
     }
-    public static void configureIntegerTableColum(TableColumn tcGruppeID) {
+    public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
+        for (GruppeFuerKalender gr : gruppenListe) {
+            System.out.println(gr.getGruppeId());
+        }
 
+        tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
     }
 }
