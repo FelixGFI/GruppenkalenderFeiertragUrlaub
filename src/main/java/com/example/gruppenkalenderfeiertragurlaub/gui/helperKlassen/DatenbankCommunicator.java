@@ -31,10 +31,10 @@ public class DatenbankCommunicator {
         }
     }
 
-
-    //TODO Update Doku
     /**
      * Liest alle werte aus der Tabelle kuechenplanung für das übergebene Jahr und speichert diese in eine ArrayList von KüchenkalenderTag objekten
+     * Überprüft außerdem ob Daten für diese jahr in der Datenbank vorhanden sind, wenn nicht generiert es diese für das übergebene jahr und
+     * fährt dan mit dem einlesen fort.
      * @param jahr
      * @return Liste aller datenbankeinträge in kuechenplanung für das übergebene jahr als
      * @throws SQLException
@@ -50,9 +50,7 @@ public class DatenbankCommunicator {
                     + jahr + "-01-01' AND kuechenplanung.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
-
-                    //TODO change columnLabel below to new and corrected Colum name
-                    Boolean kuecheOffen = rs.getBoolean("gooeffnet");
+                    Boolean kuecheOffen = rs.getBoolean("geoeffnet");
                     KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen);
                     kuechenKalenderTagListe.add(kuechenTag);
                 }
@@ -60,7 +58,15 @@ public class DatenbankCommunicator {
         }
         return kuechenKalenderTagListe;
     }
-    //TODO add Dokumentation
+
+    /**
+     * überprüft Mittels Methodenaufruf ob für en bestimmtes jahr der erste Werktag des jahres in der Datenbanktabelle kuechenplanung vorhandne ist.
+     * wenn dies der Fall ist geht die Methode davon aus das alle nötigen einträge dieses jahres bereits in der Datenbank vorhanden sind.
+     * Wenn nicht generiert die Methode eine ArrayList<LocalDate> von allen Werktagen des Jahres und schreibt zu jedem Datum einen eintrag
+     * in die Tabelle gruppenkalender.
+     * @param jahr
+     * @throws SQLException
+     */
     private static void generateKuechenDatensaetzeIfMissing(Integer jahr) throws SQLException {
         if(kuechenDatenSatzVorhanden(jahr)) {
              return;
@@ -68,14 +74,18 @@ public class DatenbankCommunicator {
         try(Statement stmt = conn.createStatement()) {
             ArrayList<LocalDate> generatedWerktagsdatumListe = getListOfLocalDatesForAllWerktageOfGivenYear(jahr);
             for (LocalDate dat : generatedWerktagsdatumListe) {
-                //TODO replace gooeffnet mit geoeffnet
-                stmt.execute("INSERT INTO kuechenplanung (datum, gooeffnet)" +
+                stmt.execute("INSERT INTO kuechenplanung (datum, geoeffnet)" +
                         " VALUES ('" + dat.toString() + "', true);");
             }
         }
     }
 
-    //TODO add Dokumentation
+    /**
+     * ermittelt den ersten werktag eines Jahres. Überprüft ob ein eintrg für diesen, für dieses Jahr in der Datenbanktabelle kuechenplanung vorhanden ist.
+     * @param jahr
+     * @return true wenn datensatz für ersten werktag für gegebenes jahr vorhanden ist, false wenn nicht
+     * @throws SQLException
+     */
     private static Boolean kuechenDatenSatzVorhanden(Integer jahr) throws SQLException {
         LocalDate datum = LocalDate.parse(jahr + "-01-01");
         while(!datumIstWerktag(datum)){
@@ -92,8 +102,8 @@ public class DatenbankCommunicator {
 
     }
 
-    //TODO Update Doku
     /**
+     * Überprüft ob in der kuechenplanung tabelle einträge für das übergebene jahr vorhanden sind. Wenn nicht werden diese genneriert
      * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
      * betriebsurlaub nach einem identischen datum. Wenn ein datum gefunden wird ist klar das es sich bie dem gelesenen Datum um einen bereits festgelgten
      * Betriebsurlaubstag handelt, (ein objekt Betriebsurlaubstag wird erstellt mit dem Booleanwert istBetriebsurlaubstag auf true)
@@ -216,7 +226,15 @@ public class DatenbankCommunicator {
         return gruppenFamilieListe;
     }
 
-    //TODO Write Dokumentation
+    /**
+     * überprüft mittels Methodenaufruf ob für ein bestimmtes jahr und eine bestimmte gruppe der Erste Werktag des Jahres in der Datenbanktabelle
+     * gruppenkalender vorhanden ist. Wenn dies der Fall ist geht die Methode davon aus das alle nötigen eitnräge dieses jahres bereits in der
+     * Datenbank sind, wenn nicht generiert die Methode ein ArrayList<LocalDate> von allen Werktagen des jahres und erzeugt mit der Nummer der
+     * übergebenen Gruppe alle entsprechenden Einträge in der Datenbank (Tabelle: gruppenkalender)
+     * @param gr
+     * @param jahr
+     * @throws SQLException
+     */
 
     static void generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
 
@@ -235,7 +253,11 @@ public class DatenbankCommunicator {
         }
     }
 
-    //TODO add Documentation
+    /**
+     * ermittelt für das gegebene Jahr alle Werktage als LocalDate und speichert diese in einer ArrayList<LocalDate> die zurückgegeben wird.
+     * @param jahr
+     * @return ArrayList<LocalDate> welches alle Werktage des gegebenen Jahres als LocalDate enthält
+     */
     private static ArrayList<LocalDate> getListOfLocalDatesForAllWerktageOfGivenYear(Integer jahr) {
         ArrayList<LocalDate> generierteTageListe = new ArrayList<>();
         LocalDate upcountDatum = LocalDate.parse(jahr + "-01-01");

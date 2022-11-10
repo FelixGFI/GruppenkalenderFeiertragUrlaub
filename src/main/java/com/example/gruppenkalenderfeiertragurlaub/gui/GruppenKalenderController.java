@@ -89,7 +89,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureLocalDateTableColum(tcDatum, "datum");
         configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
         configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
-        //TODO Default sort Table by datum
 
         DatenbankCommunicator.establishConnection();
     }
