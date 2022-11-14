@@ -276,9 +276,7 @@ public class DatenbankCommunicator {
      */
     private static Boolean tagDatenSatzVorhanden(GruppeFuerKalender gr, Integer jahr) throws SQLException {
         LocalDate datum = LocalDate.parse(jahr + "-01-01");
-        while(!datumIstWerktag(datum)){
-            datum = datum.plusDays(1);
-        }
+        datum = getNextWerktag(datum);
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM gruppenkalender g WHERE g.datum = '" + datum.toString() + "' AND g.gruppe_id = " + gr.getGruppeId() +") as dayExists;")) {
                 rs.next();
@@ -313,5 +311,19 @@ public class DatenbankCommunicator {
             }
         }
         return gruppenListe;
+    }
+
+    /**
+     * findet heraus welches, vom gegebenen Datum heraus gerechnet der nächste Wekrtag ist (berücksichtigt nicht Feiertage)
+     * Wenn das übergebne Datum ein Werktag ist, gibt die Methode besagtes Datum unverändert zurück, ansonsten den nächsten Gefundenen
+     * Werktag.
+     * @param datum
+     * @return den Nächsten Werktag als LocalDate
+     */
+    public static LocalDate getNextWerktag(LocalDate datum) {
+        while(!datumIstWerktag(datum)) {
+            datum = datum.plusDays(1);
+        }
+        return datum;
     }
 }

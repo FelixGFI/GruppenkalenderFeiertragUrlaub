@@ -30,16 +30,15 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppenBezeichnung;
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
+    LocalDate firstOfCurrentMonth;
 
     @FXML protected void onBtVorherigerMonatClick() throws SQLException {
         changeMonthBackOrForthByGivenNumber(-1);
-        System.out.println("Called onBtVorigerMonatClick()");
-        scrollToSelectedMonth();
+        //scrollToSelectedMonth();
     }
     @FXML protected void onBtNaechsterMonatClick() throws SQLException {
         changeMonthBackOrForthByGivenNumber(1);
-        System.out.println("Called onBtNaechsterMonatClick()");
-        scrollToSelectedMonth();
+        //scrollToSelectedMonth();
     }
     @FXML protected void onBtAbbrechenClick() {
             System.out.println("Called onBAbbrechenClick()");
@@ -60,6 +59,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         scrollToSelectedMonth();
     }
     @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
+        System.out.println("OnACTION!");
         scrollToSelectedMonth();
     }
 
@@ -95,6 +95,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
 
         DatenbankCommunicator.establishConnection();
+
+        //TODO maybe make use of firstOfCurrentMonth to update things.
+        firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(LocalDate.now());
+
+
+
     }
     //TODO add documentation
     private void changeMonthBackOrForthByGivenNumber(Integer changeNumber) throws SQLException {
@@ -102,7 +108,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         Boolean operationIsIncreaseMonat = (changeNumber > 0);
         Integer jahr = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         if(operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(11)) {
-            //TODO implement increase jahr
             Integer neuesJahr = jahr + 1;
             Integer neuerMonatIndex = 0;
             setNewYearAndMonth(neuesJahr, neuerMonatIndex);
@@ -110,7 +115,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             Integer neuesJahr = jahr - 1;
             Integer neuerMonatIndex = 11;
             setNewYearAndMonth(neuesJahr, neuerMonatIndex);
-            //TODO implement decreas jahr
         } else {
             comboBoxMonatAuswahl.getSelectionModel().select(getSelectedMonatIndex() + changeNumber);
         }
@@ -127,9 +131,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     //TODO add documentation
     private void scrollToSelectedMonth() {
         LocalDate firstWerktagOfMonth = getFirstWerktagOfSelectedMonth();
+        System.out.println(firstWerktagOfMonth.toString());
         for(GruppenKalenderTag gkTag : tbTabelle.getItems()) {
-            if(gkTag.getDatum().toString().equals(firstWerktagOfMonth.toString())) {
-                System.out.println(tbTabelle.getItems().indexOf(gkTag));
+            //TODO ERROR HAPPENS HERE
+            if(gkTag.getDatum().getMonth().equals(firstWerktagOfMonth.getMonth())) {
+                System.out.println(gkTag.getDatum().toString() + " =? " + firstWerktagOfMonth.toString());
                 tbTabelle.scrollTo(tbTabelle.getItems().indexOf(gkTag));
                 break;
             }
@@ -140,10 +146,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         Integer monatIndex = getSelectedMonatIndex();
         LocalDate datum = LocalDate.parse(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem() + "-01-01");
         datum = datum.plusMonths(monatIndex);
-        while(!DatenbankCommunicator.datumIstWerktag(datum)) {
-            datum = datum.plusDays(1);
-        }
-        System.out.println(datum);
+        DatenbankCommunicator.getNextWerktag(datum);
         return datum;
     }
 
