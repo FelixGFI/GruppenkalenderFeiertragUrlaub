@@ -31,15 +31,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
-    @FXML protected void onBtVorherigerMonatClick() {
+    @FXML protected void onBtVorherigerMonatClick() throws SQLException {
         changeMonthBackOrForthByGivenNumber(-1);
         System.out.println("Called onBtVorigerMonatClick()");
         scrollToSelectedMonth();
     }
-
-
-
-    @FXML protected void onBtNaechsterMonatClick() {
+    @FXML protected void onBtNaechsterMonatClick() throws SQLException {
         changeMonthBackOrForthByGivenNumber(1);
         System.out.println("Called onBtNaechsterMonatClick()");
         scrollToSelectedMonth();
@@ -54,7 +51,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtuebernehmenClick()");
     }
-
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         update();
         scrollToSelectedMonth();
@@ -101,17 +97,33 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         DatenbankCommunicator.establishConnection();
     }
     //TODO add documentation
-    private void changeMonthBackOrForthByGivenNumber(Integer changeNumber) {
+    private void changeMonthBackOrForthByGivenNumber(Integer changeNumber) throws SQLException {
         String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
         Boolean operationIsIncreaseMonat = (changeNumber > 0);
+        Integer jahr = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         if(operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(11)) {
             //TODO implement increase jahr
+            Integer neuesJahr = jahr + 1;
+            Integer neuerMonatIndex = 0;
+            setNewYearAndMonth(neuesJahr, neuerMonatIndex);
         } else if (!operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(0)) {
+            Integer neuesJahr = jahr - 1;
+            Integer neuerMonatIndex = 11;
+            setNewYearAndMonth(neuesJahr, neuerMonatIndex);
             //TODO implement decreas jahr
         } else {
             comboBoxMonatAuswahl.getSelectionModel().select(getSelectedMonatIndex() + changeNumber);
         }
     }
+    //TODO add documentation
+    private void setNewYearAndMonth(Integer neuesJahr, Integer neuerMonatIndex) throws SQLException {
+        if(UsefulConstants.getJahreList().contains(neuesJahr)) {
+            comboBoxJahrAuswahl.getSelectionModel().select(comboBoxJahrAuswahl.getItems().indexOf(neuesJahr));
+            comboBoxMonatAuswahl.getSelectionModel().select(neuerMonatIndex);
+            update();
+        }
+    }
+
     //TODO add documentation
     private void scrollToSelectedMonth() {
         LocalDate firstWerktagOfMonth = getFirstWerktagOfSelectedMonth();
