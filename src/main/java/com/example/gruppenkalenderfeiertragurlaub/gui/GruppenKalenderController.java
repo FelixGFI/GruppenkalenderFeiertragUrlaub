@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.fxml.FXML;
@@ -31,19 +32,23 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
 
     @FXML protected void onBtVorherigerMonatClick() {
+        changeMonthBackOrForthByGivenNumber(-1);
         System.out.println("Called onBtVorigerMonatClick()");
+        scrollToSelectedMonth();
     }
+
+
 
     @FXML protected void onBtNaechsterMonatClick() {
+        changeMonthBackOrForthByGivenNumber(1);
         System.out.println("Called onBtNaechsterMonatClick()");
+        scrollToSelectedMonth();
     }
-
     @FXML protected void onBtAbbrechenClick() {
-        System.out.println("Called onBAbbrechenClick()");
+            System.out.println("Called onBAbbrechenClick()");
     }
 
     @FXML protected void onBtSpeichernClick() {
-
         System.out.println("Called onBtSpeichernClick()");
     }
     @FXML protected void onBtUebernehmenClick() {
@@ -52,10 +57,14 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         update();
+        scrollToSelectedMonth();
     }
-
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         update();
+        scrollToSelectedMonth();
+    }
+    @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
+        scrollToSelectedMonth();
     }
 
     //TODO add Documentation
@@ -90,5 +99,47 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
 
         DatenbankCommunicator.establishConnection();
+    }
+    //TODO add documentation
+    private void changeMonthBackOrForthByGivenNumber(Integer changeNumber) {
+        String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
+        Boolean operationIsIncreaseMonat = (changeNumber > 0);
+        if(operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(11)) {
+            //TODO implement increase jahr
+        } else if (!operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(0)) {
+            //TODO implement decreas jahr
+        } else {
+            comboBoxMonatAuswahl.getSelectionModel().select(getSelectedMonatIndex() + changeNumber);
+        }
+    }
+    //TODO add documentation
+    private void scrollToSelectedMonth() {
+        LocalDate firstWerktagOfMonth = getFirstWerktagOfSelectedMonth();
+        for(GruppenKalenderTag gkTag : tbTabelle.getItems()) {
+            if(gkTag.getDatum().toString().equals(firstWerktagOfMonth.toString())) {
+                System.out.println(tbTabelle.getItems().indexOf(gkTag));
+                tbTabelle.scrollTo(tbTabelle.getItems().indexOf(gkTag));
+                break;
+            }
+        }
+    }
+    //TODO add documentation
+    private LocalDate getFirstWerktagOfSelectedMonth() {
+        Integer monatIndex = getSelectedMonatIndex();
+        LocalDate datum = LocalDate.parse(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem() + "-01-01");
+        datum = datum.plusMonths(monatIndex);
+        while(!DatenbankCommunicator.datumIstWerktag(datum)) {
+            datum = datum.plusDays(1);
+        }
+        System.out.println(datum);
+        return datum;
+    }
+
+    //TODO add documentation
+    private Integer getSelectedMonatIndex() {
+        String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
+        Integer selectedMonatIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(selectedMonat
+        );
+        return selectedMonatIndex;
     }
 }

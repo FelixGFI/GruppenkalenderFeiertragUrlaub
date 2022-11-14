@@ -294,7 +294,7 @@ public class DatenbankCommunicator {
      * @param datum
      * @return true wenn es sich beim Übergebenen LocalDate um einen Werktag handelt (ausgenommen feiertag) False wenn nicht
      */
-    private static Boolean datumIstWerktag(LocalDate datum) {
+    public static Boolean datumIstWerktag(LocalDate datum) {
         return UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString());
     }
 
