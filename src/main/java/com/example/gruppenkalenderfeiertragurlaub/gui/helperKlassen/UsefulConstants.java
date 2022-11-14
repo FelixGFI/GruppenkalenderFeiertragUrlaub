@@ -28,8 +28,8 @@ public class UsefulConstants {
     public static ArrayList<String> getStatusListDisplayFormat() {
         return statusListDisplayFormat;
     }
-
     public static ArrayList<Character> getStatusListCharacterFormat() {
+
         return statusListCharacterFormat;
     }
 

@@ -33,6 +33,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     LocalDate firstOfCurrentMonth;
 
     @FXML protected void onBtVorherigerMonatClick() throws SQLException {
+        //TODO investigate why scrolling doesn't work properly when changing to previous year
         changeMonthBackOrForthByGivenNumber(-1);
         //scrollToSelectedMonth();
     }
@@ -107,11 +108,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
         Boolean operationIsIncreaseMonat = (changeNumber > 0);
         Integer jahr = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
-        if(operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(11)) {
+        if(operationIsIncreaseMonat && selectedMonat.equals(UsefulConstants.getMonateListInLocalDateFormat().get(11))) {
             Integer neuesJahr = jahr + 1;
             Integer neuerMonatIndex = 0;
             setNewYearAndMonth(neuesJahr, neuerMonatIndex);
-        } else if (!operationIsIncreaseMonat && selectedMonat == UsefulConstants.getMonateListInLocalDateFormat().get(0)) {
+        } else if (!operationIsIncreaseMonat && selectedMonat.equals(UsefulConstants.getMonateListInLocalDateFormat().get(0))) {
             Integer neuesJahr = jahr - 1;
             Integer neuerMonatIndex = 11;
             setNewYearAndMonth(neuesJahr, neuerMonatIndex);
