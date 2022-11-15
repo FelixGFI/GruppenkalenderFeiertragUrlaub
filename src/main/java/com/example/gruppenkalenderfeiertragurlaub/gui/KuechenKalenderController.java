@@ -1,8 +1,8 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -34,17 +34,13 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<KuechenKalenderTag, Boolean> tcKuecheOffen;
-    ArrayList<KuechenKalenderTag> kuechenListe;
-    @FXML
-    protected void onBtVorherigerMonatClick() {
-        System.out.println("Called onBtVorigerMonatClick()");
+    LocalDate firstOfCurrentMonth;
+    @FXML protected void onBtVorherigerMonatClick() throws SQLException {
+        changeMonthBackOrForthBy(-1);
     }
-
-    @FXML
-    protected void onBtNaechsterMonatClick() {
-        System.out.println("Called onBtNaechsterMonatClick()");
+    @FXML protected void onBtNaechsterMonatClick() throws SQLException {
+        changeMonthBackOrForthBy(1);
     }
-
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
@@ -63,7 +59,15 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
     //TODO connect with GUI and implement
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-        update();
+        Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
+        firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
+        scrollToSelectedMonth(firstOfCurrentMonth);
+        updateTableView();
+    }
+    @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
+        int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
+        firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
 
     public void initialize() throws SQLException {
@@ -75,19 +79,48 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
 
         DatenbankCommunicator.establishConnection();
-        update();
+
+        firstOfCurrentMonth = LocalDate.now();
+        firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
+        firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
+
+        updateTableView();
+
+        tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     //TODO write documentation
-    private void update() throws SQLException {
+    private void updateTableView() throws SQLException {
         if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
             return;
         }
         //TODO add save and warning window and code
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);
-        tbTabelle.getSortOrder().clear();
-        tbTabelle.getSortOrder().add(tcDatum);
+    }
+    private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
+        String month = firstWerktagOfMonth.getMonth().toString();
+        System.out.println(month);
+        ObservableList<KuechenKalenderTag> items = tbTabelle.getItems();
+        for (KuechenKalenderTag tag : items) {
+            if (tag.getDatum().getMonth().toString().equals(month)) {
+                System.out.println(tag.getDatum().getMonth().toString() + items.indexOf(tag));
+                tbTabelle.scrollTo(items.indexOf(tag));
+                break;
+            }
+        }
+    }
+    private void changeMonthBackOrForthBy(Integer changeNumber) throws SQLException {
+        // Set new date
+        firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
+        if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
+            int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
+            int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
+            comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
+            comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
+        } else {
+            firstOfCurrentMonth = firstOfCurrentMonth.minusMonths(changeNumber);
+        }
     }
 }
 

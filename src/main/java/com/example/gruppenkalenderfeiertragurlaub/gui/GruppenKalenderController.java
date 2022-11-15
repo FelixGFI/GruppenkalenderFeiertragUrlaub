@@ -49,13 +49,24 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onBtUebernehmenClick() {
         System.out.println("Called onBtuebernehmenClick()");
+        Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();
+        if(ausgewaehlerStatus != null) {
+
+            ObservableList<GruppenKalenderTag> ausgewaelteTageListe = tbTabelle.getSelectionModel().getSelectedItems();
+
+            System.out.println("GruppenKalenderController.onBtUebernehmenClick()" + ausgewaehlerStatus + "\n" +
+                    "" + ausgewaelteTageListe.get(0).toString());
+            for (GruppenKalenderTag tag : ausgewaelteTageListe) {
+                tag.setGruppenstatus(ausgewaehlerStatus);
+            }
+            tbTabelle.refresh();
+        }
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         scrollToSelectedMonth(firstOfCurrentMonth);
         updateTableView();
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-        // TODO aktuelles Datum korrigieren
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth);
@@ -104,6 +115,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = LocalDate.now();
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
+
+        tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     //TODO add documentation
