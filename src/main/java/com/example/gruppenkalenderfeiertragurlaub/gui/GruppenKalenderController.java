@@ -34,7 +34,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     LocalDate firstOfCurrentMonth;
 
     @FXML protected void onBtVorherigerMonatClick() throws SQLException {
-        //TODO investigate why scrolling doesn't work properly when changing to previous year
         changeMonthBackOrForthBy(-1);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
@@ -109,16 +108,16 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     //TODO add documentation
     private void changeMonthBackOrForthBy(Integer changeNumber) throws SQLException {
-
         // Set new date
-        //if(firstOfCurrentMonth.plusMonths(changeNumber).getYear())
-        //TODO add bedingung um zu überprüfen ob neues Jahr in der Liste ist
         firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
-
-        int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
-        int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
-        comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
-        comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
+        if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
+            int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
+            int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
+            comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
+            comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
+        } else {
+            firstOfCurrentMonth = firstOfCurrentMonth.minusMonths(changeNumber);
+        }
     }
 
     //TODO add documentation
