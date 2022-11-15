@@ -52,15 +52,15 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         System.out.println("Called onBtuebernehmenClick()");
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
-        updateTableView();
         scrollToSelectedMonth(firstOfCurrentMonth);
+        updateTableView();
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         // TODO aktuelles Datum korrigieren
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        updateTableView();
         scrollToSelectedMonth(firstOfCurrentMonth);
+        updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
