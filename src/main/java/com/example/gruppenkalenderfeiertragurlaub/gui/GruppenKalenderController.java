@@ -46,7 +46,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onBtAbbrechenClick() {
             System.out.println("Called onBAbbrechenClick()");
     }
-
     @FXML protected void onBtSpeichernClick() {
         System.out.println("Called onBtSpeichernClick()");
     }
@@ -58,7 +57,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-
         // TODO aktuelles Datum korrigieren
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         update();
@@ -66,7 +64,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
-        System.out.println("GruppenKlanderController.onComboboxMonatAuswahlAction() " + monthIndex);
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth);
     }
@@ -81,7 +78,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
         //TODO Implement Save or Discard Changes warning, Implement Save if selected.
         ArrayList<GruppenKalenderTag> tageListe = DatenbankCommunicator.readGruppenKalenderTage(
-                comboBoxJahrAuswahl.getSelectionModel().getSelectedItem(),
+                firstOfCurrentMonth.getYear(),
                 comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(tageListe);
         tbTabelle.getSortOrder().clear();
@@ -107,8 +104,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = LocalDate.now();
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
-        System.out.println("GruppenKalenderCrontroller.initialize() " + firstOfCurrentMonth.toString());
-
     }
 
     //TODO add documentation
@@ -125,33 +120,14 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     //TODO add documentation
     private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
-
         Month month = firstWerktagOfMonth.getMonth();
-        System.out.println(firstWerktagOfMonth.toString());
         ObservableList<GruppenKalenderTag> items = tbTabelle.getItems();
         for(GruppenKalenderTag tag : items) {
             if(tag.getDatum().getMonth().equals(month)) {
-                System.out.println(tag.getDatum().toString() + " =? " + firstWerktagOfMonth.toString());
                 tbTabelle.scrollTo(0);
                 tbTabelle.scrollTo(items.indexOf(tag));
                 break;
             }
         }
-    }
-    //TODO add documentation
-    private LocalDate getFirstWerktagOfSelectedMonth() {
-        Integer monatIndex = getSelectedMonatIndex();
-        LocalDate datum = LocalDate.parse(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem() + "-01-01");
-        datum = datum.plusMonths(monatIndex);
-        DatenbankCommunicator.getNextWerktag(datum);
-        return datum;
-    }
-
-    //TODO add documentation
-    private Integer getSelectedMonatIndex() {
-        String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
-        Integer selectedMonatIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(selectedMonat
-        );
-        return selectedMonatIndex;
     }
 }
