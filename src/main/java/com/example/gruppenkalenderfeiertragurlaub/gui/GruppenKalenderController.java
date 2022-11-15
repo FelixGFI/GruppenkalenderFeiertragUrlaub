@@ -4,11 +4,13 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 public class GruppenKalenderController extends ControllerBasisKlasse{
@@ -35,11 +37,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onBtVorherigerMonatClick() throws SQLException {
         //TODO investigate why scrolling doesn't work properly when changing to previous year
         changeMonthBackOrForthByGivenNumber(-1);
-        //scrollToSelectedMonth();
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtNaechsterMonatClick() throws SQLException {
         changeMonthBackOrForthByGivenNumber(1);
-        //scrollToSelectedMonth();
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtAbbrechenClick() {
             System.out.println("Called onBAbbrechenClick()");
@@ -53,15 +55,20 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         update();
-        scrollToSelectedMonth();
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+
+        // TODO aktuelles Datum korrigieren
+        firstOfCurrentMonth = firstOfCurrentMonth.withYear(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         update();
-        scrollToSelectedMonth();
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
-        System.out.println("OnACTION!");
-        scrollToSelectedMonth();
+        int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
+        System.out.println("GruppenKlanderController.onComboboxMonatAuswahlAction() " + monthIndex);
+        firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
 
     //TODO add Documentation
@@ -97,47 +104,36 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
         DatenbankCommunicator.establishConnection();
 
-        //TODO maybe make use of firstOfCurrentMonth to update things.
-        firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(LocalDate.now());
-
-
+        firstOfCurrentMonth = LocalDate.now();
+        firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
+        firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
+        System.out.println("GruppenKalenderCrontroller.initialize() " + firstOfCurrentMonth.toString());
 
     }
+
     //TODO add documentation
     private void changeMonthBackOrForthByGivenNumber(Integer changeNumber) throws SQLException {
-        String selectedMonat = comboBoxMonatAuswahl.getSelectionModel().getSelectedItem();
-        Boolean operationIsIncreaseMonat = (changeNumber > 0);
-        Integer jahr = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
-        if(operationIsIncreaseMonat && selectedMonat.equals(UsefulConstants.getMonateListInLocalDateFormat().get(11))) {
-            Integer neuesJahr = jahr + 1;
-            Integer neuerMonatIndex = 0;
-            setNewYearAndMonth(neuesJahr, neuerMonatIndex);
-        } else if (!operationIsIncreaseMonat && selectedMonat.equals(UsefulConstants.getMonateListInLocalDateFormat().get(0))) {
-            Integer neuesJahr = jahr - 1;
-            Integer neuerMonatIndex = 11;
-            setNewYearAndMonth(neuesJahr, neuerMonatIndex);
-        } else {
-            comboBoxMonatAuswahl.getSelectionModel().select(getSelectedMonatIndex() + changeNumber);
-        }
-    }
-    //TODO add documentation
-    private void setNewYearAndMonth(Integer neuesJahr, Integer neuerMonatIndex) throws SQLException {
-        if(UsefulConstants.getJahreList().contains(neuesJahr)) {
-            comboBoxJahrAuswahl.getSelectionModel().select(comboBoxJahrAuswahl.getItems().indexOf(neuesJahr));
-            comboBoxMonatAuswahl.getSelectionModel().select(neuerMonatIndex);
-            update();
-        }
+
+        // Set new date
+        firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
+
+        int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
+        comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
+        int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
+        comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
     }
 
     //TODO add documentation
-    private void scrollToSelectedMonth() {
-        LocalDate firstWerktagOfMonth = getFirstWerktagOfSelectedMonth();
+    private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
+
+        Month month = firstWerktagOfMonth.getMonth();
         System.out.println(firstWerktagOfMonth.toString());
-        for(GruppenKalenderTag gkTag : tbTabelle.getItems()) {
-            //TODO ERROR HAPPENS HERE
-            if(gkTag.getDatum().getMonth().equals(firstWerktagOfMonth.getMonth())) {
-                System.out.println(gkTag.getDatum().toString() + " =? " + firstWerktagOfMonth.toString());
-                tbTabelle.scrollTo(tbTabelle.getItems().indexOf(gkTag));
+        ObservableList<GruppenKalenderTag> items = tbTabelle.getItems();
+        for(GruppenKalenderTag tag : items) {
+            if(tag.getDatum().getMonth().equals(month)) {
+                System.out.println(tag.getDatum().toString() + " =? " + firstWerktagOfMonth.toString());
+                tbTabelle.scrollTo(0);
+                tbTabelle.scrollTo(items.indexOf(tag));
                 break;
             }
         }
