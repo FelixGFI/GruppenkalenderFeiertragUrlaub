@@ -62,39 +62,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
     }
     @FXML protected void onDpVonAction() {
-        System.out.println("Called onDpVonAction()");
-        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
-        if(vonDatum == null) {
-            return;
-        }
-        if(vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
-            return;
-        }
-        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
-        if(bisDatum == null || bisDatum.getYear() != firstOfCurrentMonth.getYear()) {
-            markRowsOfOneDate(vonDatum, tbTabelle);
-        } else {
-            if(!bisDatum.isAfter(vonDatum)) {
-                return;
-            }
-            markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
-        }
+        toBeCalledInOnDpVonAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onDpBisAction() {
-        System.out.println("Called onDpBisAction()");
-        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
-        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
-        if(bisDatum == null || vonDatum == null) {
-            return;
-        }
-        if(bisDatum.getYear() != firstOfCurrentMonth.getYear() || vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
-            return;
-        }
-        if(!bisDatum.isAfter(vonDatum)) {
-            return;
-        }
-        markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
+        toBeCalledInOnDpBisAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
+
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         updateTableView();

@@ -409,4 +409,36 @@ public class ControllerBasisKlasse {
         }
         return firstOfCurrentMonth;
     }
+    protected void toBeCalledInOnDpVonAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
+        if(vonDatum == null) {
+            return;
+        }
+        if(vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            return;
+        }
+        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
+        if(bisDatum == null || bisDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            markRowsOfOneDate(vonDatum, tbTabelle);
+        } else {
+            if(!bisDatum.isAfter(vonDatum)) {
+                return;
+            }
+            markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
+        }
+    }
+    protected void toBeCalledInOnDpBisAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
+        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
+        if(bisDatum == null || vonDatum == null) {
+            return;
+        }
+        if(bisDatum.getYear() != firstOfCurrentMonth.getYear() || vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            return;
+        }
+        if(!bisDatum.isAfter(vonDatum)) {
+            return;
+        }
+        markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
+    }
 }

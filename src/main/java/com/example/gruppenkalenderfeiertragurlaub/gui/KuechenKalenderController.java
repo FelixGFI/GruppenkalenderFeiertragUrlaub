@@ -36,10 +36,10 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableColumn<KuechenKalenderTag, Boolean> tcKuecheOffen;
     LocalDate firstOfCurrentMonth;
     @FXML protected void onBtVorherigerMonatClick() throws SQLException {
-        changeMonthBackOrForthBy(-1);
+        firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML protected void onBtNaechsterMonatClick() throws SQLException {
-        changeMonthBackOrForthBy(1);
+        firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
     protected void onBtAbbrechenClick() {
@@ -56,18 +56,24 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML protected void onBtOffenClick() {
         System.out.println("Called onBtOffenClick()");
     }
+    @FXML protected void onDpVonAction() {
+        toBeCalledInOnDpVonAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+    }
+    @FXML protected void onDpBisAction() {
+        toBeCalledInOnDpBisAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+    }
 
     //TODO connect with GUI and implement
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
 
     public void initialize() throws SQLException {
@@ -97,30 +103,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         //TODO add save and warning window and code
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);
-    }
-    private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
-        String month = firstWerktagOfMonth.getMonth().toString();
-        System.out.println(month);
-        ObservableList<KuechenKalenderTag> items = tbTabelle.getItems();
-        for (KuechenKalenderTag tag : items) {
-            if (tag.getDatum().getMonth().toString().equals(month)) {
-                System.out.println(tag.getDatum().getMonth().toString() + items.indexOf(tag));
-                tbTabelle.scrollTo(items.indexOf(tag));
-                break;
-            }
-        }
-    }
-    private void changeMonthBackOrForthBy(Integer changeNumber) throws SQLException {
-        // Set new date
-        firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
-        if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
-            int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
-            int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
-            comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
-            comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
-        } else {
-            firstOfCurrentMonth = firstOfCurrentMonth.minusMonths(changeNumber);
-        }
     }
 }
 
