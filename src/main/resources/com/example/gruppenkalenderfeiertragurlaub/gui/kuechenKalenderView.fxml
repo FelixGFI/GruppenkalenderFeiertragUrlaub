@@ -61,13 +61,13 @@
             <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
                   <Label text="von" />
-                  <DatePicker fx:id="dpVon" prefWidth="110.0">
+                  <DatePicker fx:id="dpVon" onAction="#onDpVonAction" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </DatePicker>
                   <Label text="bis" />
-                  <DatePicker fx:id="dpBis" layoutX="10.0" layoutY="10.0" prefWidth="110.0">
+                  <DatePicker fx:id="dpBis" layoutX="10.0" layoutY="10.0" onAction="#onDpBisAction" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.gui.BetriebsurlaubController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gruppenkalenderfeiertragurlaub.gui.BetriebsurlaubController">
    <top>
       <FlowPane alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
@@ -63,18 +63,23 @@
             <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                <children>
                   <Label text="von" />
-                  <DatePicker fx:id="dpVon" prefWidth="110.0">
+                  <DatePicker fx:id="dpVon" onAction="#onDpVonAction" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </DatePicker>
                   <Label text="bis" />
-                  <DatePicker fx:id="dpBis" layoutX="10.0" layoutY="10.0" prefWidth="110.0">
+                  <DatePicker fx:id="dpBis" layoutX="10.0" layoutY="10.0" onAction="#onDpBisAction" prefWidth="110.0">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </FlowPane.margin>
                   </DatePicker>
-                  <Button fx:id="btUebernehmen" mnemonicParsing="false" onAction="#onBtUebernehmenClick" prefWidth="90.0" text="Übernehmen">
+                  <Button fx:id="btUrlaub" mnemonicParsing="false" onAction="#onBtUrlaubClick" prefWidth="77.0" text="Urlaub">
+                     <FlowPane.margin>
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                     </FlowPane.margin>
+                  </Button>
+                  <Button fx:id="btArbeit" mnemonicParsing="false" onAction="#onBtArbeitClick" prefWidth="85.0" text="Arbeit">
                      <FlowPane.margin>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                      </FlowPane.margin>
@@ -82,8 +87,8 @@
                </children></FlowPane>
             <TableView fx:id="tbTabelle" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
-                <TableColumn fx:id="tcDatum" prefWidth="190.0" text="Datum" />
-                <TableColumn fx:id="tcIstBetriebsurlaub" prefWidth="190.0" text="Betriebsurlaub" />
+                <TableColumn fx:id="tcDatum" prefWidth="225.0" text="Datum" />
+                <TableColumn fx:id="tcIstBetriebsurlaub" prefWidth="225.0" text="Betriebsurlaub" />
               </columns>
             </TableView>
             <GridPane GridPane.rowIndex="2">
@@ -119,11 +124,11 @@
    <bottom>
       <FlowPane alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btSpeichern" mnemonicParsing="false" onAction="#onBtSpeichernClick" prefWidth="90.0" text="Speichern">
+            <Button fx:id="btSpeichern" mnemonicParsing="false" onAction="#onBtSpeichernClick" prefWidth="77.0" text="Speichern">
                <FlowPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
                </FlowPane.margin></Button>
-            <Button fx:id="btAbbrechen" mnemonicParsing="false" onAction="#onBtAbbrechenClick" prefWidth="90.0" text="Abbrechen">
+            <Button fx:id="btAbbrechen" mnemonicParsing="false" onAction="#onBtAbbrechenClick" prefWidth="85.0" text="Abbrechen">
                <FlowPane.margin>
                   <Insets bottom="5.0" left="5.0" right="25.0" top="5.0" />
                </FlowPane.margin></Button>

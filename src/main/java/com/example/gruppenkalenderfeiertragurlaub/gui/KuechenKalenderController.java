@@ -2,7 +2,6 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -51,10 +50,18 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         System.out.println("Klick Speichern");
     }
     @FXML protected void onBtGeschlossenClick() {
-        System.out.println("Called onBtGeschlossenClick()");
+        System.out.println("Called onBtArbeitClick()");
+        for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
+            tag.setKuecheGeoeffnet(false);
+        }
+        tbTabelle.refresh();
     }
     @FXML protected void onBtOffenClick() {
         System.out.println("Called onBtOffenClick()");
+        for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
+            tag.setKuecheGeoeffnet(true);
+        }
+        tbTabelle.refresh();
     }
     @FXML protected void onDpVonAction() {
         toBeCalledInOnDpVonAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
@@ -62,8 +69,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML protected void onDpBisAction() {
         toBeCalledInOnDpBisAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
-
-    //TODO connect with GUI and implement
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);

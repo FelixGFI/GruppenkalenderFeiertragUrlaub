@@ -2,7 +2,6 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -16,7 +15,9 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML
     Button btAbbrechen;
     @FXML
-    Button btUebernehmen;
+    Button btUrlaub;
+    @FXML
+    Button btArbeit;
     @FXML
     Button btVorigerMonat;
     @FXML
@@ -35,19 +36,15 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     TableColumn<BetriebsurlaubsTag, Boolean> tcIstBetriebsurlaub;
     @FXML
     TableView<BetriebsurlaubsTag> tbTabelle;
-
     LocalDate firstOfCurrentMonth;
-
     @FXML
     protected void onBtVorherigerMonatClick() throws SQLException {
         firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
-
     @FXML
     protected void onBtNaechsterMonatClick() throws SQLException {
         firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
-
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
@@ -74,8 +71,20 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     }
 
     @FXML
-    protected void onBtUebernehmenClick() {
-        System.out.println("Called onBtUebernehmenClick()");
+    protected void onBtUrlaubClick() {
+        System.out.println("Called onBtUrlaubClick()");
+        for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
+            tag.setIsBetriebsurlaub(true);
+        }
+        tbTabelle.refresh();
+    }
+    @FXML
+    protected void onBtArbeitClick() {
+        System.out.println("Called onBtArbeitClick()");
+        for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
+            tag.setIsBetriebsurlaub(false);
+        }
+        tbTabelle.refresh();
     }
     @FXML protected void onDpVonAction() {
         toBeCalledInOnDpVonAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
@@ -103,7 +112,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
 
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
-
     //TODO write documentation
     private void updateTableView() throws SQLException {
         if (comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {

@@ -409,6 +409,18 @@ public class ControllerBasisKlasse {
         }
         return firstOfCurrentMonth;
     }
+
+    /**
+     * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpVon aufgerufen zu
+     * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
+     * dpVon und dpBis aus und ruft je nach Inhalt der Selben entweder Methoden zum Markieren eines Eizigen Datums oder mehrere Daten in der
+     * übergebenen TableView tbTabelle auf oder returned ohne etwas zu tun.
+     * @param firstOfCurrentMonth
+     * @param dpVon
+     * @param dpBis
+     * @param tbTabelle
+     */
+
     protected void toBeCalledInOnDpVonAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(vonDatum == null) {
@@ -427,6 +439,17 @@ public class ControllerBasisKlasse {
             markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
         }
     }
+
+    /**
+     * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpBis aufgerufen zu
+     * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
+     * dpVon und dpBis aus und ruft je nach Inhalt der Selben entweder eine Methode zum Markieren mehrerer Daten in der
+     * übergebenen TableView tbTabelle auf oder returned ohne etwas zu tun.
+     * @param firstOfCurrentMonth
+     * @param dpVon
+     * @param dpBis
+     * @param tbTabelle
+     */
     protected void toBeCalledInOnDpBisAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);

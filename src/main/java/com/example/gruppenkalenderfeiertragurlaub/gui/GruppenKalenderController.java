@@ -3,7 +3,6 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.TagBasisKlasse;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
