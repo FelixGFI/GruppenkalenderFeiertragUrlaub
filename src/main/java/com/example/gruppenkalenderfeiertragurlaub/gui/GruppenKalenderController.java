@@ -31,11 +31,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
     LocalDate firstOfCurrentMonth;
 
-    @FXML protected void onBtVorherigerMonatClick() throws SQLException {
+    @FXML protected void onBtVorherigerMonatClick() {
         changeMonthBackOrForthBy(-1);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
-    @FXML protected void onBtNaechsterMonatClick() throws SQLException {
+    @FXML protected void onBtNaechsterMonatClick() {
         changeMonthBackOrForthBy(1);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
@@ -106,7 +106,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         scrollToSelectedMonth(firstOfCurrentMonth);
         updateTableView();
     }
-    @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
+    @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth);
@@ -161,9 +161,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
      * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
      * onActions dieser Comboboxen Ausgelöst werden)
      * @param changeNumber
-     * @throws SQLException
      */
-    private void changeMonthBackOrForthBy(Integer changeNumber) throws SQLException {
+    private void changeMonthBackOrForthBy(Integer changeNumber) {
         // Set new date
         firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
         if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
@@ -219,11 +218,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     private void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum) {
         tbTabelle.getSelectionModel().clearSelection();
         ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
-        Boolean istErstesGefundenesDatum = true;
+        boolean istErstesGefundenesDatum = true;
         for(GruppenKalenderTag tag : tabellenEintraege) {
             LocalDate tagesDatum = tag.getDatum();
-            Boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
-            Boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
+            boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
+            boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
             if(tagIsInIbetweenRange || tagIsVonOrBisDatum) {
                 tbTabelle.getSelectionModel().select(tag);
                 if(istErstesGefundenesDatum) {
@@ -243,7 +242,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     private void markRowsOfOneDate(LocalDate vonDatum) {
         tbTabelle.getSelectionModel().clearSelection();
         ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
-        Boolean istErstesGefundenesDatum = true;
+        boolean istErstesGefundenesDatum = true;
         for (GruppenKalenderTag tag : tabellenEintraege) {
             if(tag.getDatum().toString().equals(vonDatum.toString())) {
                 tbTabelle.getSelectionModel().select(tag);

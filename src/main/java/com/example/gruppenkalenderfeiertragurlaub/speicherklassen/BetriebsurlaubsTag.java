@@ -2,22 +2,13 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 import java.time.LocalDate;
 
-public class BetriebsurlaubsTag {
+public class BetriebsurlaubsTag extends  SpeicherBasisKlasse {
 
-    LocalDate datum;
-    Boolean isBetriebsurlaub;
+    private Boolean isBetriebsurlaub;
 
     public BetriebsurlaubsTag(LocalDate datum, Boolean isBetriebsurlaub) {
         this.datum = datum;
         this.isBetriebsurlaub = isBetriebsurlaub;
-    }
-
-    public LocalDate getDatum() {
-        return datum;
-    }
-
-    public void setDatum(LocalDate datum) {
-        this.datum = datum;
     }
 
     public Boolean getIsBetriebsurlaub() {
