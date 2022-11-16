@@ -3,20 +3,33 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
+import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Skin;
+import javafx.scene.control.skin.DatePickerSkin;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.Era;
+import java.time.format.ResolverStyle;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalField;
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
+import java.time.chrono.Chronology;
+import java.util.List;
+import java.util.Map;
+
 
 public class Playground {
     public static void main(String[] args) throws SQLException {
-        // launch();
-        //create connection for a server installed in localhost, with a user "root" with no password
         //dataBaseReadDeleteInsertUpdateTest();
-        Integer jahr = 2022;
-        LocalDate datum = LocalDate.parse(jahr + "-01-02");
-        System.out.println(UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString()));
-        System.out.println(datum.getDayOfWeek());
+
+
+
+
 
     }
 

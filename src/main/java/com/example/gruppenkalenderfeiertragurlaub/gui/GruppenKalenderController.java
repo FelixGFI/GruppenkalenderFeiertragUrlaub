@@ -6,7 +6,6 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalende
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,9 +71,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
         LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
         if(bisDatum == null || bisDatum.getYear() != firstOfCurrentMonth.getYear()) {
-            System.out.println("GruppenKalenderTag.onDpVonAction() ONLY MARK VON DATUM");
+            markRowsOfOneDate(vonDatum);
         } else {
-            System.out.println("GruppenKalenderTag.onDpVonAction() MARK FROM VON TO BIS");
+            if(!bisDatum.isAfter(vonDatum)) {
+                return;
+            }
+            markAllRowsVonBis(vonDatum, bisDatum);
         }
     }
     @FXML protected void onDpBisAction() {
@@ -87,7 +89,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         if(bisDatum.getYear() != firstOfCurrentMonth.getYear() || vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
             return;
         }
-        System.out.println("GruppenKalenderTag.onDpBisAction() MARK FROM VON TO BIS");
+        if(!bisDatum.isAfter(vonDatum)) {
+            return;
+        }
+        markAllRowsVonBis(vonDatum, bisDatum);
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         scrollToSelectedMonth(firstOfCurrentMonth);
@@ -144,6 +149,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
 
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
     }
 
     //TODO add documentation
@@ -166,7 +173,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         ObservableList<GruppenKalenderTag> items = tbTabelle.getItems();
         for(GruppenKalenderTag tag : items) {
             if(tag.getDatum().getMonth().toString().equals(month)) {
-                tbTabelle.scrollTo(0);
                 tbTabelle.scrollTo(items.indexOf(tag));
                 break;
             }
@@ -188,5 +194,39 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             datum = null;
         }
         return datum;
+    }
+    //TODO add Documentation
+    private void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum) {
+        tbTabelle.getSelectionModel().clearSelection();
+        ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
+        Boolean istErstesGefundenesDatum = true;
+        for(GruppenKalenderTag tag : tabellenEintraege) {
+            LocalDate tagesDatum = tag.getDatum();
+            Boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
+            Boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
+            if(tagIsInIbetweenRange || tagIsVonOrBisDatum) {
+                tbTabelle.getSelectionModel().select(tag);
+                if(istErstesGefundenesDatum) {
+                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
+                    istErstesGefundenesDatum = false;
+                }
+            }
+        }
+
+    }
+    //TODO add Documentation
+    private void markRowsOfOneDate(LocalDate vonDatum) {
+        tbTabelle.getSelectionModel().clearSelection();
+        ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
+        Boolean istErstesGefundenesDatum = true;
+        for (GruppenKalenderTag tag : tabellenEintraege) {
+            if(tag.getDatum().toString().equals(vonDatum.toString())) {
+                tbTabelle.getSelectionModel().select(tag);
+                if(istErstesGefundenesDatum) {
+                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
+                    istErstesGefundenesDatum = false;
+                }
+            }
+        }
     }
 }
