@@ -62,6 +62,34 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             tbTabelle.refresh();
         }
     }
+    @FXML protected void onDpVonAction() {
+        System.out.println("Called onDpVonAction()");
+        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
+        if(vonDatum == null) {
+            return;
+        }
+        if(vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            return;
+        }
+        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
+        if(bisDatum == null || bisDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            System.out.println("GruppenKalenderTag.onDpVonAction() ONLY MARK VON DATUM");
+        } else {
+            System.out.println("GruppenKalenderTag.onDpVonAction() MARK FROM VON TO BIS");
+        }
+    }
+    @FXML protected void onDpBisAction() {
+        System.out.println("Called onDpBisAction()");
+        LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
+        LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
+        if(bisDatum == null || vonDatum == null) {
+            return;
+        }
+        if(bisDatum.getYear() != firstOfCurrentMonth.getYear() || vonDatum.getYear() != firstOfCurrentMonth.getYear()) {
+            return;
+        }
+        System.out.println("GruppenKalenderTag.onDpBisAction() MARK FROM VON TO BIS");
+    }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         scrollToSelectedMonth(firstOfCurrentMonth);
         updateTableView();
@@ -144,5 +172,22 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
                 break;
             }
         }
+    }
+    /**
+     * erhält einen DatePicker und versucht aus diesem ein LocalDate auszulesen. Ist dies erfolgreich so gibt die Methode
+     * besagtes datum zurück, ist dies nicht erfolgreich gibt die Methode null zurück
+     * @param dp
+     * @return ausgelesenes LocalDate wenn erfolgreich, Null wenn nicht erfolgreich
+     */
+    private LocalDate leseDatumAusDatePicker(DatePicker dp) {
+        LocalDate datum;
+        try {
+            datum = dp.getValue();
+            System.out.println("GruppenKalenderController.onDpVonAction() " + datum);
+
+        } catch (Exception e) {
+            datum = null;
+        }
+        return datum;
     }
 }
