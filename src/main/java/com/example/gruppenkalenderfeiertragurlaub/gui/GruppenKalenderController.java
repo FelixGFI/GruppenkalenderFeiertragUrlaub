@@ -95,10 +95,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         markAllRowsVonBis(vonDatum, bisDatum);
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         updateTableView();
+        scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+        //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth);
