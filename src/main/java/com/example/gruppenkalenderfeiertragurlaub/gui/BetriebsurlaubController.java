@@ -38,11 +38,11 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     TableView<BetriebsurlaubsTag> tbTabelle;
     LocalDate firstOfCurrentMonth;
     @FXML
-    protected void onBtVorherigerMonatClick() throws SQLException {
+    protected void onBtVorherigerMonatClick() {
         firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
-    protected void onBtNaechsterMonatClick() throws SQLException {
+    protected void onBtNaechsterMonatClick() {
         firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
@@ -64,7 +64,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     }
 
     @FXML
-    protected void onComboboxMonatAuswahlAction() throws SQLException {
+    protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -92,7 +92,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML protected void onDpBisAction() {
         toBeCalledInOnDpBisAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
-    public void initialize() throws SQLException, InterruptedException {
+    public void initialize() throws SQLException {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
 

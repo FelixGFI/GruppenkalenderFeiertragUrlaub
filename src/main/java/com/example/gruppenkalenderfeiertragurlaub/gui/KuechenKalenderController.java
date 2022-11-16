@@ -34,10 +34,10 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<KuechenKalenderTag, Boolean> tcKuecheOffen;
     LocalDate firstOfCurrentMonth;
-    @FXML protected void onBtVorherigerMonatClick() throws SQLException {
+    @FXML protected void onBtVorherigerMonatClick() {
         firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
-    @FXML protected void onBtNaechsterMonatClick() throws SQLException {
+    @FXML protected void onBtNaechsterMonatClick() {
         firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
@@ -75,7 +75,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
         updateTableView();
     }
-    @FXML protected void onComboboxMonatAuswahlAction() throws SQLException {
+    @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);

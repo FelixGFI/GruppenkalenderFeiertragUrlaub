@@ -37,7 +37,7 @@ public class HauptMenueController {
     }
 
     @FXML
-    protected void onBtKalenderplanungClick() throws IOException {
+    protected void onBtKalenderplanungClick() {
         openSubwindowFromButtonClick("Kalenderplanung","gruppenKalenderView.fxml");
     }
 
