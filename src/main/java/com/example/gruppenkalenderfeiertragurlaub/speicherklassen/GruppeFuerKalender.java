@@ -2,9 +2,9 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 public class GruppeFuerKalender {
 
-    private Integer gruppeId;
-    private String gruppeName;
-    private Integer familienId;
+    private final Integer gruppeId;
+    private final String gruppeName;
+    private final Integer familienId;
 
     public GruppeFuerKalender(Integer gruppeId, String gruppeName, Integer familienId) {
         this.gruppeId = gruppeId;

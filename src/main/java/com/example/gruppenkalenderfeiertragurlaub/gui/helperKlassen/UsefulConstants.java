@@ -7,7 +7,7 @@ public class UsefulConstants {
 
     /**
      * diese Klasse enthält eine Reihe von Konstanten für das Programm
-     *
+     * -
      * TageListeInLocalDateFormat:  die Fünf Arbeitstage der Woche in dem Format wie sie die Klasse LocalDate verwendet
      * statusListCharacterFormat:   Liste der möglichen Gruppenstatuse (Was eine bestimmte Gruppe/Gruppenfamilie dem Klander
      *                              entsprechend an einem Tag tut) im Character Format, zur verwendung in Objekten der Klasse
