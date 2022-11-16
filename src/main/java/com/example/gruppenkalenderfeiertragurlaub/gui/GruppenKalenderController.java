@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 
 public class GruppenKalenderController extends ControllerBasisKlasse{
