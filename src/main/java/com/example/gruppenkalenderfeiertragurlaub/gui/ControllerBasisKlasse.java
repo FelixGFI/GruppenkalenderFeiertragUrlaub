@@ -50,11 +50,11 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
-        comboBoxMonatAuswahl.setConverter(new StringConverter<String>() {
+        comboBoxMonatAuswahl.setConverter(new StringConverter<>() {
             @Override
             public String toString(String localDateMonat) {
                 String anzeigeMonat = "";
-                if(localDateMonat != null) {
+                if (localDateMonat != null) {
                     anzeigeMonat = getAnzeigeMonatString(localDateMonat);
                 }
                 return anzeigeMonat;
@@ -88,11 +88,11 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
-        comboBoxStatusAuswahl.setConverter(new StringConverter<Character>() {
+        comboBoxStatusAuswahl.setConverter(new StringConverter<>() {
             @Override
             public String toString(Character statusCharacter) {
                 String statusDisplayString = "";
-                if(statusCharacter != null) {
+                if (statusCharacter != null) {
                     statusDisplayString = getDisplayMessageForStatus(statusCharacter);
                 }
                 return statusDisplayString;
@@ -113,8 +113,7 @@ public class ControllerBasisKlasse {
      */
     private static String getDisplayMessageForStatus(Character aktivitaetsStatus) {
         int statusIndex = UsefulConstants.getStatusListCharacterFormat().indexOf(aktivitaetsStatus);
-        String displayStatus = (statusIndex != -1) ? UsefulConstants.getStatusListDisplayFormat().get(statusIndex) : "";
-        return displayStatus;
+        return (statusIndex != -1) ? UsefulConstants.getStatusListDisplayFormat().get(statusIndex) : "";
     }
 
     /**
@@ -152,10 +151,10 @@ public class ControllerBasisKlasse {
         this day is a day of Betriebsurlaub then it displays the word "Ja" in the cell instead of the
         actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
          */
-            cell.itemProperty().addListener((obs, old, newVal) -> {
-                if (newVal != null) {
+            cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
+                if (newBooleanVal != null) {
                     //Ternärer Ausdruck
-                    cell.setText((newVal == true) ? "Ja" : "Nein");
+                    cell.setText((newBooleanVal) ? "Ja" : "Nein");
                 }
             });
             return cell;
@@ -223,13 +222,14 @@ public class ControllerBasisKlasse {
     }
 
     /**
-     * Erhält eine Combobox<Object>. Ruft die Nötigen Methoden des DatenbankComunicators auf um alle Vorhandenen Gruppenfamileien und die zu ihnen
-     * Gehördenden Gruppen zu erhalten. Fügt der Combobox alle Gruppenfamilien sowie die zugehörigen Gruppen hinzo wobei die Gruppenfamilien stets in der Liste
-     * über den Gruppen stehen die zu Ihnen gehören. Stellt sicher das in der Liste für Jede Gruppe/Gruppenfamilie dernen Name dem Nutzer Angeziegt wird, sowohl
-     * in der Liste als auch wenn Ausgewählt. Stellt sicher das in der Liste die Gruppenfamilien Fett Gedruckt geschrieben sind sodas sie von Gruppen leicht zu
+     * Erhält eine Combobox<Object>. Füllt die ArrayList<GruppenFamileienFuerkalender> gruppenFamilienListe mit Allen Gruppenfamilien aus der Datenbank
+     * In den Gruppenfamilien sind alle zu ihnen Gehörigen Gruppen bereits enthalten. Fügt der Combobox alle Gruppenfamilien sowie die zugehörigen
+     * Gruppen hinzo wobei die Gruppenfamilien stets in der Liste über den Gruppen stehen die zu Ihnen gehören. Stellt sicher das in der
+     * Liste für Jede Gruppe/Gruppenfamilie dernen Name dem Nutzer Angeziegt wird, sowohl in der Liste als auch wenn Ausgewählt.
+     * Stellt sicher das in der Liste die Gruppenfamilien Fett Gedruckt geschrieben sind sodas sie von Gruppen leicht zu
      * unterscheiden sind.
      * @param comboBoxGruppenAuswahl
-     * @return
+     * @return ArrayList der Ausgelesenen Gruppenfamilien von denen Jede alle zu ihr gehörenden Gruppen enthält.
      * @throws SQLException
      */
     public static ArrayList<GruppenFamilieFuerKalender> configureCBGruppenAuswahl(ComboBox comboBoxGruppenAuswahl) throws SQLException {
