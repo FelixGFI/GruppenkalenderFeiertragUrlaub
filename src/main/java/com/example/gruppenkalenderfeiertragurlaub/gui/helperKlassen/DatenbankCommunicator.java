@@ -5,29 +5,25 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DatenbankCommunicator {
 
     private static Connection conn;
-    private static String url = "jdbc:mariadb://localhost/verpflegungsgeld";
-    private static String user = "root";
-    private static String password = "";
+    private static final String url = "jdbc:mariadb://localhost/verpflegungsgeld";
+    private static final String user = "root";
+    private static final String password = "";
 
 
     /**
      * Establishes a conection to the database with the information specified in the url, user and password global variables
-     * @return if conection was succesfully established, returns true, otherwise false
      */
-    public static boolean establishConnection() {
+    public static void establishConnection() {
         //create connection for a server installed in localhost, with a user "root" with no password
         try {
             conn = DriverManager.getConnection(url, user, password);
-
-            return true;
-
         } catch (SQLException e) {
             System.out.println("Database not found. Please make sure the correct Database is available");
-            return false;
         }
     }
 
@@ -92,7 +88,7 @@ public class DatenbankCommunicator {
             datum = datum.plusDays(1);
         }
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM kuechenplanung k WHERE k.datum = '" + datum.toString() + "') as kuechenEintragVorhanden;")) {
+            try(ResultSet rs = stmt.executeQuery("SELECT EXISTS (SELECT * FROM kuechenplanung k WHERE k.datum = '" + datum + "') as kuechenEintragVorhanden;")) {
                 rs.next();
                 return rs.getBoolean("kuechenEintragVorhanden");
 
@@ -125,10 +121,7 @@ public class DatenbankCommunicator {
                     "\tWHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("normalDatum").toString());
-                    boolean isBetiebsurlaub = false;
-                    if(rs.getDate("betiebsurlaubsDatum") != null) {
-                        isBetiebsurlaub = true;
-                    }
+                    boolean isBetiebsurlaub = rs.getDate("betiebsurlaubsDatum") != null;
                     BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetiebsurlaub);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
 
@@ -147,24 +140,22 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
-        String gruppeOderFamilieSelectedBedinung = " AND ";
+        StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" AND ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
-            gruppeOderFamilieSelectedBedinung = gruppeOderFamilieSelectedBedinung + "gruppenkalender.gruppe_id = "
-                    + ((GruppeFuerKalender) gruppeOderFamilie).getGruppeId();
+            gruppeOderFamilieSelectedBedinung.append("gruppenkalender.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
             generateTageIfMissing((GruppeFuerKalender) gruppeOderFamilie, jahr);
         } else {
             boolean isFirstGruppInArray = true;
-            gruppeOderFamilieSelectedBedinung = gruppeOderFamilieSelectedBedinung + "(";
+            gruppeOderFamilieSelectedBedinung.append("(");
             for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender)gruppeOderFamilie).getGruppenDerFamilie() ) {
                 if(!isFirstGruppInArray) {
-                    gruppeOderFamilieSelectedBedinung = gruppeOderFamilieSelectedBedinung + " OR ";
+                    gruppeOderFamilieSelectedBedinung.append(" OR ");
                 }
-                gruppeOderFamilieSelectedBedinung = gruppeOderFamilieSelectedBedinung + "gruppenkalender.gruppe_id = "
-                        + ((GruppeFuerKalender) gr).getGruppeId();
+                gruppeOderFamilieSelectedBedinung.append("gruppenkalender.gruppe_id = ").append(gr.getGruppeId());
                 generateTageIfMissing(gr, jahr);
                 isFirstGruppInArray = false;
             }
-            gruppeOderFamilieSelectedBedinung = gruppeOderFamilieSelectedBedinung + ")";
+            gruppeOderFamilieSelectedBedinung.append(")");
         }
 
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
@@ -205,9 +196,9 @@ public class DatenbankCommunicator {
 
                     GruppeFuerKalender neueGruppe = new GruppeFuerKalender(gruppeId, gruppeName, familienId);
 
-                    Boolean gruppeExists = false;
+                    boolean gruppeExists = false;
                     for (GruppenFamilieFuerKalender familie : gruppenFamilieListe) {
-                        if(familie.getFamilieId() == familienId) {
+                        if(Objects.equals(familie.getFamilieId(), familienId)) {
                             gruppeExists = true;
                             familie.getGruppenDerFamilie().add(neueGruppe);
                             break;
@@ -306,9 +297,7 @@ public class DatenbankCommunicator {
     public static ArrayList<GruppeFuerKalender> getAlleGruppenAusFamilien(ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe) {
         ArrayList<GruppeFuerKalender> gruppenListe = new ArrayList<>();
         for (GruppenFamilieFuerKalender grFa : gruppenFamilienListe) {
-            for (GruppeFuerKalender gr : grFa.getGruppenDerFamilie()) {
-                gruppenListe.add(gr);;
-            }
+            gruppenListe.addAll(grFa.getGruppenDerFamilie());
         }
         return gruppenListe;
     }
