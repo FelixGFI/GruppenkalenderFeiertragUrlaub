@@ -71,12 +71,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
         LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
         if(bisDatum == null || bisDatum.getYear() != firstOfCurrentMonth.getYear()) {
-            markRowsOfOneDate(vonDatum);
+            markRowsOfOneDate(vonDatum, tbTabelle);
         } else {
             if(!bisDatum.isAfter(vonDatum)) {
                 return;
             }
-            markAllRowsVonBis(vonDatum, bisDatum);
+            markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
         }
     }
     @FXML protected void onDpBisAction() {
@@ -92,7 +92,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         if(!bisDatum.isAfter(vonDatum)) {
             return;
         }
-        markAllRowsVonBis(vonDatum, bisDatum);
+        markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
     }
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
@@ -187,69 +187,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             if(tag.getDatum().getMonth().toString().equals(month)) {
                 tbTabelle.scrollTo(items.indexOf(tag));
                 break;
-            }
-        }
-    }
-    /**
-     * erhält einen DatePicker und versucht aus diesem ein LocalDate auszulesen. Ist dies erfolgreich so gibt die Methode
-     * besagtes datum zurück, ist dies nicht erfolgreich gibt die Methode null zurück
-     * @param dp
-     * @return ausgelesenes LocalDate wenn erfolgreich, Null wenn nicht erfolgreich
-     */
-    private LocalDate leseDatumAusDatePicker(DatePicker dp) {
-        LocalDate datum;
-        try {
-            datum = dp.getValue();
-            System.out.println("GruppenKalenderController.onDpVonAction() " + datum);
-
-        } catch (Exception e) {
-            datum = null;
-        }
-        return datum;
-    }
-
-    /**
-     * Die Methode soll in der Tabelle eine Reihe von einträgen welche Zwischen zwei LocalDate Daten liegen auswählen
-     * (einschließlich der Zwei Daten selbst). Hierfür überprüft es bei Jedem Objekt in der Tabelle ob dessen datum Entweder
-     * dem vonDatum oder bisDatum entspricht oder zwischen den Beiden liegt. Jedes so gefunden Objekt wird selected.
-     * Scrollt zum Ersten Gefundenen Reihe Welches das VonDatum enthält.
-     * @param vonDatum
-     */
-    private void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum) {
-        tbTabelle.getSelectionModel().clearSelection();
-        ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
-        boolean istErstesGefundenesDatum = true;
-        for(GruppenKalenderTag tag : tabellenEintraege) {
-            LocalDate tagesDatum = tag.getDatum();
-            boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
-            boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
-            if(tagIsInIbetweenRange || tagIsVonOrBisDatum) {
-                tbTabelle.getSelectionModel().select(tag);
-                if(istErstesGefundenesDatum) {
-                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
-                    istErstesGefundenesDatum = false;
-                }
-            }
-        }
-
-    }
-
-    /**
-     * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
-     * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
-     * @param vonDatum
-     */
-    private void markRowsOfOneDate(LocalDate vonDatum) {
-        tbTabelle.getSelectionModel().clearSelection();
-        ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
-        boolean istErstesGefundenesDatum = true;
-        for (GruppenKalenderTag tag : tabellenEintraege) {
-            if(tag.getDatum().toString().equals(vonDatum.toString())) {
-                tbTabelle.getSelectionModel().select(tag);
-                if(istErstesGefundenesDatum) {
-                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
-                    istErstesGefundenesDatum = false;
-                }
             }
         }
     }

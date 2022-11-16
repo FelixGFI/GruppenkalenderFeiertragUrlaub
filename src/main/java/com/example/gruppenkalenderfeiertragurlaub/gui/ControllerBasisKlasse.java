@@ -2,14 +2,9 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -317,5 +312,67 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
+    }
+    /**
+     * Die Methode soll in der Tabelle eine Reihe von einträgen welche Zwischen zwei LocalDate Daten liegen auswählen
+     * (einschließlich der Zwei Daten selbst). Hierfür überprüft es bei Jedem Objekt in der Tabelle ob dessen datum Entweder
+     * dem vonDatum oder bisDatum entspricht oder zwischen den Beiden liegt. Jedes so gefunden Objekt wird selected.
+     * Scrollt zum Ersten Gefundenen Reihe Welches das VonDatum enthält.
+     * @param vonDatum
+     */
+    protected void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum, TableView tbTabelle) {
+        tbTabelle.getSelectionModel().clearSelection();
+        ObservableList<TagBasisKlasse> tabellenEintraege = tbTabelle.getItems();
+        boolean istErstesGefundenesDatum = true;
+        for(TagBasisKlasse tag : tabellenEintraege) {
+            LocalDate tagesDatum = tag.getDatum();
+            boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
+            boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
+            if(tagIsInIbetweenRange || tagIsVonOrBisDatum) {
+                tbTabelle.getSelectionModel().select(tag);
+                if(istErstesGefundenesDatum) {
+                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
+                    istErstesGefundenesDatum = false;
+                }
+            }
+        }
+
+    }
+
+    /**
+     * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
+     * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
+     * @param vonDatum
+     */
+    protected void markRowsOfOneDate(LocalDate vonDatum, TableView tbTabelle) {
+        tbTabelle.getSelectionModel().clearSelection();
+        ObservableList<TagBasisKlasse> tabellenEintraege = tbTabelle.getItems();
+        boolean istErstesGefundenesDatum = true;
+        for (TagBasisKlasse tag : tabellenEintraege) {
+            if(tag.getDatum().toString().equals(vonDatum.toString())) {
+                tbTabelle.getSelectionModel().select(tag);
+                if(istErstesGefundenesDatum) {
+                    tbTabelle.scrollTo(tabellenEintraege.indexOf(tag));
+                    istErstesGefundenesDatum = false;
+                }
+            }
+        }
+    }
+    /**
+     * erhält einen DatePicker und versucht aus diesem ein LocalDate auszulesen. Ist dies erfolgreich so gibt die Methode
+     * besagtes datum zurück, ist dies nicht erfolgreich gibt die Methode null zurück
+     * @param dp
+     * @return ausgelesenes LocalDate wenn erfolgreich, Null wenn nicht erfolgreich
+     */
+    protected LocalDate leseDatumAusDatePicker(DatePicker dp) {
+        LocalDate datum;
+        try {
+            datum = dp.getValue();
+            System.out.println("GruppenKalenderController.onDpVonAction() " + datum);
+
+        } catch (Exception e) {
+            datum = null;
+        }
+        return datum;
     }
 }

@@ -2,7 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 import java.time.LocalDate;
 
-public class KuechenKalenderTag extends  SpeicherBasisKlasse {
+public class KuechenKalenderTag extends TagBasisKlasse {
     private Boolean kuecheGeoeffnet;
 
     public KuechenKalenderTag(LocalDate datum, Boolean kuecheGeoeffnet) {
