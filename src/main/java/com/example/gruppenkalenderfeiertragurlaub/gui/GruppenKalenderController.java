@@ -155,7 +155,14 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
     }
 
-    //TODO add documentation
+    /**
+     * Erhält einen Integer changeNumber und verändert das Datum firstOfCurrentMonth um eine Anzahl von Monaten die
+     * der übergebenen ChangNumber Entspricht. Passt die Comboboxen comboBoxMonatAuswahl und gegebenen Falls die
+     * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
+     * onActions dieser Comboboxen Ausgelöst werden)
+     * @param changeNumber
+     * @throws SQLException
+     */
     private void changeMonthBackOrForthBy(Integer changeNumber) throws SQLException {
         // Set new date
         firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
@@ -169,7 +176,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
     }
 
-    //TODO add documentation
+    /**
+     * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
+     * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
+     * @param firstWerktagOfMonth
+     */
     private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
         String month = firstWerktagOfMonth.getMonth().toString();
         ObservableList<GruppenKalenderTag> items = tbTabelle.getItems();
@@ -197,7 +208,14 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
         return datum;
     }
-    //TODO add Documentation
+
+    /**
+     * Die Methode soll in der Tabelle eine Reihe von einträgen welche Zwischen zwei LocalDate Daten liegen auswählen
+     * (einschließlich der Zwei Daten selbst). Hierfür überprüft es bei Jedem Objekt in der Tabelle ob dessen datum Entweder
+     * dem vonDatum oder bisDatum entspricht oder zwischen den Beiden liegt. Jedes so gefunden Objekt wird selected.
+     * Scrollt zum Ersten Gefundenen Reihe Welches das VonDatum enthält.
+     * @param vonDatum
+     */
     private void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum) {
         tbTabelle.getSelectionModel().clearSelection();
         ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
@@ -216,7 +234,12 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
 
     }
-    //TODO add Documentation
+
+    /**
+     * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
+     * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
+     * @param vonDatum
+     */
     private void markRowsOfOneDate(LocalDate vonDatum) {
         tbTabelle.getSelectionModel().clearSelection();
         ObservableList<GruppenKalenderTag> tabellenEintraege = tbTabelle.getItems();
