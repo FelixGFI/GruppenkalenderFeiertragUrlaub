@@ -3,6 +3,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.TagBasisKlasse;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,11 +33,11 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     LocalDate firstOfCurrentMonth;
 
     @FXML protected void onBtVorherigerMonatClick() {
-        changeMonthBackOrForthBy(-1);
+        firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtNaechsterMonatClick() {
-        changeMonthBackOrForthBy(1);
+        firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtAbbrechenClick() {
@@ -97,19 +98,19 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         updateTableView();
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
-        scrollToSelectedMonth(firstOfCurrentMonth);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
 
     //TODO add Documentation
@@ -153,41 +154,5 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
-    }
-
-    /**
-     * Erhält einen Integer changeNumber und verändert das Datum firstOfCurrentMonth um eine Anzahl von Monaten die
-     * der übergebenen ChangNumber Entspricht. Passt die Comboboxen comboBoxMonatAuswahl und gegebenen Falls die
-     * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
-     * onActions dieser Comboboxen Ausgelöst werden)
-     * @param changeNumber
-     */
-    private void changeMonthBackOrForthBy(Integer changeNumber) {
-        // Set new date
-        firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
-        if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
-            int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
-            int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
-            comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
-            comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
-        } else {
-            firstOfCurrentMonth = firstOfCurrentMonth.minusMonths(changeNumber);
-        }
-    }
-
-    /**
-     * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
-     * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
-     * @param firstWerktagOfMonth
-     */
-    private void scrollToSelectedMonth(LocalDate firstWerktagOfMonth) {
-        String month = firstWerktagOfMonth.getMonth().toString();
-        ObservableList<GruppenKalenderTag> items = tbTabelle.getItems();
-        for(GruppenKalenderTag tag : items) {
-            if(tag.getDatum().getMonth().toString().equals(month)) {
-                tbTabelle.scrollTo(items.indexOf(tag));
-                break;
-            }
-        }
     }
 }

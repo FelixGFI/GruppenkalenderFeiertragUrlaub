@@ -369,10 +369,44 @@ public class ControllerBasisKlasse {
         try {
             datum = dp.getValue();
             System.out.println("GruppenKalenderController.onDpVonAction() " + datum);
-
         } catch (Exception e) {
             datum = null;
         }
         return datum;
+    }
+    /**
+     * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
+     * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
+     * @param firstWerktagOfMonth
+     */
+    protected void scrollToSelectedMonth(LocalDate firstWerktagOfMonth, TableView tbTabelle) {
+        String month = firstWerktagOfMonth.getMonth().toString();
+        ObservableList<TagBasisKlasse> items = tbTabelle.getItems();
+        for(TagBasisKlasse tag : items) {
+            if(tag.getDatum().getMonth().toString().equals(month)) {
+                tbTabelle.scrollTo(items.indexOf(tag));
+                break;
+            }
+        }
+    }
+    /**
+     * Erhält einen Integer changeNumber und verändert das Datum firstOfCurrentMonth um eine Anzahl von Monaten die
+     * der übergebenen ChangNumber Entspricht. Passt die Comboboxen comboBoxMonatAuswahl und gegebenen Falls die
+     * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
+     * onActions dieser Comboboxen Ausgelöst werden)
+     * @param changeNumber
+     */
+    protected LocalDate changeMonthBackOrForthBy(Integer changeNumber, LocalDate firstOfCurrentMonth, ComboBox comboBoxMonatAuswahl, ComboBox comboBoxJahrAuswahl) {
+        // Set new date
+        firstOfCurrentMonth = firstOfCurrentMonth.plusMonths(changeNumber);
+        if(comboBoxJahrAuswahl.getItems().contains(firstOfCurrentMonth.getYear())) {
+            int indexOfYear = comboBoxJahrAuswahl.getItems().indexOf(firstOfCurrentMonth.getYear());
+            int indexOfMonth = firstOfCurrentMonth.getMonthValue() - 1;
+            comboBoxMonatAuswahl.getSelectionModel().select(indexOfMonth);
+            comboBoxJahrAuswahl.getSelectionModel().select(indexOfYear);
+        } else {
+            firstOfCurrentMonth = firstOfCurrentMonth.minusMonths(changeNumber);
+        }
+        return firstOfCurrentMonth;
     }
 }
