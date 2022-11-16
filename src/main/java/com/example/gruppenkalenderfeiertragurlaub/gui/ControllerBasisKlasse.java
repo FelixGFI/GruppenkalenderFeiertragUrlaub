@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ControllerBasisKlasse {
 
@@ -259,12 +260,12 @@ public class ControllerBasisKlasse {
             return cell;
         });
 
-        comboBoxGruppenAuswahl.setConverter(new StringConverter<Object>() {
+        comboBoxGruppenAuswahl.setConverter(new StringConverter<>() {
             @Override
             public String toString(Object gruppeOrGruppenFamilie) {
                 String gruppeNameString = "";
-                if(gruppeOrGruppenFamilie != null) {
-                    if(gruppeOrGruppenFamilie.getClass() == GruppeFuerKalender.class) {
+                if (gruppeOrGruppenFamilie != null) {
+                    if (gruppeOrGruppenFamilie.getClass() == GruppeFuerKalender.class) {
                         gruppeNameString = ((GruppeFuerKalender) gruppeOrGruppenFamilie).getGruppeName();
 
                     } else {
@@ -303,7 +304,7 @@ public class ControllerBasisKlasse {
                 if (newVal != null) {
                     cell.setText("");
                     for (GruppeFuerKalender gr : gruppenListe) {
-                        if(gr.getGruppeId() == newVal) {
+                        if(Objects.equals(gr.getGruppeId(), newVal)) {
                             cell.setText(gr.getGruppeName());
                             break;
                         }
