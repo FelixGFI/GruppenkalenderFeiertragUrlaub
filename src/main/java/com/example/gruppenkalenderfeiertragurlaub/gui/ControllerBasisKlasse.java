@@ -22,7 +22,7 @@ public class ControllerBasisKlasse {
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
      * Standard vorauswahl aus.
-     * @param comboBoxJahrAuswahl
+     * @param comboBoxJahrAuswahl die zu konfigurierende Combobox<Integer>
      */
     public static void configureCBJahrAuswahl(ComboBox<Integer> comboBoxJahrAuswahl) {
 
@@ -35,7 +35,7 @@ public class ControllerBasisKlasse {
      * die übergebene Combobox<String> hinzu.
      * Sorgt dafür das für Jeden Monat sowohl wenn augewählt als auch wenn in der Auswahlliste angezeigt,
      * String mit dem Deutschen Monatsnamen angezeigt wird. (Januar). Wählt den Akktulen Monat als default aus.
-     * @param comboBoxMonatAuswahl
+     * @param comboBoxMonatAuswahl die zu konfigurierende Combobox<String>
      */
     public static void configureCBMonatAuswahl(ComboBox<String> comboBoxMonatAuswahl) {
 
@@ -75,7 +75,7 @@ public class ControllerBasisKlasse {
      * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut). Legt fest das für jeden
      * Character ein Entsprchender String welcher den gruppenstatus beschreibt in der Gui angezeigt wird, sohwohl
      * wenn ausgewählt als auch in er Auswahl liste der Combobox
-     * @param comboBoxStatusAuswahl
+     * @param comboBoxStatusAuswahl die zu konfigurierende Combobox<Character>
      */
     public static void configureCBStatusauswahl(ComboBox<Character> comboBoxStatusAuswahl) {
 
@@ -109,7 +109,7 @@ public class ControllerBasisKlasse {
     /**
      * Die Methode bekommt einen Gruppenstatus (welcher Anzeigt was eine Gruppe an einem bestimmten Tag tut)
      * in Form eines Characters. Für diesen Character wird ein Text erzeugt, der in der Gui angezeigt werden kann.
-     * @param aktivitaetsStatus
+     * @param aktivitaetsStatus Status als Character für den der Passende String gefunden wwerden soll.
      * @return Text für die Ausgabe in der Gui
      */
     private static String getDisplayMessageForStatus(Character aktivitaetsStatus) {
@@ -120,7 +120,7 @@ public class ControllerBasisKlasse {
     /**
      * konvertiert einen String welcher einen Monat in dem Format enthält wie die Classe LocalDate diesen Zurückgibt
      * (Monatsname in Capslock "JANUARY") in einen für String für die Gui Ausgabe.
-     * @param localDateMonat
+     * @param localDateMonat Monat im Format wie von der LocalDate Klasse verwendet.
      * @return Text für die Ausgabe in der Gui
      */
     private static String getAnzeigeMonatString(String localDateMonat) {
@@ -132,8 +132,8 @@ public class ControllerBasisKlasse {
      * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
      * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
      * Boolean wert "true" der String "Ja" und für den Boolean wert "false" der String "Nein" angezeigt wird
-     * @param tableColumnBoolean
-     * @param columAttributeName
+     * @param tableColumnBoolean zu Formatierende TableColum<Klassenname, Boolean>
+     * @param columAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
      */
     public static void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName) {
 
@@ -163,11 +163,11 @@ public class ControllerBasisKlasse {
     }
 
     /**
-     * Konfiguriert für die Übergebene tabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
+     * Konfiguriert für die Übergebene TabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
      * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
      * üblichen Format (dd.MM.yyyy) so das es in diesem Format in der Gui angezeigt wird.
-     * @param tableColumnLocalDate
-     * @param columAttributeName
+     * @param tableColumnLocalDate Zu KonfigurierendeTabelColum<Klassenname, LocalDate>
+     * @param columAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
      */
     public static void configureLocalDateTableColum(TableColumn tableColumnLocalDate, String columAttributeName) {
         tableColumnLocalDate.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
@@ -199,8 +199,8 @@ public class ControllerBasisKlasse {
      * Attribut und findet für Jeden angezeigten Character, welcher den Gruppenstatus definiert
      * (Was die Gruppe an einem Tag gemacht hat) den Entsprechenden String der in der Gui angezeigt werden soll.
      * Dieser String wird statt des Characters in der jeweiligen Zelle angezeigt.
-     * @param gruppenStatusColum
-     * @param columnAttributeName
+     * @param gruppenStatusColum Zu Konfigurierende TableColum<Klassenname, Character> zur Statusanzeige
+     * @param columnAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
      */
     public static void configureGruppenStatusTableColum(TableColumn gruppenStatusColum, String columnAttributeName) {
         gruppenStatusColum.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
@@ -229,9 +229,10 @@ public class ControllerBasisKlasse {
      * Liste für Jede Gruppe/Gruppenfamilie dernen Name dem Nutzer Angeziegt wird, sowohl in der Liste als auch wenn Ausgewählt.
      * Stellt sicher das in der Liste die Gruppenfamilien Fett Gedruckt geschrieben sind sodas sie von Gruppen leicht zu
      * unterscheiden sind.
-     * @param comboBoxGruppenAuswahl
+     * @param comboBoxGruppenAuswahl zu Konfigurierende und zu befüllende Combobox<Object>
      * @return ArrayList der Ausgelesenen Gruppenfamilien von denen Jede alle zu ihr gehörenden Gruppen enthält.
-     * @throws SQLException
+     * @throws SQLException wird geworfen fals in der zur Auslesung der Daten aufgerufenen Methode DatenbankCommunicator.getAllGruppenFamilienUndGruppen()
+     * beim Auslesen der Daten ein Fehler auftrit.
      */
     public static ArrayList<GruppenFamilieFuerKalender> configureCBGruppenAuswahl(ComboBox comboBoxGruppenAuswahl) throws SQLException {
         DatenbankCommunicator.establishConnection();
@@ -254,7 +255,6 @@ public class ControllerBasisKlasse {
                         cell.setText(((GruppenFamilieFuerKalender) newVal).getFamilieName());
                         cell.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
                     }
-
                 }
             });
             return cell;
@@ -270,13 +270,10 @@ public class ControllerBasisKlasse {
 
                     } else {
                         gruppeNameString = ((GruppenFamilieFuerKalender) gruppeOrGruppenFamilie).getFamilieName();
-
                     }
                 }
-
                 return gruppeNameString;
             }
-
             @Override
             public Character fromString(String string) {
                 return null;
