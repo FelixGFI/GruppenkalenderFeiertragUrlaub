@@ -144,7 +144,7 @@ public class DatenbankCommunicator {
         //TODO add mechanic to check if a day is a feiertag or betriebsurlaub and set coresponding boolean if yes.
         StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" AND ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
-            gruppeOderFamilieSelectedBedinung.append("gruppenkalender.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
+            gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
             generateTageIfMissing((GruppeFuerKalender) gruppeOderFamilie, jahr);
         } else {
             boolean isFirstGruppInArray = true;
@@ -153,7 +153,7 @@ public class DatenbankCommunicator {
                 if(!isFirstGruppInArray) {
                     gruppeOderFamilieSelectedBedinung.append(" OR ");
                 }
-                gruppeOderFamilieSelectedBedinung.append("gruppenkalender.gruppe_id = ").append(gr.getGruppeId());
+                gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(gr.getGruppeId());
                 generateTageIfMissing(gr, jahr);
                 isFirstGruppInArray = false;
             }
@@ -162,8 +162,10 @@ public class DatenbankCommunicator {
 
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT * FROM gruppenkalender WHERE gruppenkalender.datum >= '"
-                    + jahr + "-01-01' AND gruppenkalender.datum <= '" + jahr + "-12-31'" + gruppeOderFamilieSelectedBedinung)) {
+            try(ResultSet rs = stmt.executeQuery("select g.*, b.datum as bdatum, f.datum as fdatum from gruppenkalender g\n" +
+                    "left join betriebsurlaub b on g.datum = b.datum \n" +
+                    "left join feiertag f on g.datum = f.datum\n" +
+                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr + "-12-31'" + gruppeOderFamilieSelectedBedinung)) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("essensangebot");
