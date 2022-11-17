@@ -56,6 +56,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
                     "" + ausgewaelteTageListe.get(0).toString());
             for (GruppenKalenderTag tag : ausgewaelteTageListe) {
                 tag.setGruppenstatus(ausgewaehlerStatus);
+                //TODO check if Tag is Betriebsurlaub oder Feiertag and don't change if it is
             }
             tbTabelle.refresh();
         }
@@ -101,6 +102,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         tbTabelle.getItems().setAll(tageListe);
         tbTabelle.getSortOrder().clear();
         tbTabelle.getSortOrder().add(tcDatum);
+
+        //TODO Implement mechanic to mark Betriebsurlaub und Feiertage in other Color (or in some other way)
     }
 
     public void initialize() throws SQLException {

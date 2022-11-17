@@ -23,6 +23,7 @@ public class DatenbankCommunicator {
         try {
             conn = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
+            //TODO implement AlertBox for Warning
             System.out.println("Database not found. Please make sure the correct Database is available");
         }
     }
@@ -140,6 +141,7 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
+        //TODO add mechanic to check if a day is a feiertag or betriebsurlaub and set coresponding boolean if yes.
         StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" AND ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
             gruppeOderFamilieSelectedBedinung.append("gruppenkalender.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
