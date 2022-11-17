@@ -144,7 +144,7 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
-        StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" AND ");
+        StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" and ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
             gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
             generateTageIfMissing((GruppeFuerKalender) gruppeOderFamilie, jahr);
@@ -153,7 +153,7 @@ public class DatenbankCommunicator {
             gruppeOderFamilieSelectedBedinung.append("(");
             for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender)gruppeOderFamilie).getGruppenDerFamilie() ) {
                 if(!isFirstGruppInArray) {
-                    gruppeOderFamilieSelectedBedinung.append(" OR ");
+                    gruppeOderFamilieSelectedBedinung.append(" or ");
                 }
                 gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(gr.getGruppeId());
                 generateTageIfMissing(gr, jahr);
@@ -164,18 +164,24 @@ public class DatenbankCommunicator {
 
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("select g.*, b.datum as bdatum, f.datum as fdatum from gruppenkalender g\n" +
-                    "left join betriebsurlaub b on g.datum = b.datum \n" +
-                    "left join feiertag f on g.datum = f.datum\n" +
-                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr + "-12-31'" + gruppeOderFamilieSelectedBedinung)) {
+            try(ResultSet rs = stmt.executeQuery("" +
+                    "select g.*, k.geoeffnet as kgeoeffnet ,b.datum as bdatum, f.datum as fdatum from gruppenkalender g " +
+                    "left join kuechenplanung k on g.datum = k.datum " +
+                    "left join betriebsurlaub b on g.datum = b.datum " +
+                    "left join feiertag f on g.datum = f.datum " +
+                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr +"-12-31'" + gruppeOderFamilieSelectedBedinung)) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
-                    Boolean kuecheOffen = rs.getBoolean("essensangebot");
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
-                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen, isBetriebsurlaub, isFeiertag));
+                    Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
+                    Boolean essenVerfuegbar = true;
+                    if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
+                        essenVerfuegbar = false;
+                    }
+                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, essenVerfuegbar, isBetriebsurlaub, isFeiertag));
                 }
             }
         }
