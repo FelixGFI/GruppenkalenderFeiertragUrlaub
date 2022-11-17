@@ -1,5 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
