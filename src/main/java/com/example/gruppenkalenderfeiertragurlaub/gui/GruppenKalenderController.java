@@ -55,8 +55,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             System.out.println("GruppenKalenderController.onBtUebernehmenClick()" + ausgewaehlerStatus + "\n" +
                     "" + ausgewaelteTageListe.get(0).toString());
             for (GruppenKalenderTag tag : ausgewaelteTageListe) {
-                tag.setGruppenstatus(ausgewaehlerStatus);
-                //TODO check if Tag is Betriebsurlaub oder Feiertag and don't change if it is
+                //TODO evtl. Remove Farbe from Betriebsurlaub if changed to not urlaub
+                if(!tag.getFeiertag()) {
+                    tag.setGruppenstatus(ausgewaehlerStatus);
+                }
             }
             tbTabelle.refresh();
         }
