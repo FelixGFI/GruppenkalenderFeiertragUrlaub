@@ -135,13 +135,13 @@ public class DatenbankCommunicator {
     /**
      * Liest alle Einträge für das gegebene Jahr und die gegebene Gruppe bzw Gruppenfamilie
      * aus der Datenbanktabelle Gruppenkalender und speichert diese in einer ArrayListe von
-     * GruppenKalenderTag objekten.
+     * GruppenKalenderTag objekten. Liest außerdme aus, ob ein bestimmter Tag ein Betriebsurlabs- oder Feiertag ist.
+     * Setzt die Diesbezüglichen Boolean Attribute des GruppenkalenderTages Entsprechend
      * @param jahr
      * @return Liste aller datenbankeinträge in gruppenkalender für das übergebene jahr
      * @throws SQLException
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
-        //TODO add mechanic to check if a day is a feiertag or betriebsurlaub and set coresponding boolean if yes.
         StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" AND ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
             gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
@@ -171,7 +171,11 @@ public class DatenbankCommunicator {
                     Boolean kuecheOffen = rs.getBoolean("essensangebot");
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
-                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen));
+                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
+                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    if(isBetriebsurlaub) {System.out.println("isBetriebsurlaub");}
+                    if(isFeiertag) {System.out.println("isFeiertag");}
+                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen, isBetriebsurlaub, isFeiertag));
                 }
             }
         }

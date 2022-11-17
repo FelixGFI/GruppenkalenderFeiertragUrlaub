@@ -10,15 +10,6 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     private Boolean isBetriebsurlaub;
     private Boolean isFeiertag;
 
-
-
-    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar) {
-        this.gruppenID = gruppenID;
-        this.datum = datum;
-        this.gruppenstatus = gruppenstatus;
-        this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
-    }
-
     public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub, Boolean isFeiertag) {
         this.gruppenID = gruppenID;
         this.datum = datum;
