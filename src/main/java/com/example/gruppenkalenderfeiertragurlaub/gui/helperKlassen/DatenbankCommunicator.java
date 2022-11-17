@@ -114,16 +114,18 @@ public class DatenbankCommunicator {
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTagListe = new ArrayList<>();
 
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("select\n" +
-                    "\tk.datum as 'normalDatum',\n" +
-                    "\tb.datum as 'betiebsurlaubsDatum'\n" +
-                    "FROM \n" +
-                    "\tkuechenplanung k left join betriebsurlaub b on k.datum = b.datum\n" +
-                    "\tWHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
+            try(ResultSet rs = stmt.executeQuery(
+                    "select k.datum as 'datum', b.datum as 'bdatum', f.datum as 'fdatum' " +
+                    "from kuechenplanung k left join betriebsurlaub b on k.datum = b.datum " +
+                    "                      left join feiertag f on k.datum = f.datum " +
+                    "WHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
-                    LocalDate datum = LocalDate.parse(rs.getDate("normalDatum").toString());
-                    boolean isBetiebsurlaub = rs.getDate("betiebsurlaubsDatum") != null;
-                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetiebsurlaub);
+                    LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
+                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
+                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    if(isBetriebsurlaub) {System.out.println("isBetriebsurlaub");}
+                    if(isFeiertag) {System.out.println("isFeiertag");}
+                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaub, isFeiertag);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
 
                 }
@@ -173,8 +175,6 @@ public class DatenbankCommunicator {
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
-                    if(isBetriebsurlaub) {System.out.println("isBetriebsurlaub");}
-                    if(isFeiertag) {System.out.println("isFeiertag");}
                     kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuecheOffen, isBetriebsurlaub, isFeiertag));
                 }
             }
