@@ -143,7 +143,7 @@ public class ControllerBasisKlasse {
          */
 
         tableColumnBoolean.setCellFactory(colum -> {
-            TableCell<BetriebsurlaubsTag, Boolean> cell = new TableCell<>();
+            TableCell<TagBasisKlasse, Boolean> cell = new TableCell<>();
 
              /* Because during at this point there are no Values in the table yet, because this is the
                initialize method, we add a Listener on the cell which we are setting the format on
@@ -183,7 +183,7 @@ public class ControllerBasisKlasse {
         should work with updating things as well I assume)
          */
         tableColumnLocalDate.setCellFactory(colum -> {
-            TableCell<BetriebsurlaubsTag, LocalDate> cell = new TableCell<>();
+            TableCell<TagBasisKlasse, LocalDate> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
                     cell.setText(newVal.format(DateTimeFormatter
@@ -295,7 +295,7 @@ public class ControllerBasisKlasse {
 
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
         tcGruppenBezeichung.setCellFactory(colum -> {
-            TableCell<BetriebsurlaubsTag, Integer> cell = new TableCell<>();
+            TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
 
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
