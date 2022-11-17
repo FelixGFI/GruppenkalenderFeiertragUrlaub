@@ -43,12 +43,14 @@ public class DatenbankCommunicator {
 
         kuechenDatenSatzVorhanden(jahr);
         try (Statement stmt = conn.createStatement()) {
-            try(ResultSet rs = stmt.executeQuery("SELECT * FROM kuechenplanung WHERE kuechenplanung.datum >= '"
-                    + jahr + "-01-01' AND kuechenplanung.datum <= '" + jahr + "-12-31'")) {
+            try(ResultSet rs = stmt.executeQuery("select k.*, f.datum as 'fdatum' " +
+                    "from kuechenplanung k left join feiertag f on k.datum = f.datum " +
+                    "WHERE k.datum >= '\" + jahr + \"-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("geoeffnet");
-                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen);
+                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen, isFeiertag);
                     kuechenKalenderTagListe.add(kuechenTag);
                 }
             }
@@ -123,8 +125,6 @@ public class DatenbankCommunicator {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
-                    if(isBetriebsurlaub) {System.out.println("isBetriebsurlaub");}
-                    if(isFeiertag) {System.out.println("isFeiertag");}
                     BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaub, isFeiertag);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
 
