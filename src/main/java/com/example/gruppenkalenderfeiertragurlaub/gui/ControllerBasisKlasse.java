@@ -419,7 +419,7 @@ public class ControllerBasisKlasse {
      * @param tbTabelle
      */
 
-    protected void toBeCalledInOnDpVonAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+    protected void handleDatePickerVon(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(vonDatum == null) {
             return;
@@ -448,7 +448,7 @@ public class ControllerBasisKlasse {
      * @param dpBis
      * @param tbTabelle
      */
-    protected void toBeCalledInOnDpBisAction(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+    protected void handleDatePickerBis(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(bisDatum == null || vonDatum == null) {

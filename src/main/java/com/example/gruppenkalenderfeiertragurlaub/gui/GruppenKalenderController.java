@@ -62,10 +62,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
     }
     @FXML protected void onDpVonAction() {
-        toBeCalledInOnDpVonAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+        handleDatePickerVon(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onDpBisAction() {
-        toBeCalledInOnDpBisAction(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+        handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
 
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
