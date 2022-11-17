@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.collections.ObservableList;
@@ -56,7 +57,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
                     "" + ausgewaelteTageListe.get(0).toString());
             for (GruppenKalenderTag tag : ausgewaelteTageListe) {
                 //TODO evtl. Remove Farbe from Betriebsurlaub if changed to not urlaub
-                if(!tag.getFeiertag()) {
+                if(tag.getGruppenstatus() != UsefulConstants.getStatusListCharacterFormat().get(6)) {
                     tag.setGruppenstatus(ausgewaehlerStatus);
                 }
             }

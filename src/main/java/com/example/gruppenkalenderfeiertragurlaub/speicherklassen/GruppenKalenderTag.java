@@ -8,15 +8,13 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     private Boolean essenFuerGruppeVerfuegbar;
     //TODO Implement mechanic to determin of day is Feiertag or Urlaubstag
     private Boolean isBetriebsurlaub;
-    private Boolean isFeiertag;
 
-    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub, Boolean isFeiertag) {
+    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub) {
         this.gruppenID = gruppenID;
         this.datum = datum;
         this.gruppenstatus = gruppenstatus;
         this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
         this.isBetriebsurlaub = isBetriebsurlaub;
-        this.isFeiertag = isFeiertag;
     }
 
     public Boolean getBetriebsurlaub() {
@@ -27,13 +25,6 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
         isBetriebsurlaub = betriebsurlaub;
     }
 
-    public Boolean getFeiertag() {
-        return isFeiertag;
-    }
-
-    public void setFeiertag(Boolean feiertag) {
-        isFeiertag = feiertag;
-    }
     public Integer getGruppenID() {return gruppenID;}
 
     public Character getGruppenstatus() {

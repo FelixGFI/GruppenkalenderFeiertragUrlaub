@@ -72,14 +72,17 @@ public class ControllerBasisKlasse {
 
     /**
      * fügt der übergbenen Combobox<Character> Character hinzu welche die auswählbaren Gruppenstatuse representieren
-     * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut). Legt fest das für jeden
-     * Character ein Entsprchender String welcher den gruppenstatus beschreibt in der Gui angezeigt wird, sohwohl
-     * wenn ausgewählt als auch in er Auswahl liste der Combobox
+     * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut, Ausgenommen Gesetzliche Feiertage
+     * Welche nicht in der Combobox auswählbar sein sollen). Legt fest das für jeden Character ein Entsprchender
+     * String welcher den gruppenstatus beschreibt in der Gui angezeigt wird, sohwohl wenn ausgewählt
+     * als auch in er Auswahl liste der Combobox
      * @param comboBoxStatusAuswahl die zu konfigurierende Combobox<Character>
      */
     public static void configureCBStatusauswahl(ComboBox<Character> comboBoxStatusAuswahl) {
 
-        comboBoxStatusAuswahl.getItems().addAll(UsefulConstants.getStatusListCharacterFormat());
+
+        comboBoxStatusAuswahl.getItems().addAll(UsefulConstants.getStatusListCharacterFormatOhneFeiertag());
+
         comboBoxStatusAuswahl.setCellFactory(colum -> {
             ListCell<Character> cell = new ListCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -153,9 +156,20 @@ public class ControllerBasisKlasse {
         actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
          */
             cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
+
+                TagBasisKlasse item = cell.getTableRow().getItem();
+
                 if (newBooleanVal != null) {
                     //Ternärer Ausdruck
                     cell.setText((newBooleanVal) ? "Ja" : "Nein");
+                    if(item == null) {return;}
+                    if(item.getFeiertag() == null) {return;}
+                    //TODO figure out why Betriebsurlaub does not show Feiertage
+                    System.out.println(item.getFeiertag());
+                    if(item.getFeiertag()) {
+                        System.out.println("ControllerBasisKlasse.configureBooleanTableColum()" + item.getDatum());
+                        cell.setText("Feiertag");
+                    }
                 }
             });
             return cell;

@@ -27,7 +27,7 @@ public class DatenbankCommunicator {
             System.out.println("Database not found. Please make sure the correct Database is available");
         }
     }
-
+    //TODO UPDATE doku
     /**
      * Liest alle werte aus der Tabelle kuechenplanung für das übergebene Jahr und speichert diese in eine ArrayList von KüchenkalenderTag objekten
      * Überprüft außerdem ob Daten für diese jahr in der Datenbank vorhanden sind, wenn nicht generiert es diese für das übergebene jahr und
@@ -45,11 +45,12 @@ public class DatenbankCommunicator {
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("select k.*, f.datum as 'fdatum' " +
                     "from kuechenplanung k left join feiertag f on k.datum = f.datum " +
-                    "WHERE k.datum >= '\" + jahr + \"-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
+                    "WHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("geoeffnet");
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    if(isFeiertag) {kuecheOffen = false;}
                     KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen, isFeiertag);
                     kuechenKalenderTagListe.add(kuechenTag);
                 }
@@ -99,7 +100,7 @@ public class DatenbankCommunicator {
         }
 
     }
-
+    //TODO UPDATE doku
     /**
      * Überprüft ob in der kuechenplanung tabelle einträge für das übergebene jahr vorhanden sind. Wenn nicht werden diese genneriert
      * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
@@ -114,7 +115,7 @@ public class DatenbankCommunicator {
     public static ArrayList<BetriebsurlaubsTag> readBetriebsurlaubTage(Integer jahr) throws SQLException {
         generateKuechenDatensaetzeIfMissing(jahr);
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTagListe = new ArrayList<>();
-
+        //TODO evtl. Don't display tag at all if it is a Feiertag
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery(
                     "select k.datum as 'datum', b.datum as 'bdatum', f.datum as 'fdatum' " +
@@ -127,13 +128,12 @@ public class DatenbankCommunicator {
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
                     BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaub, isFeiertag);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
-
                 }
             }
         }
         return betriebsurlaubsTagListe;
     }
-
+    //TODO UPDATE doku
     /**
      * Liest alle Einträge für das gegebene Jahr und die gegebene Gruppe bzw Gruppenfamilie
      * aus der Datenbanktabelle Gruppenkalender und speichert diese in einer ArrayListe von
@@ -181,7 +181,8 @@ public class DatenbankCommunicator {
                     if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
                         essenVerfuegbar = false;
                     }
-                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, essenVerfuegbar, isBetriebsurlaub, isFeiertag));
+                    if(isFeiertag) {gruppenstatus = UsefulConstants.getStatusListCharacterFormat().get(6);}
+                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, essenVerfuegbar, isBetriebsurlaub));
                 }
             }
         }
