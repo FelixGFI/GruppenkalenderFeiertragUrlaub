@@ -148,28 +148,39 @@ public class ControllerBasisKlasse {
         tableColumnBoolean.setCellFactory(colum -> {
             TableCell<TagBasisKlasse, Boolean> cell = new TableCell<>();
 
-             /* Because during at this point there are no Values in the table yet, because this is the
+             /* Because during at this point there are no Values in the table yet, because this is called during the
                initialize method, we add a Listener on the cell which we are setting the format on
         If i understand it correctly this listens for any action, e.g. if a value is inserted
         it then checks this value and if the value is not null  it proceeds
         this day is a day of Betriebsurlaub then it displays the word "Ja" in the cell instead of the
         actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
          */
+
             cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
 
                 TagBasisKlasse item = cell.getTableRow().getItem();
 
                 if (newBooleanVal != null) {
+                    //TODO potentially needs to be replaced with Better alternative
                     //Ternärer Ausdruck
                     cell.setText((newBooleanVal) ? "Ja" : "Nein");
-                    if(item == null) {return;}
+                    /*if(item == null) {return;}
+                    if(item.getDatum().toString().equals(LocalDate.parse("2022-12-26"))) {
+                        System.out.println("");
+                    }
                     if(item.getFeiertag() == null) {return;}
                     //TODO figure out why Betriebsurlaub does not show Feiertage
-                    System.out.println(item.getFeiertag());
+                    //The Reason it does not work with the comended out code is that CellFactory is only called
+                    //when the Item in the Cell changes. Since the Boolean value the cell displays dous not change
+                    //depending on if it is a feiertag or not the cell Factory is not allways called when feiertag should be
+                    //displayed. It is only called when the Bollean it(the cell) contains changes.
+                    System.out.println(item.getFeiertag() + "" + item.getDatum());
                     if(item.getFeiertag()) {
                         System.out.println("ControllerBasisKlasse.configureBooleanTableColum()" + item.getDatum());
                         cell.setText("Feiertag");
-                    }
+                    }*/
+                } else {
+                    cell.setText("gesetzlicher Feiertag");
                 }
             });
             return cell;
