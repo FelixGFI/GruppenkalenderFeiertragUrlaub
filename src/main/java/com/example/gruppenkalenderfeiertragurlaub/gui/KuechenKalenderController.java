@@ -32,7 +32,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     DatePicker dpBis;
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
-    @FXML TableColumn<KuechenKalenderTag, Boolean> tcKuecheOffen;
+    @FXML TableColumn<KuechenKalenderTag, Integer> tcKuecheOffen;
     LocalDate firstOfCurrentMonth;
     @FXML protected void onBtVorherigerMonatClick() {
         firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
@@ -52,14 +52,18 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML protected void onBtGeschlossenClick() {
         System.out.println("Called onBtArbeitClick()");
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            tag.setKuecheGeoeffnet(false);
+            if(tag.getKuecheGeoeffnet() != 2) {
+                tag.setKuecheGeoeffnet(0);
+            }
         }
         tbTabelle.refresh();
     }
     @FXML protected void onBtOffenClick() {
         System.out.println("Called onBtOffenClick()");
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            tag.setKuecheGeoeffnet(true);
+            if(tag.getKuecheGeoeffnet() != 2) {
+                tag.setKuecheGeoeffnet(1);
+            }
         }
         tbTabelle.refresh();
     }
@@ -83,7 +87,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
     public void initialize() throws SQLException {
 
-        configureBooleanTableColum(tcKuecheOffen, "kuecheGeoeffnet");
+        configureIntegerTableColum(tcKuecheOffen, "kuecheGeoeffnet");
         configureLocalDateTableColum(tcDatum, "datum");
 
         configureCBMonatAuswahl(comboBoxMonatAuswahl);

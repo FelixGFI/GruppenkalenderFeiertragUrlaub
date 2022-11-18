@@ -50,8 +50,10 @@ public class DatenbankCommunicator {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean kuecheOffen = rs.getBoolean("geoeffnet");
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
-                    if(isFeiertag) {kuecheOffen = null;}
-                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffen, isFeiertag);
+                    Integer kuecheOffenAsInteger = 0;
+                    if(kuecheOffen) {kuecheOffenAsInteger = 1;}
+                    if(isFeiertag) {kuecheOffenAsInteger = 2;}
+                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffenAsInteger, isFeiertag);
                     kuechenKalenderTagListe.add(kuechenTag);
                 }
             }
@@ -126,8 +128,12 @@ public class DatenbankCommunicator {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
-                    if(isFeiertag) {isBetriebsurlaub = null;}
-                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaub, isFeiertag);
+
+                    Integer isBetriebsurlaubAsInteger = 0;
+                    if(isBetriebsurlaub) {isBetriebsurlaubAsInteger = 1;}
+                    if(isFeiertag) {isBetriebsurlaubAsInteger = 2;}
+
+                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaubAsInteger, isFeiertag);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
                 }
             }

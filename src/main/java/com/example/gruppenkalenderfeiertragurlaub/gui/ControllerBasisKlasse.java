@@ -130,7 +130,7 @@ public class ControllerBasisKlasse {
         int monatsIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? UsefulConstants.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
-
+    //TODO update documentation and maybe improve method
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
      * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
@@ -157,36 +157,55 @@ public class ControllerBasisKlasse {
          */
 
             cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
-
-                TagBasisKlasse item = cell.getTableRow().getItem();
-
                 if (newBooleanVal != null) {
                     //TODO potentially needs to be replaced with Better alternative
                     //Ternärer Ausdruck
                     cell.setText((newBooleanVal) ? "Ja" : "Nein");
-                    /*if(item == null) {return;}
-                    if(item.getDatum().toString().equals(LocalDate.parse("2022-12-26"))) {
-                        System.out.println("");
-                    }
-                    if(item.getFeiertag() == null) {return;}
                     //TODO figure out why Betriebsurlaub does not show Feiertage
                     //The Reason it does not work with the comended out code is that CellFactory is only called
                     //when the Item in the Cell changes. Since the Boolean value the cell displays dous not change
                     //depending on if it is a feiertag or not the cell Factory is not allways called when feiertag should be
                     //displayed. It is only called when the Bollean it(the cell) contains changes.
-                    System.out.println(item.getFeiertag() + "" + item.getDatum());
-                    if(item.getFeiertag()) {
-                        System.out.println("ControllerBasisKlasse.configureBooleanTableColum()" + item.getDatum());
-                        cell.setText("Feiertag");
-                    }*/
-                } else {
-                    cell.setText("gesetzlicher Feiertag");
                 }
             });
             return cell;
         });
     }
+    //TODO add Doku
+    public static void configureIntegerTableColum(TableColumn tableColumnInteger, String columAttributeName) {
 
+        tableColumnInteger.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
+         /* sets the CellFactory (not to be confused with the CellValueFactory) which is responseble
+        for determening the format in which the data (which are set using CellVlaueFactory) is displayed
+         */
+
+        tableColumnInteger.setCellFactory(colum -> {
+            TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
+
+             /* Because during at this point there are no Values in the table yet, because this is called during the
+               initialize method, we add a Listener on the cell which we are setting the format on
+        If i understand it correctly this listens for any action, e.g. if a value is inserted
+        it then checks this value and if the value is not null  it proceeds
+        this day is a day of Betriebsurlaub then it displays the word "Ja" in the cell instead of the
+        actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
+         */
+
+            cell.itemProperty().addListener((obs, old, newIntegerVal) -> {
+                if (newIntegerVal != null) {
+                    //TODO potentially needs to be replaced with Better alternative
+                    if(newIntegerVal == 0) {cell.setText("Nein");}
+                    if(newIntegerVal == 1) {cell.setText("Ja");}
+                    if(newIntegerVal == 2) {cell.setText("gesetzlicher Feiertag");}
+                    //TODO figure out why Betriebsurlaub does not show Feiertage
+                    //The Reason it does not work with the comended out code is that CellFactory is only called
+                    //when the Item in the Cell changes. Since the Boolean value the cell displays dous not change
+                    //depending on if it is a feiertag or not the cell Factory is not allways called when feiertag should be
+                    //displayed. It is only called when the Bollean it(the cell) contains changes.
+                }
+            });
+            return cell;
+        });
+    }
     /**
      * Konfiguriert für die Übergebene TabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
      * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
