@@ -3,19 +3,19 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 import java.time.LocalDate;
 
 public class BetriebsurlaubsTag extends TagBasisKlasse {
-    private Integer isBetriebsurlaub;
+    private Integer betriebsurlaub;
 
     public BetriebsurlaubsTag(LocalDate datum, Integer isBetriebsurlaub, Boolean isFeiertag) {
         this.isFeiertag = isFeiertag;
         this.datum = datum;
-        this.isBetriebsurlaub = isBetriebsurlaub;
+        this.betriebsurlaub = isBetriebsurlaub;
     }
 
-    public Integer getIsBetriebsurlaub() {
-        return isBetriebsurlaub;
+    public Integer getBetriebsurlaub() {
+        return betriebsurlaub;
     }
 
-    public void setIsBetriebsurlaub(Integer isBetriebsurlaub) {
-        this.isBetriebsurlaub = isBetriebsurlaub;
+    public void setBetriebsurlaub(Integer betriebsurlaub) {
+        this.betriebsurlaub = betriebsurlaub;
     }
 }
