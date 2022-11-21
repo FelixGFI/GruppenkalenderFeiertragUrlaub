@@ -5,8 +5,7 @@ import java.time.LocalDate;
 public class KuechenKalenderTag extends TagBasisKlasse {
     private Integer kuecheGeoeffnet;
 
-    public KuechenKalenderTag(LocalDate datum, Integer kuecheGeoeffnet, Boolean isFeiertag) {
-        this.isFeiertag = isFeiertag;
+    public KuechenKalenderTag(LocalDate datum, Integer kuecheGeoeffnet) {
         this.datum = datum;
         this.kuecheGeoeffnet = kuecheGeoeffnet;
     }

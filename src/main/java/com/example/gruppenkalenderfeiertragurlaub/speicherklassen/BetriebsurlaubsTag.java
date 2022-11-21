@@ -5,8 +5,7 @@ import java.time.LocalDate;
 public class BetriebsurlaubsTag extends TagBasisKlasse {
     private Integer betriebsurlaub;
 
-    public BetriebsurlaubsTag(LocalDate datum, Integer isBetriebsurlaub, Boolean isFeiertag) {
-        this.isFeiertag = isFeiertag;
+    public BetriebsurlaubsTag(LocalDate datum, Integer isBetriebsurlaub) {
         this.datum = datum;
         this.betriebsurlaub = isBetriebsurlaub;
     }

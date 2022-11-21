@@ -28,6 +28,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML TableColumn<GruppenKalenderTag, Character> tcGruppenStatus;
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
     @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppenBezeichnung;
+    @FXML Button btBetriebsurlaubUebernehmen;
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
     LocalDate firstOfCurrentMonth;
@@ -87,6 +88,18 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+    }
+
+    @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
+        for (GruppenKalenderTag tag : tbTabelle.getItems()) {
+            if(tag.getGruppenstatus() == UsefulConstants.getStatusListCharacterFormat().get(6)) {
+                continue;
+            }
+            if(tag.getBetriebsurlaub()) {
+                tag.setGruppenstatus(UsefulConstants.getStatusListCharacterFormat().get(4));
+            }
+        }
+        tbTabelle.refresh();
     }
 
     //TODO add Documentation

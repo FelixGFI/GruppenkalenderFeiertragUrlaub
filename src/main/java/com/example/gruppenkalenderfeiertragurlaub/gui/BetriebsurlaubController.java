@@ -74,7 +74,9 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     protected void onBtUrlaubClick() {
         System.out.println("Called onBtUrlaubClick()");
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            tag.setBetriebsurlaub(1);
+            if(tag.getBetriebsurlaub() != 2) {
+                tag.setBetriebsurlaub(1);
+            }
         }
         tbTabelle.refresh();
     }
@@ -82,7 +84,9 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     protected void onBtArbeitClick() {
         System.out.println("Called onBtArbeitClick()");
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            tag.setBetriebsurlaub(0);
+            if(tag.getBetriebsurlaub() != 2) {
+                tag.setBetriebsurlaub(0);
+            }
         }
         tbTabelle.refresh();
     }

@@ -53,7 +53,7 @@ public class DatenbankCommunicator {
                     Integer kuecheOffenAsInteger = 0;
                     if(kuecheOffen) {kuecheOffenAsInteger = 1;}
                     if(isFeiertag) {kuecheOffenAsInteger = 2;}
-                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffenAsInteger, isFeiertag);
+                    KuechenKalenderTag kuechenTag = new KuechenKalenderTag(datum, kuecheOffenAsInteger);
                     kuechenKalenderTagListe.add(kuechenTag);
                 }
             }
@@ -133,7 +133,7 @@ public class DatenbankCommunicator {
                     if(isBetriebsurlaub) {isBetriebsurlaubAsInteger = 1;}
                     if(isFeiertag) {isBetriebsurlaubAsInteger = 2;}
 
-                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaubAsInteger, isFeiertag);
+                    BetriebsurlaubsTag betriebsurlaub = new BetriebsurlaubsTag(datum, isBetriebsurlaubAsInteger);
                     betriebsurlaubsTagListe.add(betriebsurlaub);
                 }
             }
@@ -181,8 +181,8 @@ public class DatenbankCommunicator {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
-                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
-                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null) ? true : false;
+                    Boolean isFeiertag = (rs.getDate("fdatum") != null) ? true : false;
                     Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
                     Boolean essenVerfuegbar = true;
                     if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
