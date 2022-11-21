@@ -202,13 +202,13 @@ public class DatenbankCommunicator {
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
                     Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
-                    //TODO make essenverfuegbar Be deterind within the class GruppenKalendertag
                     Boolean essenVerfuegbar = true;
                     if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
                         essenVerfuegbar = false;
                     }
                     if(isFeiertag) {gruppenstatus = UsefulConstants.getStatusListCharacterFormat().get(6);}
-                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuechheOffen , essenVerfuegbar, isBetriebsurlaub));
+                    GruppenKalenderTag tag = new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuechheOffen, isBetriebsurlaub);
+                    kalenderTagListe.add(tag);
                 }
             }
         }

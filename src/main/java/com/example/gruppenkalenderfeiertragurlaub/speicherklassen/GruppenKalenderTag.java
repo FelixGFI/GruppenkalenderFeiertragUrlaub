@@ -1,6 +1,9 @@
 package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class GruppenKalenderTag  extends TagBasisKlasse {
     private final Integer gruppenID;
@@ -10,13 +13,13 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     //TODO Implement mechanic to determin of day is Feiertag or Urlaubstag
     private Boolean isBetriebsurlaub;
 
-    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub) {
+    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean isBetriebsurlaub) {
         this.gruppenID = gruppenID;
         this.datum = datum;
         this.gruppenstatus = gruppenstatus;
         this.kuecheGeoeffnet = kuecheGeoeffnet;
-        this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
         this.isBetriebsurlaub = isBetriebsurlaub;
+        aktualisiereEssenFuerGruppeVerfuegbar();
     }
 
     public Boolean getBetriebsurlaub() {
@@ -46,5 +49,9 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     }
     public Boolean getKuecheGeoeffnet() {
         return kuecheGeoeffnet;
+    }
+    protected void aktualisiereEssenFuerGruppeVerfuegbar() {
+        ArrayList<Character> statusListe = UsefulConstants.getStatusListCharacterFormat();
+        this.essenFuerGruppeVerfuegbar = (this.gruppenstatus == statusListe.get(0) || this.gruppenstatus == statusListe.get(5));
     }
 }
