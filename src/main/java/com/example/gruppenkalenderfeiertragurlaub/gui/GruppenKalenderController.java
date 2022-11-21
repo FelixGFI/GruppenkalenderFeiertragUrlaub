@@ -91,6 +91,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
 
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
+        //TODO Warnung das Daten Überschrieben werden
+        //TODO aktuallisiere Essensangebot
         for (GruppenKalenderTag tag : tbTabelle.getItems()) {
             if(tag.getGruppenstatus() == UsefulConstants.getStatusListCharacterFormat().get(6)) {
                 continue;
@@ -135,6 +137,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         configureLocalDateTableColum(tcDatum, "datum");
         configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
         configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
+
+        Label lblEssenverfuegbarHeader = new Label("Essensangebot");
+        lblEssenverfuegbarHeader.setTooltip(new Tooltip("Den ausgewählten Gruppen kann heute Essen angeboten werden"));
+        tcEssenVerfuegbar.setGraphic(lblEssenverfuegbarHeader);
 
         DatenbankCommunicator.establishConnection();
 
