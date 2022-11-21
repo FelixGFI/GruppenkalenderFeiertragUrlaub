@@ -151,24 +151,42 @@ public class DatenbankCommunicator {
      * @throws SQLException
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
-        StringBuilder gruppeOderFamilieSelectedBedinung = new StringBuilder(" and ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
-            gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
             generateTageIfMissing((GruppeFuerKalender) gruppeOderFamilie, jahr);
         } else {
-            boolean isFirstGruppInArray = true;
-            gruppeOderFamilieSelectedBedinung.append("(");
-            for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender)gruppeOderFamilie).getGruppenDerFamilie() ) {
-                if(!isFirstGruppInArray) {
-                    gruppeOderFamilieSelectedBedinung.append(" or ");
-                }
-                gruppeOderFamilieSelectedBedinung.append("g.gruppe_id = ").append(gr.getGruppeId());
+            for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender) gruppeOderFamilie).getGruppenDerFamilie() ) {
                 generateTageIfMissing(gr, jahr);
-                isFirstGruppInArray = false;
             }
-            gruppeOderFamilieSelectedBedinung.append(")");
         }
 
+        StringBuilder gruppeOderFamilieSelectedBedingung = getSQLExpressionChoosingGroups(jahr, gruppeOderFamilie);
+
+        ArrayList<GruppenKalenderTag> kalenderTagListe = readGruppenKalenderTageDatenbankzugriff(jahr, gruppeOderFamilieSelectedBedingung);
+
+        return kalenderTagListe;
+    }
+
+    //TODO add Documentation
+    private static StringBuilder getSQLExpressionChoosingGroups(Integer jahr, Object gruppeOderFamilie) throws SQLException {
+        StringBuilder gruppeOderFamilieSelectedBedingung = new StringBuilder(" and ");
+        if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
+            gruppeOderFamilieSelectedBedingung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
+        } else {
+            boolean isFirstGruppInArray = true;
+            gruppeOderFamilieSelectedBedingung.append("(");
+            for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender) gruppeOderFamilie).getGruppenDerFamilie() ) {
+                if(!isFirstGruppInArray) {
+                    gruppeOderFamilieSelectedBedingung.append(" or ");
+                }
+                gruppeOderFamilieSelectedBedingung.append("g.gruppe_id = ").append(gr.getGruppeId());
+                isFirstGruppInArray = false;
+            }
+            gruppeOderFamilieSelectedBedingung.append(")");
+        }
+        return gruppeOderFamilieSelectedBedingung;
+    }
+    //TODO add Documentation
+    private static ArrayList<GruppenKalenderTag> readGruppenKalenderTageDatenbankzugriff(Integer jahr, StringBuilder gruppeOderFamilieSelectedBedignung) throws SQLException {
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("" +
@@ -176,7 +194,7 @@ public class DatenbankCommunicator {
                     "left join kuechenplanung k on g.datum = k.datum " +
                     "left join betriebsurlaub b on g.datum = b.datum " +
                     "left join feiertag f on g.datum = f.datum " +
-                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr +"-12-31'" + gruppeOderFamilieSelectedBedinung)) {
+                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr +"-12-31'" + gruppeOderFamilieSelectedBedignung)) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Integer gruppen_id =  rs.getInt("gruppe_id");
@@ -193,7 +211,6 @@ public class DatenbankCommunicator {
                 }
             }
         }
-
         return kalenderTagListe;
     }
 
