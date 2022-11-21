@@ -38,14 +38,10 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
 
     public void setGruppenstatus(Character gruppenstatus) {
         this.gruppenstatus = gruppenstatus;
+        aktualisiereEssenFuerGruppeVerfuegbar();
     }
-
     public Boolean getEssenFuerGruppeVerfuegbar() {
         return essenFuerGruppeVerfuegbar;
-    }
-
-    public void setEssenFuerGruppeVerfuegbar(Boolean essenFuerGruppeVerfuegbar) {
-        this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
     }
     public Boolean getKuecheGeoeffnet() {
         return kuecheGeoeffnet;
