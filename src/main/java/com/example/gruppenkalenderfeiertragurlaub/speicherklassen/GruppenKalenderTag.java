@@ -5,14 +5,16 @@ import java.time.LocalDate;
 public class GruppenKalenderTag  extends TagBasisKlasse {
     private final Integer gruppenID;
     private Character gruppenstatus;
+    private Boolean kuecheGeoeffnet;
     private Boolean essenFuerGruppeVerfuegbar;
     //TODO Implement mechanic to determin of day is Feiertag or Urlaubstag
     private Boolean isBetriebsurlaub;
 
-    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub) {
+    public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean essenFuerGruppeVerfuegbar, Boolean isBetriebsurlaub) {
         this.gruppenID = gruppenID;
         this.datum = datum;
         this.gruppenstatus = gruppenstatus;
+        this.kuecheGeoeffnet = kuecheGeoeffnet;
         this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
         this.isBetriebsurlaub = isBetriebsurlaub;
     }
@@ -41,5 +43,8 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
 
     public void setEssenFuerGruppeVerfuegbar(Boolean essenFuerGruppeVerfuegbar) {
         this.essenFuerGruppeVerfuegbar = essenFuerGruppeVerfuegbar;
+    }
+    public Boolean getKuecheGeoeffnet() {
+        return kuecheGeoeffnet;
     }
 }

@@ -199,15 +199,16 @@ public class DatenbankCommunicator {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
-                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null) ? true : false;
-                    Boolean isFeiertag = (rs.getDate("fdatum") != null) ? true : false;
+                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
+                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
                     Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
+                    //TODO make essenverfuegbar Be deterind within the class GruppenKalendertag
                     Boolean essenVerfuegbar = true;
                     if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
                         essenVerfuegbar = false;
                     }
                     if(isFeiertag) {gruppenstatus = UsefulConstants.getStatusListCharacterFormat().get(6);}
-                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, essenVerfuegbar, isBetriebsurlaub));
+                    kalenderTagListe.add(new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuechheOffen , essenVerfuegbar, isBetriebsurlaub));
                 }
             }
         }

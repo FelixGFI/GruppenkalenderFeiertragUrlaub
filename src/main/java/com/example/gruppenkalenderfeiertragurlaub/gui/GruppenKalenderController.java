@@ -152,4 +152,20 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
         //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
     }
+    protected void aktualisiereEssenVerfuegbarkeit(GruppenKalenderTag tag) {
+        Boolean essenIstFuerGruppeVerfuegbar = essenVerfuegbar(tag);
+        if (essenIstFuerGruppeVerfuegbar == null) return;
+        tag.setEssenFuerGruppeVerfuegbar(essenIstFuerGruppeVerfuegbar);
+    }
+
+    protected static Boolean essenVerfuegbar(GruppenKalenderTag tag) {
+        if(!tag.getKuecheGeoeffnet()) {
+            tag.setEssenFuerGruppeVerfuegbar(false);
+            return null;
+        }
+        Character status = tag.getGruppenstatus();
+        ArrayList<Character> statusListe = UsefulConstants.getStatusListCharacterFormat();
+        Boolean essenIstFuerGruppeVerfuegbar = (status == statusListe.get(0) || status == statusListe.get(5));
+        return essenIstFuerGruppeVerfuegbar;
+    }
 }
