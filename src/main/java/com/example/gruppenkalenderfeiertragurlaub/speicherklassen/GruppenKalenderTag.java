@@ -10,7 +10,6 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     private Character gruppenstatus;
     private Boolean kuecheGeoeffnet;
     private Boolean essenFuerGruppeVerfuegbar;
-    //TODO Implement mechanic to determin of day is Feiertag or Urlaubstag
     private Boolean isBetriebsurlaub;
 
     public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean isBetriebsurlaub) {

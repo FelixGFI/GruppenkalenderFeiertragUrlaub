@@ -57,7 +57,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
             System.out.println("GruppenKalenderController.onBtUebernehmenClick()" + ausgewaehlerStatus + "\n" +
                     "" + ausgewaelteTageListe.get(0).toString());
             for (GruppenKalenderTag tag : ausgewaelteTageListe) {
-                //TODO evtl. Remove Farbe from Betriebsurlaub if changed to not urlaub
                 if(tag.getGruppenstatus() != UsefulConstants.getStatusListCharacterFormat().get(6)) {
                     tag.setGruppenstatus(ausgewaehlerStatus);
                 }
@@ -92,7 +91,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
         //TODO Warnung das Daten Überschrieben werden
-        //TODO aktuallisiere Essensangebot
         for (GruppenKalenderTag tag : tbTabelle.getItems()) {
             if(tag.getGruppenstatus() == UsefulConstants.getStatusListCharacterFormat().get(6)) {
                 continue;
@@ -120,8 +118,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         tbTabelle.getItems().setAll(tageListe);
         tbTabelle.getSortOrder().clear();
         tbTabelle.getSortOrder().add(tcDatum);
-
-        //TODO Implement mechanic to mark Betriebsurlaub und Feiertage in other Color (or in some other way)
     }
 
     public void initialize() throws SQLException {

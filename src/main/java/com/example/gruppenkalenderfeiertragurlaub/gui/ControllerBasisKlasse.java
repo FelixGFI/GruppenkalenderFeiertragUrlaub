@@ -130,7 +130,7 @@ public class ControllerBasisKlasse {
         int monatsIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? UsefulConstants.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
-    //TODO update documentation and maybe improve method
+
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
      * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
@@ -139,6 +139,20 @@ public class ControllerBasisKlasse {
      * @param columAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
      */
     public static void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName) {
+
+        /*
+        IMPORTANT TO NOTE ABUT CellFactory class. Cells in Java are not generated anew every time a new Object
+        needs to be displayed in the table. The Cells that are on Screen do not change (for the most part)
+        but the Values displayed in them and the Objects this Values are obtained from do. Thererffore it is important
+        to note that If you set a cell factory that cell factory is called ONLY if the VALUE that is displayed in a cell
+        changes. it is NOT called when the OBJECT whos values are displayed Changes. This can cause problems if
+        you want to alter what the cell factory does based on an attribute of the Object whos value is displayed
+        becaus only a change in the displayed Value will trigger the cell factory no matter the changes that may have
+        occured to other Values in that obejct. Example: if A new Object is displayed within this cell that previously
+        displayed an other obejcts value true: if the new objects Value to be displayed in the cell is
+        false or any other Value then true, which is currenlty being displayed in the cell allready the CellFactory IS called
+        if the objects Value for this call is True just like the previous object's was then the CellFactory IS NOT called.
+         */
 
         tableColumnBoolean.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
          /* sets the CellFactory (not to be confused with the CellValueFactory) which is responseble
@@ -158,54 +172,35 @@ public class ControllerBasisKlasse {
 
             cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
                 if (newBooleanVal != null) {
-                    //TODO potentially needs to be replaced with Better alternative
                     //Ternärer Ausdruck
                     cell.setText((newBooleanVal) ? "Ja" : "Nein");
-                    //TODO figure out why Betriebsurlaub does not show Feiertage
-                    //The Reason it does not work with the comended out code is that CellFactory is only called
-                    //when the Item in the Cell changes. Since the Boolean value the cell displays dous not change
-                    //depending on if it is a feiertag or not the cell Factory is not allways called when feiertag should be
-                    //displayed. It is only called when the Bollean it(the cell) contains changes.
                 }
             });
             return cell;
         });
     }
-    //TODO add Doku
+    /**
+     * Konfiguriert die Übergebene TableColumn<Klassenname, Integer> so dass das als String übergebene Attribut der
+     * anzuzeigenenden Klasse eingefügt wird. Sorgt dafür das für den Integer 0 "Ja", für 1 "Nein" und für
+     * 3 "gesetzlicher Feiertag" anstatt des Integer Wertes angezeigt wird.
+     * @param tableColumnInteger
+     * @param columAttributeName
+     */
     public static void configureIntegerTableColum(TableColumn tableColumnInteger, String columAttributeName) {
-
         tableColumnInteger.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
-         /* sets the CellFactory (not to be confused with the CellValueFactory) which is responseble
-        for determening the format in which the data (which are set using CellVlaueFactory) is displayed
-         */
-
         tableColumnInteger.setCellFactory(colum -> {
             TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
-
-             /* Because during at this point there are no Values in the table yet, because this is called during the
-               initialize method, we add a Listener on the cell which we are setting the format on
-        If i understand it correctly this listens for any action, e.g. if a value is inserted
-        it then checks this value and if the value is not null  it proceeds
-        this day is a day of Betriebsurlaub then it displays the word "Ja" in the cell instead of the
-        actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
-         */
-
             cell.itemProperty().addListener((obs, old, newIntegerVal) -> {
                 if (newIntegerVal != null) {
-                    //TODO potentially needs to be replaced with Better alternative
                     if(newIntegerVal == 0) {cell.setText("Nein");}
                     if(newIntegerVal == 1) {cell.setText("Ja");}
                     if(newIntegerVal == 2) {cell.setText("gesetzlicher Feiertag");}
-                    //TODO figure out why Betriebsurlaub does not show Feiertage
-                    //The Reason it does not work with the comended out code is that CellFactory is only called
-                    //when the Item in the Cell changes. Since the Boolean value the cell displays dous not change
-                    //depending on if it is a feiertag or not the cell Factory is not allways called when feiertag should be
-                    //displayed. It is only called when the Bollean it(the cell) contains changes.
                 }
             });
             return cell;
         });
     }
+
     /**
      * Konfiguriert für die Übergebene TabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
      * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
