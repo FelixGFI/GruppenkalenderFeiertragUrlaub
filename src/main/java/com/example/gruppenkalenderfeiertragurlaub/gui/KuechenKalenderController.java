@@ -44,8 +44,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
-        if(dataHasBeenAltered()) System.out.println("Date ahs been Altered");
-        //TODO add warning before close if changes have been made
+        Boolean verwerfenUndSchließen = false;
+        if(dataHasBeenAltered()) verwerfenUndSchließen = createAndShowAlert();
 
     }
 

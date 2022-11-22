@@ -20,11 +20,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ControllerBasisKlasse {
-
-    protected Stage parentStage;
-    protected Stage childStage;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -513,8 +511,7 @@ public class ControllerBasisKlasse {
      * @param titel
      * @param fxmlReccouse
      */
-    void openSubwindowFromButtonClick(Stage givenParentStage, String titel, String fxmlReccouse) {
-        parentStage = givenParentStage;
+    protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlReccouse) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
         Scene newScene;
         try {
@@ -523,11 +520,27 @@ public class ControllerBasisKlasse {
             // TODO: handle error
             return;
         }
-        childStage = new Stage();
+        Stage childStage = new Stage();
         childStage.initOwner(parentStage);
         childStage.setScene(newScene);
         childStage.setTitle(titel);
         childStage.initModality(Modality.APPLICATION_MODAL);
         childStage.showAndWait();
+    }
+    //TODO write Dokumentation
+    protected Boolean createAndShowAlert() {
+        Boolean executeRequestedAction = false;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Beschtätigen");
+        alert.setHeaderText("Sind sie Sicher?");
+        alert.setContentText("Nicht Gespeicherte Daten gehen Verloren");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            executeRequestedAction = true;
+        }
+
+        return executeRequestedAction;
     }
 }
