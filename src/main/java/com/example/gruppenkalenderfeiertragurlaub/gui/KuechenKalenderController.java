@@ -43,7 +43,11 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
+        if(dataHasBeenAltered()) System.out.println("Date ahs been Altered");
+        //TODO add warning before close if changes have been made
     }
+
+
 
     @FXML
     protected void onBtSpeichernClick() throws SQLException {
@@ -52,16 +56,16 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     }
     @FXML protected void onBtGeschlossenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            if(tag.getKuecheGeoeffnet() != 2) {
-                tag.setKuecheGeoeffnet(0);
+            if(tag.getKuecheCurrentlyGeoeffnet() != 2) {
+                tag.setKuecheCurrentlyGeoeffnet(0);
             }
         }
         tbTabelle.refresh();
     }
     @FXML protected void onBtOffenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            if(tag.getKuecheGeoeffnet() != 2) {
-                tag.setKuecheGeoeffnet(1);
+            if(tag.getKuecheCurrentlyGeoeffnet() != 2) {
+                tag.setKuecheCurrentlyGeoeffnet(1);
             }
         }
         tbTabelle.refresh();
@@ -86,7 +90,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
     public void initialize() throws SQLException {
 
-        configureIntegerTableColum(tcKuecheOffen, "kuecheGeoeffnet");
+        configureIntegerTableColum(tcKuecheOffen, "kuecheCurrentlyGeoeffnet");
         configureLocalDateTableColum(tcDatum, "datum");
 
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
@@ -111,6 +115,14 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         //TODO add save and warning window and code
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);
+    }
+    //TODO add Documentation
+    private Boolean dataHasBeenAltered() {
+        for (KuechenKalenderTag tag : tbTabelle.getItems()) {
+            Boolean kuecheCurrentlyGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
+            if (tag.getKuecheOriginallyGeoeffnet() != kuecheCurrentlyGeoffnet) return true;
+        }
+        return false;
     }
 }
 

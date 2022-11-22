@@ -418,7 +418,7 @@ public class DatenbankCommunicator {
         Statement stmt = conn.createStatement();
 
         for (KuechenKalenderTag tag : kuechenTagesListe) {
-            Boolean kuecheGeoffnet = (tag.getKuecheGeoeffnet() == 1);
+            Boolean kuecheGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
             try {
                 stmt.execute("update kuechenplanung set geoeffnet = " + kuecheGeoffnet + " WHERE datum = '" + tag.getDatum().toString() + "'");
             } catch (Exception e) {

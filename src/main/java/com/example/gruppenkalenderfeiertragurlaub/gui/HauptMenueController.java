@@ -38,17 +38,17 @@ public class HauptMenueController {
 
     @FXML
     protected void onBtKalenderplanungClick() {
-        openSubwindowFromButtonClick("Kalenderplanung","gruppenKalenderView.fxml");
+        openSubwindowFromButtonClick(stage, "Kalenderplanung","gruppenKalenderView.fxml");
     }
 
     @FXML
     protected void onBtKuechenplanungClick() {
-        openSubwindowFromButtonClick("Küchenplanung", "kuechenKalenderView.fxml");
+        openSubwindowFromButtonClick(stage, "Küchenplanung", "kuechenKalenderView.fxml");
     }
 
     @FXML
     protected void onBtBetriebsurlaubsplanungClick() {
-        openSubwindowFromButtonClick("Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
+        openSubwindowFromButtonClick(stage, "Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
     }
 
     @FXML
@@ -102,7 +102,7 @@ public class HauptMenueController {
      * @param titel
      * @param fxmlReccouse
      */
-    private void openSubwindowFromButtonClick(String titel, String fxmlReccouse) {
+    private void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlReccouse) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
         Scene newScene;
         try {
@@ -111,9 +111,8 @@ public class HauptMenueController {
             // TODO: handle error
             return;
         }
-
         Stage inputStage = new Stage();
-        inputStage.initOwner(stage);
+        inputStage.initOwner(parentStage);
         inputStage.setScene(newScene);
         inputStage.setTitle(titel);
         inputStage.initModality(Modality.APPLICATION_MODAL);
@@ -126,7 +125,6 @@ public class HauptMenueController {
      * @throws IOException
      */
     public void showDialog() throws IOException {
-
         FXMLLoader fxmlLoader = new FXMLLoader(HauptmenueApp.class.getResource("UeberMenueView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage = new Stage();

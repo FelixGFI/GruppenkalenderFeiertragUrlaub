@@ -2,6 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -48,6 +49,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
+        if(dataHasBeenAltered()) System.out.println("Data has been Altered"); //TODO display Warning if data has been altered
     }
 
     @FXML
@@ -123,6 +125,14 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         //TODO add save and warning window and code
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(firstOfCurrentMonth.getYear());
         tbTabelle.getItems().setAll(betriebsurlaubsTage);
+    }
+    //TODO add Documentation
+    private Boolean dataHasBeenAltered() {
+        for (BetriebsurlaubsTag tag : tbTabelle.getItems()) {
+            Boolean kuecheCurrentlyGeoffnet = (tag.getIsCurrentlyBetriebsurlaub() == 1);
+            if (tag.getBeganAsBetriebsurlaub() != kuecheCurrentlyGeoffnet) return true;
+        }
+        return false;
     }
 }
 
