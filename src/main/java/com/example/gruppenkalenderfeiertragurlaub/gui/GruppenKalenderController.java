@@ -48,14 +48,9 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         System.out.println("Called onBtSpeichernClick()");
     }
     @FXML protected void onBtUebernehmenClick() {
-        System.out.println("Called onBtuebernehmenClick()");
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();
         if(ausgewaehlerStatus != null) {
-
             ObservableList<GruppenKalenderTag> ausgewaelteTageListe = tbTabelle.getSelectionModel().getSelectedItems();
-
-            System.out.println("GruppenKalenderController.onBtUebernehmenClick()" + ausgewaehlerStatus + "\n" +
-                    "" + ausgewaelteTageListe.get(0).toString());
             for (GruppenKalenderTag tag : ausgewaelteTageListe) {
                 if(tag.getGruppenstatus() != UsefulConstants.getStatusListCharacterFormat().get(6)) {
                     tag.setGruppenstatus(ausgewaehlerStatus);

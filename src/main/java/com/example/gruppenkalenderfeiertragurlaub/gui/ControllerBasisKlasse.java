@@ -405,7 +405,6 @@ public class ControllerBasisKlasse {
         LocalDate datum;
         try {
             datum = dp.getValue();
-            System.out.println("GruppenKalenderController.onDpVonAction() " + datum);
         } catch (Exception e) {
             datum = null;
         }

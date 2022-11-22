@@ -50,7 +50,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         System.out.println("Klick Speichern");
     }
     @FXML protected void onBtGeschlossenClick() {
-        System.out.println("Called onBtArbeitClick()");
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheGeoeffnet() != 2) {
                 tag.setKuecheGeoeffnet(0);
@@ -59,7 +58,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         tbTabelle.refresh();
     }
     @FXML protected void onBtOffenClick() {
-        System.out.println("Called onBtOffenClick()");
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheGeoeffnet() != 2) {
                 tag.setKuecheGeoeffnet(1);
