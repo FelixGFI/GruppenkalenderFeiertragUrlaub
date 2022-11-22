@@ -392,17 +392,18 @@ public class DatenbankCommunicator {
             Boolean isCurrentlyBetriebsurlaub = (tag.getIsCurrentlyBetriebsurlaub() == 1);
             if(isCurrentlyBetriebsurlaub == beganAsBetriebsurlaub) continue;
             if(isCurrentlyBetriebsurlaub) {
-                System.out.println("saveBetriebsurlaub() new betriebsurlaub Added");
                 try{
                     stmt.execute("insert into betriebsurlaub (datum) values ('" + tag.getDatum().toString() + "')");
+                    System.out.println("saveBetriebsurlaub() new betriebsurlaub Added");
                 } catch (Exception e) {
                     //TODO Fehlermeldung
                 }
             }
+            System.out.println("saveBetriebsurlaub()" + beganAsBetriebsurlaub);
             if(beganAsBetriebsurlaub){
-                System.out.println("saveBetriebsurlaub() Alter Betriebsurlaub removed");
                 try{
-                    stmt.execute("delete from betriebsurlaub b where b.datum = '" + tag.getDatum().toString() + "'");
+                    stmt.execute("delete from betriebsurlaub where datum = '" + tag.getDatum().toString() + "'");
+                    System.out.println("saveBetriebsurlaub() Alter Betriebsurlaub removed");
                 } catch (Exception e) {
                     //TODO Fehlermeldung
                 }
