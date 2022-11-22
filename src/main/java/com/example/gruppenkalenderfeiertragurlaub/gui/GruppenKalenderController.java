@@ -44,7 +44,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML protected void onBtAbbrechenClick() {
             System.out.println("Called onBAbbrechenClick()");
     }
-    @FXML protected void onBtSpeichernClick() {
+    @FXML protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Called onBtSpeichernClick()");
         DatenbankCommunicator.saveGruppenKalender(tbTabelle.getItems());
     }

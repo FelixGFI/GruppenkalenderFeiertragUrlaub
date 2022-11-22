@@ -413,15 +413,31 @@ public class DatenbankCommunicator {
     }
 
     //TODO Add Documentation
-    public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) {
+    public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) throws SQLException {
         if(kuechenTagesListe.isEmpty()) return;
+        Statement stmt = conn.createStatement();
 
+        for (KuechenKalenderTag tag : kuechenTagesListe) {
+            Boolean kuecheGeoffnet = (tag.getKuecheGeoeffnet() == 1);
+            try {
+                stmt.execute("update kuechenplanung set geoeffnet = " + kuecheGeoffnet + " WHERE datum = '" + tag.getDatum().toString() + "'");
+            } catch (Exception e) {
+                //TODO Fehlermeldung
+            }
+        }
 
     }
 
     //TODO Add Documentation
-    public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> gruppenkalnderTagesListe) {
+    public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> gruppenkalnderTagesListe) throws SQLException {
         if(gruppenkalnderTagesListe.isEmpty()) return;
-
+        Statement stmt = conn.createStatement();
+        for (GruppenKalenderTag tag : gruppenkalnderTagesListe) {
+            try {
+                stmt.execute("update gruppenkalender essensangebot = ");
+            } catch (Exception e) {
+                //TODO Fehlermeldung
+            }
+        }
     }
 }

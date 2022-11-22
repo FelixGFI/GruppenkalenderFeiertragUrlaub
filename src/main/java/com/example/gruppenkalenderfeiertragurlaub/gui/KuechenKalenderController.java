@@ -46,7 +46,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     }
 
     @FXML
-    protected void onBtSpeichernClick() {
+    protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Klick Speichern");
         DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
     }
