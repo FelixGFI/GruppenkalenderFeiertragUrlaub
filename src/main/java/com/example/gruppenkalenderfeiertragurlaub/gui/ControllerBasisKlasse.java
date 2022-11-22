@@ -4,12 +4,17 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +23,8 @@ import java.util.Objects;
 
 public class ControllerBasisKlasse {
 
+    protected Stage parentStage;
+    protected Stage childStage;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -499,5 +506,28 @@ public class ControllerBasisKlasse {
             return;
         }
         markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
+    }
+    /**
+     * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
+     * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
+     * @param titel
+     * @param fxmlReccouse
+     */
+    void openSubwindowFromButtonClick(Stage givenParentStage, String titel, String fxmlReccouse) {
+        parentStage = givenParentStage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
+        Scene newScene;
+        try {
+            newScene = new Scene(loader.load());
+        } catch (IOException ex) {
+            // TODO: handle error
+            return;
+        }
+        childStage = new Stage();
+        childStage.initOwner(parentStage);
+        childStage.setScene(newScene);
+        childStage.setTitle(titel);
+        childStage.initModality(Modality.APPLICATION_MODAL);
+        childStage.showAndWait();
     }
 }

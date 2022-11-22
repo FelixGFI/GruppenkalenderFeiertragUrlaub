@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.HauptmenueApp;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -38,17 +39,20 @@ public class HauptMenueController {
 
     @FXML
     protected void onBtKalenderplanungClick() {
-        openSubwindowFromButtonClick(stage, "Kalenderplanung","gruppenKalenderView.fxml");
+        GruppenKalenderController gc = new GruppenKalenderController();
+        gc.openSubwindowFromButtonClick(stage, "Kalenderplanung","gruppenKalenderView.fxml");
     }
 
     @FXML
     protected void onBtKuechenplanungClick() {
-        openSubwindowFromButtonClick(stage, "Küchenplanung", "kuechenKalenderView.fxml");
+        KuechenKalenderController kc = new KuechenKalenderController();
+        kc.openSubwindowFromButtonClick(stage, "Küchenplanung", "kuechenKalenderView.fxml");
     }
 
     @FXML
     protected void onBtBetriebsurlaubsplanungClick() {
-        openSubwindowFromButtonClick(stage, "Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
+        BetriebsurlaubController bc = new BetriebsurlaubController();
+        bc.openSubwindowFromButtonClick(stage, "Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
     }
 
     @FXML
@@ -94,29 +98,6 @@ public class HauptMenueController {
     @FXML
     protected void onBtProgrammSchliessenClick() {
         System.out.println("Klick Programm schließen");
-    }
-
-    /**
-     * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
-     * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
-     * @param titel
-     * @param fxmlReccouse
-     */
-    private void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlReccouse) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
-        Scene newScene;
-        try {
-            newScene = new Scene(loader.load());
-        } catch (IOException ex) {
-            // TODO: handle error
-            return;
-        }
-        Stage inputStage = new Stage();
-        inputStage.initOwner(parentStage);
-        inputStage.setScene(newScene);
-        inputStage.setTitle(titel);
-        inputStage.initModality(Modality.APPLICATION_MODAL);
-        inputStage.showAndWait();
     }
 
     /**

@@ -4,6 +4,7 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -45,6 +46,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         System.out.println("Called onBtAbbrechenClick()");
         if(dataHasBeenAltered()) System.out.println("Date ahs been Altered");
         //TODO add warning before close if changes have been made
+
     }
 
 
@@ -124,5 +126,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         }
         return false;
     }
+
 }
 
