@@ -425,7 +425,6 @@ public class DatenbankCommunicator {
                 //TODO Fehlermeldung
             }
         }
-
     }
 
     //TODO Add Documentation
@@ -434,7 +433,9 @@ public class DatenbankCommunicator {
         Statement stmt = conn.createStatement();
         for (GruppenKalenderTag tag : gruppenkalnderTagesListe) {
             try {
-                stmt.execute("update gruppenkalender essensangebot = ");
+                stmt.execute("update gruppenkalender " +
+                        "set essensangebot = " + tag.getEssenFuerGruppeVerfuegbar() + ", gruppenstatus = '" + tag.getGruppenstatus() + "' " +
+                        "where gruppe_id = " + tag.getGruppenID() + " and datum = '" + tag.getDatum().toString() + "'");
             } catch (Exception e) {
                 //TODO Fehlermeldung
             }
