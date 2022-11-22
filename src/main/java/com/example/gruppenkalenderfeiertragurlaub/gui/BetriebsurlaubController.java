@@ -51,7 +51,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     }
 
     @FXML
-    protected void onBtSpeichernClick() {
+    protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Called onBtSpeichernClick()");
         DatenbankCommunicator.saveBetriebsurlaub(tbTabelle.getItems());
     }

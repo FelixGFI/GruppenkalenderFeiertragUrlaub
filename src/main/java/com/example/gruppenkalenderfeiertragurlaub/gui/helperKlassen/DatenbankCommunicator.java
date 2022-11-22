@@ -233,10 +233,6 @@ public class DatenbankCommunicator {
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
                     Boolean isFeiertag = (rs.getDate("fdatum") != null);
                     Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
-                    Boolean essenVerfuegbar = true;
-                    if((gruppenstatus == 'B' || gruppenstatus == 'O' || gruppenstatus == 'A' || gruppenstatus == 'U') || !kuechheOffen) {
-                        essenVerfuegbar = false;
-                    }
                     if(isFeiertag) {gruppenstatus = UsefulConstants.getStatusListCharacterFormat().get(6);}
                     GruppenKalenderTag tag = new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuechheOffen, isBetriebsurlaub);
                     kalenderTagListe.add(tag);
@@ -388,33 +384,43 @@ public class DatenbankCommunicator {
     }
 
     //TODO Add Documentation
-    public static void saveBetriebsurlaub(ObservableList<BetriebsurlaubsTag> betriebsurlaubsTagListe) {
+    public static void saveBetriebsurlaub(ObservableList<BetriebsurlaubsTag> betriebsurlaubsTagListe) throws SQLException {
         if(betriebsurlaubsTagListe.isEmpty()) return;
+        Statement stmt = conn.createStatement();
         for (BetriebsurlaubsTag tag : betriebsurlaubsTagListe) {
             Boolean beganAsBetriebsurlaub = tag.getBeganAsBetriebsurlaub();
             Boolean isCurrentlyBetriebsurlaub = (tag.getIsCurrentlyBetriebsurlaub() == 1);
             if(isCurrentlyBetriebsurlaub == beganAsBetriebsurlaub) continue;
             if(isCurrentlyBetriebsurlaub) {
                 System.out.println("saveBetriebsurlaub() new betriebsurlaub Added");
-                //TODO Create Betriebsurlaub
+                try{
+                    stmt.execute("insert into betriebsurlaub (datum) values ('" + tag.getDatum().toString() + "')");
+                } catch (Exception e) {
+                    //TODO Fehlermeldung
+                }
             }
             if(beganAsBetriebsurlaub){
                 System.out.println("saveBetriebsurlaub() Alter Betriebsurlaub removed");
-                //TODO Delete betriebsurlaub
+                try{
+                    stmt.execute("delete from betriebsurlaub b where b.datum = '" + tag.getDatum().toString() + "'");
+                } catch (Exception e) {
+                    //TODO Fehlermeldung
+                }
             }
         }
 
     }
 
     //TODO Add Documentation
-    public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> betriebsurlaubsTagListe) {
-        if(betriebsurlaubsTagListe.isEmpty()) return;
+    public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) {
+        if(kuechenTagesListe.isEmpty()) return;
+
 
     }
 
     //TODO Add Documentation
-    public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> betriebsurlaubsTagListe) {
-        if(betriebsurlaubsTagListe.isEmpty()) return;
+    public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> gruppenkalnderTagesListe) {
+        if(gruppenkalnderTagesListe.isEmpty()) return;
 
     }
 }

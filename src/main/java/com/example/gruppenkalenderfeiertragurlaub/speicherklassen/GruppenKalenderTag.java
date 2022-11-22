@@ -47,6 +47,6 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     }
     protected void aktualisiereEssenFuerGruppeVerfuegbar() {
         ArrayList<Character> statusListe = UsefulConstants.getStatusListCharacterFormat();
-        this.essenFuerGruppeVerfuegbar = (this.gruppenstatus == statusListe.get(0) || this.gruppenstatus == statusListe.get(5));
+        this.essenFuerGruppeVerfuegbar = ((this.gruppenstatus == statusListe.get(0) || this.gruppenstatus == statusListe.get(5) && this.kuecheGeoeffnet));
     }
 }
