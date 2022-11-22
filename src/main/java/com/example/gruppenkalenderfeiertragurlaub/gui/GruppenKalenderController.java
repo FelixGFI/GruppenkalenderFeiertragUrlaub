@@ -46,6 +46,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onBtSpeichernClick() {
         System.out.println("Called onBtSpeichernClick()");
+        DatenbankCommunicator.saveGruppenKalender(tbTabelle.getItems());
     }
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();

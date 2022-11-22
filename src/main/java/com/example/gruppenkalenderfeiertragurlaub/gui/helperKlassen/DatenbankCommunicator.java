@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -384,5 +385,36 @@ public class DatenbankCommunicator {
             datum = datum.plusDays(1);
         }
         return datum;
+    }
+
+    //TODO Add Documentation
+    public static void saveBetriebsurlaub(ObservableList<BetriebsurlaubsTag> betriebsurlaubsTagListe) {
+        if(betriebsurlaubsTagListe.isEmpty()) return;
+        for (BetriebsurlaubsTag tag : betriebsurlaubsTagListe) {
+            Boolean beganAsBetriebsurlaub = tag.getBeganAsBetriebsurlaub();
+            Boolean isCurrentlyBetriebsurlaub = (tag.getIsCurrentlyBetriebsurlaub() == 1);
+            if(isCurrentlyBetriebsurlaub == beganAsBetriebsurlaub) continue;
+            if(isCurrentlyBetriebsurlaub) {
+                System.out.println("saveBetriebsurlaub() new betriebsurlaub Added");
+                //TODO Create Betriebsurlaub
+            }
+            if(beganAsBetriebsurlaub){
+                System.out.println("saveBetriebsurlaub() Alter Betriebsurlaub removed");
+                //TODO Delete betriebsurlaub
+            }
+        }
+
+    }
+
+    //TODO Add Documentation
+    public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> betriebsurlaubsTagListe) {
+        if(betriebsurlaubsTagListe.isEmpty()) return;
+
+    }
+
+    //TODO Add Documentation
+    public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> betriebsurlaubsTagListe) {
+        if(betriebsurlaubsTagListe.isEmpty()) return;
+
     }
 }

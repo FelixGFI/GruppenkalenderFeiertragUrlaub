@@ -53,6 +53,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML
     protected void onBtSpeichernClick() {
         System.out.println("Called onBtSpeichernClick()");
+        DatenbankCommunicator.saveBetriebsurlaub(tbTabelle.getItems());
     }
 
     @FXML
@@ -73,8 +74,8 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML
     protected void onBtUrlaubClick() {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            if(tag.getBetriebsurlaub() != 2) {
-                tag.setBetriebsurlaub(1);
+            if(tag.getIsCurrentlyBetriebsurlaub() != 2) {
+                tag.setIsCurrentlyBetriebsurlaub(1);
             }
         }
         tbTabelle.refresh();
@@ -82,8 +83,8 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML
     protected void onBtArbeitClick() {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
-            if(tag.getBetriebsurlaub() != 2) {
-                tag.setBetriebsurlaub(0);
+            if(tag.getIsCurrentlyBetriebsurlaub() != 2) {
+                tag.setIsCurrentlyBetriebsurlaub(0);
             }
         }
         tbTabelle.refresh();
@@ -98,7 +99,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
 
-        configureIntegerTableColum(tcIstBetriebsurlaub, "betriebsurlaub");
+        configureIntegerTableColum(tcIstBetriebsurlaub, "isCurrentlyBetriebsurlaub");
         configureLocalDateTableColum(tcDatum, "datum");
 
         configureCBJahrAuswahl(comboBoxJahrAuswahl);

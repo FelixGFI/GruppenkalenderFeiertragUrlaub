@@ -48,6 +48,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML
     protected void onBtSpeichernClick() {
         System.out.println("Klick Speichern");
+        DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
     }
     @FXML protected void onBtGeschlossenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
