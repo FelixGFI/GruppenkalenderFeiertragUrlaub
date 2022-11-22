@@ -45,16 +45,21 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
         Boolean verwerfenUndSchließen = false;
-        if(dataHasBeenAltered()) verwerfenUndSchließen = createAndShowAlert();
+        if(dataHasBeenAltered()) {
+            verwerfenUndSchließen = createAndShowAlert();
+        } else {
+            verwerfenUndSchließen = true;
+        }
+        if(verwerfenUndSchließen) {
+            Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
+            stage.close();
+        }
 
     }
-
-
-
     @FXML
     protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Klick Speichern");
-        DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
+        updateTableView();
     }
     @FXML protected void onBtGeschlossenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
@@ -79,6 +84,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
+
+        //TODO make sure that user is asked if he wants to continue
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -111,9 +118,13 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
 
     //TODO write documentation
     private void updateTableView() throws SQLException {
-        if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
-            return;
+        if(!tbTabelle.getItems().isEmpty()) {
+            DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
         }
+
+
+        if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) return;
+
         //TODO add save and warning window and code
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);

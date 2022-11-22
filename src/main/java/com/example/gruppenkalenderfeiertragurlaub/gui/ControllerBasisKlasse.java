@@ -540,7 +540,6 @@ public class ControllerBasisKlasse {
         if (result.get() == ButtonType.OK){
             executeRequestedAction = true;
         }
-
         return executeRequestedAction;
     }
 }
