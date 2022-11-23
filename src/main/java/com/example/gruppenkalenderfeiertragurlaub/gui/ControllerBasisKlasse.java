@@ -23,8 +23,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ControllerBasisKlasse {
-
+    LocalDate firstOfCurrentMonth;
     Boolean dataHasBeenModified = false;
+    Boolean jahrComboboxWurdeSoebenUmgestellt = false;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -559,5 +560,26 @@ public class ControllerBasisKlasse {
     //TODO add Documentation
     protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
         return (firstOfCurrentMonth.getYear() != firstOfCurrentMonth.plusMonths(monthChange).getYear());
+    }
+    //TODO add Documentation
+    protected boolean handleComboboxJahrauswahlShouldBeContinued(ComboBox<Integer> comboBoxJahrAuswahl) {
+        if(jahrComboboxWurdeSoebenUmgestellt) {
+            jahrComboboxWurdeSoebenUmgestellt = false;
+            return false;
+        }
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) {
+                jahrComboboxWurdeSoebenUmgestellt = true;
+                comboBoxJahrAuswahl.getSelectionModel().select(firstOfCurrentMonth.getYear() - UsefulConstants.getJahreList().get(0));
+                return false;
+            }
+        }
+        return true;
+    }
+    //TODO add Documentation
+    protected void handleOnComboboxJahrAuswahlAction(ComboBox<Integer> comboBoxJahrAuswahl, TableView tbTabelle) {
+        Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
+        firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
+        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
 }

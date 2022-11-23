@@ -7,6 +7,8 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalende
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,31 +33,38 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     @FXML Button btBetriebsurlaubUebernehmen;
 
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
-    LocalDate firstOfCurrentMonth;
-
     @FXML protected void onBtVorherigerMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = -1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtNaechsterMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = 1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtAbbrechenClick() {
-            System.out.println("Called onBAbbrechenClick()");
+        System.out.println("Called onBAbbrechenClick()");
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) return;
+        }
+        Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
+        stage.close();
     }
     @FXML protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Called onBtSpeichernClick()");
-        DatenbankCommunicator.saveGruppenKalender(tbTabelle.getItems());
+        updateTableView();
     }
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();
-        if(ausgewaehlerStatus != null) {
-            ObservableList<GruppenKalenderTag> ausgewaelteTageListe = tbTabelle.getSelectionModel().getSelectedItems();
-            for (GruppenKalenderTag tag : ausgewaelteTageListe) {
-                if(tag.getGruppenstatus() != UsefulConstants.getStatusListCharacterFormat().get(6)) {
-                    tag.setGruppenstatus(ausgewaehlerStatus);
-                }
+        if(ausgewaehlerStatus == null) return;
+        ObservableList<GruppenKalenderTag> ausgewaelteTageListe = tbTabelle.getSelectionModel().getSelectedItems();
+        for (GruppenKalenderTag tag : ausgewaelteTageListe) {
+            if(tag.getGruppenstatus() != UsefulConstants.getStatusListCharacterFormat().get(6)) {
+                tag.setGruppenstatus(ausgewaehlerStatus);
+                dataHasBeenModified = true;
             }
             tbTabelle.refresh();
         }
@@ -74,9 +83,8 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
-        Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
-        firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+        if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
+        handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
@@ -100,6 +108,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
 
     //TODO add Documentation
     private void updateTableView() throws SQLException {
+        if(!tbTabelle.getItems().isEmpty()) {
+            DatenbankCommunicator.saveGruppenKalender(tbTabelle.getItems());
+            dataHasBeenModified = false;
+        }
         //wenn die ComboboxGruppenAuswahl kein Ausgewähltes Item hat dann wird die Methode
         //mit Return abgebrochen. Durch die Verwendung von Return im If Statment wird die Komplexität
         //von zahllosen Verschachtelten if Statments vermieden.

@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
@@ -38,7 +39,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     TableColumn<BetriebsurlaubsTag, Integer> tcIstBetriebsurlaub;
     @FXML
     TableView<BetriebsurlaubsTag> tbTabelle;
-    LocalDate firstOfCurrentMonth;
     @FXML
     protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
@@ -68,16 +68,11 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
 
     @FXML
     protected void onComboboxJahrAuswahlAction() throws SQLException {
-        if(dataHasBeenModified) {
-            if(!getNutzerBestaetigung()) {
-                return;
-            }
-        }
-        Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
-        firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+        if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
+        handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
         updateTableView();
     }
+
 
     @FXML
     protected void onComboboxMonatAuswahlAction() {

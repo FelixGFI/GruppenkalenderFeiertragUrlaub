@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -34,7 +35,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<KuechenKalenderTag, Integer> tcKuecheOffen;
-    LocalDate firstOfCurrentMonth;
     @FXML protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
         if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
@@ -85,16 +85,11 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-        if(dataHasBeenModified) {
-            if(!getNutzerBestaetigung()) {
-                return;
-            }
-        }
-        Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
-        firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
-        scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+        if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
+        handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
         updateTableView();
     }
+
     @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
