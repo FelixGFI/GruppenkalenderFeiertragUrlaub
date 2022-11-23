@@ -191,8 +191,8 @@ public class ControllerBasisKlasse {
      * Konfiguriert die Übergebene TableColumn<Klassenname, Integer> so dass das als String übergebene Attribut der
      * anzuzeigenenden Klasse eingefügt wird. Sorgt dafür das für den Integer 0 "Ja", für 1 "Nein" und für
      * 3 "gesetzlicher Feiertag" anstatt des Integer Wertes angezeigt wird.
-     * @param tableColumnInteger
-     * @param columAttributeName
+     * @param tableColumnInteger eine TableColumn des typs integer welche configuriert werden soll
+     * @param columAttributeName name des Attributs innerhalb der klasse, welches in der TableColumn angezeigt werden soll
      */
     public static void configureIntegerTableColum(TableColumn tableColumnInteger, String columAttributeName) {
         tableColumnInteger.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
@@ -363,7 +363,9 @@ public class ControllerBasisKlasse {
      * (einschließlich der Zwei Daten selbst). Hierfür überprüft es bei Jedem Objekt in der Tabelle ob dessen datum Entweder
      * dem vonDatum oder bisDatum entspricht oder zwischen den Beiden liegt. Jedes so gefunden Objekt wird selected.
      * Scrollt zum Ersten Gefundenen Reihe Welches das VonDatum enthält.
-     * @param vonDatum
+     * @param vonDatum datum von dem aus gesucht wird
+     * @param bisDatum datum bis zu dem gesucht wird
+     * @param tbTabelle zu durchsuchende Tabelle
      */
     protected void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum, TableView tbTabelle) {
         tbTabelle.getSelectionModel().clearSelection();
@@ -387,7 +389,8 @@ public class ControllerBasisKlasse {
     /**
      * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
      * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
-     * @param vonDatum
+     * @param vonDatum zu suchendes Datum
+     * @param tbTabelle zu durchsuchende Tabelle
      */
     protected void markRowsOfOneDate(LocalDate vonDatum, TableView tbTabelle) {
         tbTabelle.getSelectionModel().clearSelection();
@@ -530,7 +533,11 @@ public class ControllerBasisKlasse {
         childStage.initModality(Modality.APPLICATION_MODAL);
         childStage.showAndWait();
     }
-    //TODO write Dokumentation
+    /**
+     * erzeugt eine AlertBox welche den Nutzer fragte ob er Die Änderungen wirklcih verwerfen möchte. Liest die Antwort des
+     * Nutzers ein und gibt Entsprechend true odre false zurück
+     * @return true wenn Nutzerbestätigung erteilt wurde, false wenn nicht
+     */
     protected Boolean getNutzerBestaetigung() {
         Boolean executeRequestedAction = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -545,7 +552,18 @@ public class ControllerBasisKlasse {
         }
         return executeRequestedAction;
     }
-    //TODO add Documentation
+
+    /**
+     * Überprüft ob Änderungen an den Daten in der TableView Vorgenommen wurden (anhand der Globalen variable dataHasBeenModified)
+     * und ob eine änderung in Monaten um den gegebenen Integer wert monthChange ausgehend vom firstOfCurrentMonth zum Wechsel
+     * in eine Anderes Jahr führen würde. Wenn ja so wird mittels Methodenaufruf Nutzerbestätigung erbeten. Die Mehtode gibt einen
+     * Boolen wert zurück welcher anzeigt ob die angefragete Operation zum Wechsel eines Monats bedenkenlos oder mit
+     * Nutzerbestätigugn fortgesetzt werden soll oder nicht
+     * @param firstOfCurrentMonth ausgangsdatum
+     * @param monthChange anzahl der Monate um die nach vorn oder hinten verschoben werden soll
+     * @return true wenn keine Daten Verändert wurden und/oder kein jahreswechsel ansteht oder durch Nutzerbestätigung. false
+     * wenn Nutzerbestätigung angefragt aber nicht gewährt wurde.
+     */
     protected boolean monthChangeOperationShouldbeContinued(LocalDate firstOfCurrentMonth, Integer monthChange) {
         if(dataHasBeenModified && changingMonthWouldChangeYear(firstOfCurrentMonth, monthChange)) {
             if(!getNutzerBestaetigung()) {
@@ -557,11 +575,27 @@ public class ControllerBasisKlasse {
         }
         return true;
     }
-    //TODO add Documentation
+    /**
+     * Überpfrüft ob ausgehend vom Übergebenen Datum aus gerechnet, eine veränderung des Monats um den gegebenen Integer
+     * monthChange eine Änderung des Jahres zur folge hätte
+     * @param firstOfCurrentMonth
+     * @param monthChange
+     * @return true wenn eine Jahresanderung der Fall wäre. False wenn nicht
+     */
     protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
         return (firstOfCurrentMonth.getYear() != firstOfCurrentMonth.plusMonths(monthChange).getYear());
     }
-    //TODO add Documentation
+
+    /**
+     * Die Methode überprüft welcher Code Abschnitt durchgeführt werden muss. Ist der Boolean jahrComboboxWurdeSoebenUmgestellt
+     * true so bedeutet dies das die Methode als consequenz einer Automatischen zurückstellung des jahres nach verweigerter Nutzer
+     * bestätigugn erneut aufgerufen wurde. In diesem fall muss nichts weiter getan werden und die Methode gibt false zurück um
+     * anzuzeigen das die Aufrufende Methode sofort beendet werden kann. ist der boolean dataHasBeenModified true so wird
+     * Nutzerbestätigung angefordert. ist diese negativ gibt die Methode false zurück. Ansonsten gibt sie true zurück
+     * sodas der nachfolgende code in der aufrufenden Methode ausgeführt werden kann
+     * @param comboBoxJahrAuswahl die comboboxJahresauswahl für Wleche die Methode aufgerufen wird
+     * @return true wenn die aufrufende methode fortgesetzt werden soll, False wenn sie sofort beendet werden soll
+     */
     protected boolean handleComboboxJahrauswahlShouldBeContinued(ComboBox<Integer> comboBoxJahrAuswahl) {
         if(jahrComboboxWurdeSoebenUmgestellt) {
             jahrComboboxWurdeSoebenUmgestellt = false;
@@ -576,7 +610,11 @@ public class ControllerBasisKlasse {
         }
         return true;
     }
-    //TODO add Documentation
+    /**
+     * Ändert das firstOfCurrentMonth datum zum Ausgewählten Jahr. scorllt zum firstOfCurrentMonth in der tabelle
+     * @param comboBoxJahrAuswahl die comboboxJahresauswahl für Wleche die Methode aufgerufen wird
+     * @param tbTabelle die Tabelle welche durch änderungen in der comboboxJahresauswahl beinflusst wird.
+     */
     protected void handleOnComboboxJahrAuswahlAction(ComboBox<Integer> comboBoxJahrAuswahl, TableView tbTabelle) {
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
