@@ -391,7 +391,13 @@ public class DatenbankCommunicator {
         return datum;
     }
 
-    //TODO Add Documentation
+    /**
+     * überprüft für jeden Tag in der Liste ob sein orginalzustand mit dem jetztzustand übereinstimmt. ist ein Tag
+     * der Frühre betriebsurlaub war jetzt keiner Mehr so wird sein Eintrag aus der Datenbank gelöscht. Für jeden neuen
+     * Als Betriebsurlaub generierten Tag wird ein neuer Eintrag erzeugt.
+     * @param betriebsurlaubsTagListe ObersvableList aller BetriebsurlaubsTage deren Änderungen Gespeichert werden sollen
+     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     */
     public static void saveBetriebsurlaub(ObservableList<BetriebsurlaubsTag> betriebsurlaubsTagListe) throws SQLException {
         if(betriebsurlaubsTagListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
@@ -417,10 +423,14 @@ public class DatenbankCommunicator {
                 }
             }
         }
-
     }
 
-    //TODO Add Documentation
+    /**
+     * Die Methode erhält eine Liste von KuechenKalenderTagen. Jeder tag an dem während der Bearbeitung durch den Nutzer
+     * änderungen vorgenommen wurden wird in der Datenbank mittels SQL statement upgedated
+     * @param kuechenTagesListe Observable List aller vorhanden KuechenKalenderTage deren Änderungen gespeichert werden sollen
+     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     */
     public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) throws SQLException {
         if(kuechenTagesListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
@@ -435,11 +445,17 @@ public class DatenbankCommunicator {
         }
     }
 
-    //TODO Add Documentation
+    /**
+     * erhält eine Liste an GruppenkalenderTagen und überprüft für jeden tag ob besagter editiert worden ist. Wenn ja wird
+     * der entspprechende eintrag in der Datenbank upgedated.
+     * @param gruppenkalnderTagesListe Observable List aller GruppenKalenderTage deren Änderungen gespeichert werden sollen
+     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     */
     public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> gruppenkalnderTagesListe) throws SQLException {
         if(gruppenkalnderTagesListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
         for (GruppenKalenderTag tag : gruppenkalnderTagesListe) {
+            if(!tag.getTagWasEdited()) continue;
             try {
                 stmt.execute("update gruppenkalender " +
                         "set essensangebot = " + tag.getEssenFuerGruppeVerfuegbar() + ", gruppenstatus = '" + tag.getGruppenstatus() + "' " +

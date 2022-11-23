@@ -11,6 +11,7 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
     private Boolean kuecheGeoeffnet;
     private Boolean essenFuerGruppeVerfuegbar;
     private Boolean isBetriebsurlaub;
+    private Boolean tagWasEdited;
 
     public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean isBetriebsurlaub) {
         this.gruppenID = gruppenID;
@@ -19,14 +20,11 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
         this.kuecheGeoeffnet = kuecheGeoeffnet;
         this.isBetriebsurlaub = isBetriebsurlaub;
         aktualisiereEssenFuerGruppeVerfuegbar();
+        tagWasEdited = false;
     }
 
     public Boolean getBetriebsurlaub() {
         return isBetriebsurlaub;
-    }
-
-    public void setBetriebsurlaub(Boolean betriebsurlaub) {
-        isBetriebsurlaub = betriebsurlaub;
     }
 
     public Integer getGruppenID() {return gruppenID;}
@@ -37,16 +35,17 @@ public class GruppenKalenderTag  extends TagBasisKlasse {
 
     public void setGruppenstatus(Character gruppenstatus) {
         this.gruppenstatus = gruppenstatus;
+        tagWasEdited = true;
         aktualisiereEssenFuerGruppeVerfuegbar();
     }
     public Boolean getEssenFuerGruppeVerfuegbar() {
         return essenFuerGruppeVerfuegbar;
     }
-    public Boolean getKuecheGeoeffnet() {
-        return kuecheGeoeffnet;
-    }
     protected void aktualisiereEssenFuerGruppeVerfuegbar() {
         ArrayList<Character> statusListe = UsefulConstants.getStatusListCharacterFormat();
         this.essenFuerGruppeVerfuegbar = ((this.gruppenstatus == statusListe.get(0) || this.gruppenstatus == statusListe.get(5) && this.kuecheGeoeffnet));
+    }
+    public Boolean getTagWasEdited() {
+        return tagWasEdited;
     }
 }
