@@ -1,13 +1,10 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -105,21 +102,15 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     public void initialize() throws SQLException {
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
-
         configureIntegerTableColum(tcIstBetriebsurlaub, "isCurrentlyBetriebsurlaub");
         configureLocalDateTableColum(tcDatum, "datum");
-
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
-
         DatenbankCommunicator.establishConnection();
-
         firstOfCurrentMonth = LocalDate.now();
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
-
         updateTableView();
-
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
     //TODO write documentation

@@ -1,12 +1,10 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
-import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,7 +38,6 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
         firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
-
     @FXML protected void onBtNaechsterMonatClick() {
         Integer monthChange = 1;
         if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
@@ -89,43 +86,30 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
         updateTableView();
     }
-
     @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
-
     public void initialize() throws SQLException {
-
         configureIntegerTableColum(tcKuecheOffen, "kuecheCurrentlyGeoeffnet");
         configureLocalDateTableColum(tcDatum, "datum");
-
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
-
         DatenbankCommunicator.establishConnection();
-
         firstOfCurrentMonth = LocalDate.now();
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
-
         updateTableView();
-
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
-
     //TODO write documentation
     private void updateTableView() throws SQLException {
         if(!tbTabelle.getItems().isEmpty()) {
             DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
             dataHasBeenModified = false;
         }
-
-
         if(comboBoxJahrAuswahl.getSelectionModel().isEmpty()) return;
-
-        //TODO add save and warning window and code
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);
     }

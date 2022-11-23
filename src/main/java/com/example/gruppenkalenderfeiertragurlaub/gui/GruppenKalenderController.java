@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -92,7 +91,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
-
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
         //TODO Warnung das Daten Überschrieben werden
         for (GruppenKalenderTag tag : tbTabelle.getItems()) {
@@ -105,7 +103,6 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         }
         tbTabelle.refresh();
     }
-
     //TODO add Documentation
     private void updateTableView() throws SQLException {
         if(!tbTabelle.getItems().isEmpty()) {
@@ -127,31 +124,24 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         tbTabelle.getSortOrder().clear();
         tbTabelle.getSortOrder().add(tcDatum);
     }
-
     public void initialize() throws SQLException {
         //IMPORTANT!: gruppenFamilenListe =  configureCBGruppenAuswahl MUST BE CALLED FIRST before configure tcGruppenBeziechnung!
         //Otherwise the needed gruppenFamilienListe will  be empty"!
-
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
         gruppenFamilienListe = configureCBGruppenAuswahl(comboBoxGruppenAuswahl);
-
         configureBooleanTableColum(tcEssenVerfuegbar, "essenFuerGruppeVerfuegbar");
         configureLocalDateTableColum(tcDatum, "datum");
         configureGruppenStatusTableColum(tcGruppenStatus, "gruppenstatus");
         configureGruppenBezeichnungTableColum(tcGruppenBezeichnung, "gruppenID", DatenbankCommunicator.getAlleGruppenAusFamilien(gruppenFamilienListe));
-
         Label lblEssenverfuegbarHeader = new Label("Essensangebot");
         lblEssenverfuegbarHeader.setTooltip(new Tooltip("Den ausgewählten Gruppen kann heute Essen angeboten werden"));
         tcEssenVerfuegbar.setGraphic(lblEssenverfuegbarHeader);
-
         DatenbankCommunicator.establishConnection();
-
         firstOfCurrentMonth = LocalDate.now();
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
-
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
