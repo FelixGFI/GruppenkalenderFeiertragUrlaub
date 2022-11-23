@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class UsefulConstants {
-
     /**
      * diese Klasse enthält eine Reihe von Konstanten für das Programm
      * -
@@ -36,29 +35,23 @@ public class UsefulConstants {
         return statusListDisplayFormat;
     }
     public static ArrayList<Character> getStatusListCharacterFormat() {
-
         return statusListCharacterFormat;
     }
-
     public static ArrayList<Character> getStatusListCharacterFormatOhneFeiertag() {
         return statusListCharacterFormatOhneFeiertag;
     }
     public static ArrayList<String> getMonateListInLocalDateFormat() {
         return monateListInLocalDateFormat;
     }
-
     public static ArrayList<String> getMonatListAsDisplayText() {
         return monatListAsDisplayText;
     }
-
     public static ArrayList<Integer> getJahreList() {
         return jahreList;
     }
-
     public static ArrayList<String> getTageListInLocalDateFormat() {
         return tageListInLocalDateFormat;
     }
-
     public static Character getDefaultStatus() {return defaultStatus;}
 
 }

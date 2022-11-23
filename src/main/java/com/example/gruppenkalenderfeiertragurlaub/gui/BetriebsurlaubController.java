@@ -59,28 +59,23 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
         stage.close();
     }
-
     @FXML
     protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Called onBtSpeichernClick()");
         updateTableView();
     }
-
     @FXML
     protected void onComboboxJahrAuswahlAction() throws SQLException {
         if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
         handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
         updateTableView();
     }
-
-
     @FXML
     protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
-
     @FXML
     protected void onBtUrlaubClick() {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
