@@ -13,7 +13,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -33,11 +32,9 @@ public class ControllerBasisKlasse {
      * @param comboBoxJahrAuswahl die zu konfigurierende Combobox<Integer>
      */
     public static void configureCBJahrAuswahl(ComboBox<Integer> comboBoxJahrAuswahl) {
-
         comboBoxJahrAuswahl.getItems().addAll(UsefulConstants.getJahreList());
         comboBoxJahrAuswahl.getSelectionModel().select(UsefulConstants.getJahreList().indexOf(LocalDate.now().getYear()));
     }
-
     /**
      * Fügt alle Zwölf Monat in dem Format wie die Klasse LocalDate diese Verwendet (englisch und Capslock "JANUARY") in
      * die übergebene Combobox<String> hinzu.
@@ -46,10 +43,8 @@ public class ControllerBasisKlasse {
      * @param comboBoxMonatAuswahl die zu konfigurierende Combobox<String>
      */
     public static void configureCBMonatAuswahl(ComboBox<String> comboBoxMonatAuswahl) {
-
         //fügt Alle benötigten Items den Comboxboxen Hinzu
         comboBoxMonatAuswahl.getItems().addAll(UsefulConstants.getMonateListInLocalDateFormat());
-
         comboBoxMonatAuswahl.setCellFactory(colum -> {
             ListCell<String> cell = new ListCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -68,7 +63,6 @@ public class ControllerBasisKlasse {
                 }
                 return anzeigeMonat;
             }
-
             @Override
             public String fromString(String string) {
                 return null;
@@ -77,7 +71,6 @@ public class ControllerBasisKlasse {
         //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
     }
-
     /**
      * fügt der übergbenen Combobox<Character> Character hinzu welche die auswählbaren Gruppenstatuse representieren
      * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut, Ausgenommen Gesetzliche Feiertage
@@ -87,10 +80,7 @@ public class ControllerBasisKlasse {
      * @param comboBoxStatusAuswahl die zu konfigurierende Combobox<Character>
      */
     public static void configureCBStatusauswahl(ComboBox<Character> comboBoxStatusAuswahl) {
-
-
         comboBoxStatusAuswahl.getItems().addAll(UsefulConstants.getStatusListCharacterFormatOhneFeiertag());
-
         comboBoxStatusAuswahl.setCellFactory(colum -> {
             ListCell<Character> cell = new ListCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -109,14 +99,12 @@ public class ControllerBasisKlasse {
                 }
                 return statusDisplayString;
             }
-
             @Override
             public Character fromString(String string) {
                 return null;
             }
         });
     }
-
     /**
      * Die Methode bekommt einen Gruppenstatus (welcher Anzeigt was eine Gruppe an einem bestimmten Tag tut)
      * in Form eines Characters. Für diesen Character wird ein Text erzeugt, der in der Gui angezeigt werden kann.
@@ -127,7 +115,6 @@ public class ControllerBasisKlasse {
         int statusIndex = UsefulConstants.getStatusListCharacterFormat().indexOf(aktivitaetsStatus);
         return (statusIndex != -1) ? UsefulConstants.getStatusListDisplayFormat().get(statusIndex) : "";
     }
-
     /**
      * konvertiert einen String welcher einen Monat in dem Format enthält wie die Classe LocalDate diesen Zurückgibt
      * (Monatsname in Capslock "JANUARY") in einen für String für die Gui Ausgabe.
@@ -138,7 +125,6 @@ public class ControllerBasisKlasse {
         int monatsIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? UsefulConstants.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
-
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
      * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
@@ -147,7 +133,6 @@ public class ControllerBasisKlasse {
      * @param columAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
      */
     public static void configureBooleanTableColum(TableColumn tableColumnBoolean, String columAttributeName) {
-
         /*
         IMPORTANT TO NOTE ABUT CellFactory class. Cells in Java are not generated anew every time a new Object
         needs to be displayed in the table. The Cells that are on Screen do not change (for the most part)
@@ -161,12 +146,10 @@ public class ControllerBasisKlasse {
         false or any other Value then true, which is currenlty being displayed in the cell allready the CellFactory IS called
         if the objects Value for this call is True just like the previous object's was then the CellFactory IS NOT called.
          */
-
         tableColumnBoolean.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
          /* sets the CellFactory (not to be confused with the CellValueFactory) which is responseble
         for determening the format in which the data (which are set using CellVlaueFactory) is displayed
          */
-
         tableColumnBoolean.setCellFactory(colum -> {
             TableCell<TagBasisKlasse, Boolean> cell = new TableCell<>();
 
@@ -177,7 +160,6 @@ public class ControllerBasisKlasse {
         this day is a day of Betriebsurlaub then it displays the word "Ja" in the cell instead of the
         actual value "true" Otherwise it displays the word "Nein" instead of the Value "false"
          */
-
             cell.itemProperty().addListener((obs, old, newBooleanVal) -> {
                 if (newBooleanVal != null) {
                     //Ternärer Ausdruck
@@ -208,7 +190,6 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
-
     /**
      * Konfiguriert für die Übergebene TabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
      * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
@@ -240,7 +221,6 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
-
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Character>. Setzt den Übergebenen String als anzuzeigendes
      * Attribut und findet für Jeden angezeigten Character, welcher den Gruppenstatus definiert
@@ -268,7 +248,6 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
-
     /**
      * Erhält eine Combobox<Object>. Füllt die ArrayList<GruppenFamileienFuerkalender> gruppenFamilienListe mit Allen Gruppenfamilien aus der Datenbank
      * In den Gruppenfamilien sind alle zu ihnen Gehörigen Gruppen bereits enthalten. Fügt der Combobox alle Gruppenfamilien sowie die zugehörigen
@@ -290,7 +269,6 @@ public class ControllerBasisKlasse {
                 comboBoxGruppenAuswahl.getItems().add(gr);
             }
         }
-
         comboBoxGruppenAuswahl.setCellFactory(colum -> {
             ListCell<Object> cell = new ListCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -306,7 +284,6 @@ public class ControllerBasisKlasse {
             });
             return cell;
         });
-
         comboBoxGruppenAuswahl.setConverter(new StringConverter<>() {
             @Override
             public String toString(Object gruppeOrGruppenFamilie) {
@@ -329,7 +306,6 @@ public class ControllerBasisKlasse {
 
         return gruppenFamilienListe;
     }
-
     /**
      * erhält eine TableColumn<GruppenKalenderTag, Integer> und configuriert diese sodas sie die GruppeID enthält
      * verwendet außerdem eine CellFactory um für Jede gruppenID, aus der Übergebenen ArrayList, den Richtigen
@@ -339,11 +315,9 @@ public class ControllerBasisKlasse {
      * @param gruppenListe
      */
     public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
-
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
         tcGruppenBezeichung.setCellFactory(colum -> {
             TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
-
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
                     cell.setText("");
@@ -383,9 +357,7 @@ public class ControllerBasisKlasse {
                 }
             }
         }
-
     }
-
     /**
      * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
      * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
@@ -456,7 +428,6 @@ public class ControllerBasisKlasse {
         }
         return firstOfCurrentMonth;
     }
-
     /**
      * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpVon aufgerufen zu
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
@@ -467,7 +438,6 @@ public class ControllerBasisKlasse {
      * @param dpBis
      * @param tbTabelle
      */
-
     protected void handleDatePickerVon(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(vonDatum == null) {
@@ -486,7 +456,6 @@ public class ControllerBasisKlasse {
             markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
         }
     }
-
     /**
      * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpBis aufgerufen zu
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
@@ -545,14 +514,12 @@ public class ControllerBasisKlasse {
         alert.setTitle("Beschtätigen");
         alert.setHeaderText("Sind sie Sicher?");
         alert.setContentText("Nicht Gespeicherte Daten gehen Verloren");
-
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             executeRequestedAction = true;
         }
         return executeRequestedAction;
     }
-
     /**
      * Überprüft ob Änderungen an den Daten in der TableView Vorgenommen wurden (anhand der Globalen variable dataHasBeenModified)
      * und ob eine änderung in Monaten um den gegebenen Integer wert monthChange ausgehend vom firstOfCurrentMonth zum Wechsel
@@ -585,7 +552,6 @@ public class ControllerBasisKlasse {
     protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
         return (firstOfCurrentMonth.getYear() != firstOfCurrentMonth.plusMonths(monthChange).getYear());
     }
-
     /**
      * Die Methode überprüft welcher Code Abschnitt durchgeführt werden muss. Ist der Boolean jahrComboboxWurdeSoebenUmgestellt
      * true so bedeutet dies das die Methode als consequenz einer Automatischen zurückstellung des jahres nach verweigerter Nutzer
