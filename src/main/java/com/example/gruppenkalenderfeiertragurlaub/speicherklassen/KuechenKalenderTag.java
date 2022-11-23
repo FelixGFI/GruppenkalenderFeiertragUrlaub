@@ -11,11 +11,9 @@ public class KuechenKalenderTag extends TagBasisKlasse {
         this.kuecheCurrentlyGeoeffnet = kuecheCurrentlyGeoeffnet;
         tagWasEdited = false;
     }
-
     public Integer getKuecheCurrentlyGeoeffnet() {
         return kuecheCurrentlyGeoeffnet;
     }
-
     public void setKuecheCurrentlyGeoeffnet(Integer kuecheCurrentlyGeoeffnet) {
         this.kuecheCurrentlyGeoeffnet = kuecheCurrentlyGeoeffnet;
         tagWasEdited = true;
