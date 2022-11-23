@@ -23,6 +23,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class ControllerBasisKlasse {
+
+    Boolean dataHasBeenModified = false;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -528,7 +530,7 @@ public class ControllerBasisKlasse {
         childStage.showAndWait();
     }
     //TODO write Dokumentation
-    protected Boolean createAndShowAlert() {
+    protected Boolean getNutzerBestaetigung() {
         Boolean executeRequestedAction = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
@@ -541,5 +543,21 @@ public class ControllerBasisKlasse {
             executeRequestedAction = true;
         }
         return executeRequestedAction;
+    }
+    //TODO add Documentation
+    protected boolean monthChangeOperationShouldbeContinued(LocalDate firstOfCurrentMonth, Integer monthChange) {
+        if(dataHasBeenModified && changingMonthWouldChangeYear(firstOfCurrentMonth, monthChange)) {
+            if(!getNutzerBestaetigung()) {
+                return false;
+            } else {
+                dataHasBeenModified = false;
+                return true;
+            }
+        }
+        return true;
+    }
+    //TODO add Documentation
+    protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
+        return (firstOfCurrentMonth.getYear() != firstOfCurrentMonth.plusMonths(monthChange).getYear());
     }
 }

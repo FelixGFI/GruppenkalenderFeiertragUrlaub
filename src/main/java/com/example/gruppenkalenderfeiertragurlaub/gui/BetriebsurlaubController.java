@@ -5,6 +5,7 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.Betriebsurlaub
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -40,26 +41,38 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     LocalDate firstOfCurrentMonth;
     @FXML
     protected void onBtVorherigerMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = -1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
     protected void onBtNaechsterMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = 1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
     protected void onBtAbbrechenClick() {
-        System.out.println("Called onBtAbbrechenClick()");
-        if(dataHasBeenAltered()) System.out.println("Data has been Altered"); //TODO display Warning if data has been altered
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) return;
+        }
+        Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
+        stage.close();
     }
 
     @FXML
     protected void onBtSpeichernClick() throws SQLException {
         System.out.println("Called onBtSpeichernClick()");
-        DatenbankCommunicator.saveBetriebsurlaub(tbTabelle.getItems());
+        updateTableView();
     }
 
     @FXML
     protected void onComboboxJahrAuswahlAction() throws SQLException {
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) {
+                return;
+            }
+        }
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -78,6 +91,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getIsCurrentlyBetriebsurlaub() != 2) {
                 tag.setIsCurrentlyBetriebsurlaub(1);
+                dataHasBeenModified = true;
             }
         }
         tbTabelle.refresh();
@@ -87,6 +101,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getIsCurrentlyBetriebsurlaub() != 2) {
                 tag.setIsCurrentlyBetriebsurlaub(0);
+                dataHasBeenModified = true;
             }
         }
         tbTabelle.refresh();
@@ -119,20 +134,16 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     }
     //TODO write documentation
     private void updateTableView() throws SQLException {
+        if (!tbTabelle.getItems().isEmpty()) {
+            DatenbankCommunicator.saveBetriebsurlaub(tbTabelle.getItems());
+            dataHasBeenModified = false;
+        }
         if (comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
             return;
         }
         //TODO add save and warning window and code
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(firstOfCurrentMonth.getYear());
         tbTabelle.getItems().setAll(betriebsurlaubsTage);
-    }
-    //TODO add Documentation
-    private Boolean dataHasBeenAltered() {
-        for (BetriebsurlaubsTag tag : tbTabelle.getItems()) {
-            Boolean kuecheCurrentlyGeoffnet = (tag.getIsCurrentlyBetriebsurlaub() == 1);
-            if (tag.getBeganAsBetriebsurlaub() != kuecheCurrentlyGeoffnet) return true;
-        }
-        return false;
     }
 }
 

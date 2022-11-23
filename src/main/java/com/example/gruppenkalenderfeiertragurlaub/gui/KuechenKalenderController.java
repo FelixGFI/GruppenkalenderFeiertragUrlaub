@@ -36,25 +36,24 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML TableColumn<KuechenKalenderTag, Integer> tcKuecheOffen;
     LocalDate firstOfCurrentMonth;
     @FXML protected void onBtVorherigerMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(-1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = -1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
+
     @FXML protected void onBtNaechsterMonatClick() {
-        firstOfCurrentMonth = changeMonthBackOrForthBy(1, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        Integer monthChange = 1;
+        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
     @FXML
     protected void onBtAbbrechenClick() {
         System.out.println("Called onBtAbbrechenClick()");
-        Boolean verwerfenUndSchließen = false;
-        if(dataHasBeenAltered()) {
-            verwerfenUndSchließen = createAndShowAlert();
-        } else {
-            verwerfenUndSchließen = true;
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) return;
         }
-        if(verwerfenUndSchließen) {
-            Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
-            stage.close();
-        }
-
+        Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
+        stage.close();
     }
     @FXML
     protected void onBtSpeichernClick() throws SQLException {
@@ -65,6 +64,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheCurrentlyGeoeffnet() != 2) {
                 tag.setKuecheCurrentlyGeoeffnet(0);
+                dataHasBeenModified = true;
             }
         }
         tbTabelle.refresh();
@@ -73,6 +73,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheCurrentlyGeoeffnet() != 2) {
                 tag.setKuecheCurrentlyGeoeffnet(1);
+                dataHasBeenModified = true;
             }
         }
         tbTabelle.refresh();
@@ -84,8 +85,11 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
-
-        //TODO make sure that user is asked if he wants to continue
+        if(dataHasBeenModified) {
+            if(!getNutzerBestaetigung()) {
+                return;
+            }
+        }
         Integer year = comboBoxJahrAuswahl.getSelectionModel().getSelectedItem();
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -120,6 +124,7 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     private void updateTableView() throws SQLException {
         if(!tbTabelle.getItems().isEmpty()) {
             DatenbankCommunicator.saveKuechenKalender(tbTabelle.getItems());
+            dataHasBeenModified = false;
         }
 
 
@@ -129,14 +134,5 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         ArrayList<KuechenKalenderTag> kuechenListe = DatenbankCommunicator.readKuechenKalenderTage(comboBoxJahrAuswahl.getSelectionModel().getSelectedItem());
         tbTabelle.getItems().setAll(kuechenListe);
     }
-    //TODO add Documentation
-    private Boolean dataHasBeenAltered() {
-        for (KuechenKalenderTag tag : tbTabelle.getItems()) {
-            Boolean kuecheCurrentlyGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
-            if (tag.getKuecheOriginallyGeoeffnet() != kuecheCurrentlyGeoffnet) return true;
-        }
-        return false;
-    }
-
 }
 
