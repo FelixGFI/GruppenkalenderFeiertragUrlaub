@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class KuechenKalenderTag extends TagBasisKlasse {
     private Integer kuecheCurrentlyGeoeffnet;
-    private Boolean kuecheOriginallyGeoeffnet;
+    private Boolean tagWasEdited;
 
     public KuechenKalenderTag(LocalDate datum, Integer kuecheCurrentlyGeoeffnet) {
         this.datum = datum;
         this.kuecheCurrentlyGeoeffnet = kuecheCurrentlyGeoeffnet;
-        this.kuecheOriginallyGeoeffnet = (kuecheCurrentlyGeoeffnet == 1);
+        tagWasEdited = false;
     }
 
     public Integer getKuecheCurrentlyGeoeffnet() {
@@ -18,9 +18,9 @@ public class KuechenKalenderTag extends TagBasisKlasse {
 
     public void setKuecheCurrentlyGeoeffnet(Integer kuecheCurrentlyGeoeffnet) {
         this.kuecheCurrentlyGeoeffnet = kuecheCurrentlyGeoeffnet;
+        tagWasEdited = true;
     }
-
-    public Boolean getKuecheOriginallyGeoeffnet() {
-        return kuecheOriginallyGeoeffnet;
+    public Boolean getTagWasEdited() {
+        return tagWasEdited;
     }
 }

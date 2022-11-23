@@ -2,6 +2,8 @@ package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -17,15 +19,21 @@ public class DatenbankCommunicator {
 
 
     /**
-     * Establishes a conection to the database with the information specified in the url, user and password global variables
+     * Stellt die Verbindng mit der Datenbank her deren daten in Globalen Variable Definiert sind. Verursacht ein Popup
+     * sollte die verbindung nicht möglich sein
      */
     public static void establishConnection() {
         //create connection for a server installed in localhost, with a user "root" with no password
         try {
             conn = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            //TODO implement AlertBox for Warning
-            System.out.println("Database not found. Please make sure the correct Database is available");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setTitle("Fehler");
+            alert.setHeaderText("Datenbankverbindung Fehlgeschlagen");
+            alert.setContentText("Bitte Stellen Sie sicher das das Programm zugriff auf die Datenbank hat. " +
+                    "[" + url + "]");
+            alert.showAndWait();
         }
     }
 
@@ -34,7 +42,7 @@ public class DatenbankCommunicator {
      * von KüchenkalenderTag objekten. Liest außerdem aus ob es sich bei einem Tag um einen Feiertag handelt.
      * Überprüft ob Daten für diese jahr in der Datenbank vorhanden sind, wenn nicht generiert es diese für das übergebene jahr und
      * fährt dan mit dem einlesen fort. Übergibt die Eingelesenen Daten als ArrayList von KuechenKalenderTagen.
-     * @param jahr
+     * @param jahr jahr für welches daten Ausgelesen werden sollen
      * @return Liste aller datenbankeinträge in kuechenplanung für das übergebene jahr als
      * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
      */
@@ -86,7 +94,7 @@ public class DatenbankCommunicator {
 
     /**
      * ermittelt den ersten werktag eines Jahres. Überprüft ob ein eintrg für diesen, für dieses Jahr in der Datenbanktabelle kuechenplanung vorhanden ist.
-     * @param jahr
+     * @param jahr jahr für das überprüft werden soll ob der küchendatensatz vorhanden ist
      * @return true wenn datensatz für ersten werktag für gegebenes jahr vorhanden ist, false wenn nicht
      * @throws SQLException
      */
@@ -115,7 +123,7 @@ public class DatenbankCommunicator {
      * gespeichert.
      *
      * die Estellten Betriebsurlaubstagsobjekte werden in einer Arraylist zurückgegeben.
-     * @param jahr
+     * @param jahr jahr für welches der betriebsurlaub ausgelesen werden soll
      * @return Liste aller datenbankeinträge datum aus kuechenplanung und betriebsurlaub für das übergebene jahr
      * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
      */
@@ -416,9 +424,9 @@ public class DatenbankCommunicator {
     public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) throws SQLException {
         if(kuechenTagesListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
-
         for (KuechenKalenderTag tag : kuechenTagesListe) {
             Boolean kuecheGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
+            if(!tag.getTagWasEdited()) continue;
             try {
                 stmt.execute("update kuechenplanung set geoeffnet = " + kuecheGeoffnet + " WHERE datum = '" + tag.getDatum().toString() + "'");
             } catch (Exception e) {
