@@ -25,6 +25,8 @@ public class ControllerBasisKlasse {
     LocalDate firstOfCurrentMonth;
     Boolean dataHasBeenModified = false;
     Boolean jahrComboboxWurdeSoebenUmgestellt = false;
+    Boolean monatComboboxWurdeSoebenUmgestellt = false;
+    Boolean scrollWurdeSoebenDurchgeführt = false;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
