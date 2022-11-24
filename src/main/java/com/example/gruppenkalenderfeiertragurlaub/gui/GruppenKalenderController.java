@@ -84,12 +84,14 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
         handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
         //TODO Warnung das Daten Überschrieben werden
@@ -147,7 +149,5 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        //TODO Formatieren von Date Pickern so das das Akktuelle Datum (firstOfCurrentMonth) Standard Jahr und Monat angibt
     }
 }

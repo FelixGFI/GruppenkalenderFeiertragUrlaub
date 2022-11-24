@@ -586,4 +586,17 @@ public class ControllerBasisKlasse {
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
+    /**
+     * ändert das Ausgewählte Datum der Übregebenen Datpicker auf das Übergebene LocalDate. Dies hat zur Folge das durch OnAction
+     * methoden in der TabelleView eine auswahl getrofen wird, deswegen wird besagte Auswahl am ende der Methode entfernt.
+     * @param firstOfCurrentMonth neues default datum der DatePicker
+     * @param dpVon Erster DatePicker derssen Default Datum geändert werden soll
+     * @param dpBis Zweiter DatePicker derssen Default Datum geändert werden soll
+     * @param tbTabelle Tabelle deren Auswahl entfernt werdne soll
+     */
+    protected void updateDatpickers(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        dpBis.setValue(firstOfCurrentMonth);
+        dpVon.setValue(firstOfCurrentMonth);
+        tbTabelle.getSelectionModel().clearSelection();
+    }
 }

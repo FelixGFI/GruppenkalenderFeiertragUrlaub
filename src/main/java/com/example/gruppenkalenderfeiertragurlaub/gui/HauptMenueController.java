@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HauptMenueController {
-
     @FXML Button btProgrammSchliessen;
     @FXML Button btAnwesenheit;
     @FXML Button btKalenderplanug;
