@@ -113,7 +113,14 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         updateTableView();
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
-    //TODO write documentation
+
+
+    /**
+     * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt
+     * den Entsprechenden Boolean das es keine Uungespeicherten daten gibt. Anschließend liest sie anhand des firstOfCurrentMonth
+     * Datums alle Daten für das gewünschte Jahr aus und schreibt sie in die Tabelle
+     * @throws SQLException wird geworfen wenn der Datenbankzugriff nicht Ordnungsgemäß funktioniert
+     */
     private void updateTableView() throws SQLException {
         if (!tbTabelle.getItems().isEmpty()) {
             DatenbankCommunicator.saveBetriebsurlaub(tbTabelle.getItems());
@@ -122,7 +129,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         if (comboBoxJahrAuswahl.getSelectionModel().isEmpty()) {
             return;
         }
-        //TODO add save and warning window and code
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTage = DatenbankCommunicator.readBetriebsurlaubTage(firstOfCurrentMonth.getYear());
         tbTabelle.getItems().setAll(betriebsurlaubsTage);
     }
