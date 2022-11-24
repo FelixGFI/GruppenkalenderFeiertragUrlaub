@@ -10,26 +10,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class KuechenKalenderController extends ControllerBasisKlasse {
-    @FXML
-    Button btSpeichern;
-    @FXML
-    Button btAbbrechen;
-    @FXML
-    Button btGeschlossen;
-    @FXML
-    Button btOffen;
-    @FXML
-    Button btNaechsterMonat;
-    @FXML
-    Button btVorigerMonat;
-    @FXML
-    ComboBox<String> comboBoxMonatAuswahl;
-    @FXML
-    ComboBox<Integer> comboBoxJahrAuswahl;
-    @FXML
-    DatePicker dpVon;
-    @FXML
-    DatePicker dpBis;
+    @FXML Button btSpeichern;
+    @FXML Button btAbbrechen;
+    @FXML Button btGeschlossen;
+    @FXML Button btOffen;
+    @FXML Button btNaechsterMonat;
+    @FXML Button btVorigerMonat;
+    @FXML ComboBox<String> comboBoxMonatAuswahl;
+    @FXML ComboBox<Integer> comboBoxJahrAuswahl;
+    @FXML DatePicker dpVon;
+    @FXML DatePicker dpBis;
     @FXML TableView<KuechenKalenderTag> tbTabelle;
     @FXML TableColumn<KuechenKalenderTag, LocalDate> tcDatum;
     @FXML TableColumn<KuechenKalenderTag, Integer> tcKuecheOffen;
@@ -84,12 +74,14 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
         handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     public void initialize() throws SQLException {
         configureIntegerTableColum(tcKuecheOffen, "kuecheCurrentlyGeoeffnet");

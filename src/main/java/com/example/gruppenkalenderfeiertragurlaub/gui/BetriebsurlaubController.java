@@ -10,32 +10,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class BetriebsurlaubController extends ControllerBasisKlasse {
-    @FXML
-    Button btSpeichern;
-    @FXML
-    Button btAbbrechen;
-    @FXML
-    Button btUrlaub;
-    @FXML
-    Button btArbeit;
-    @FXML
-    Button btVorigerMonat;
-    @FXML
-    Button btNaechesterMonat;
-    @FXML
-    ComboBox<String> comboBoxMonatAuswahl;
-    @FXML
-    ComboBox<Integer> comboBoxJahrAuswahl;
-    @FXML
-    DatePicker dpVon;
-    @FXML
-    DatePicker dpBis;
-    @FXML
-    TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
-    @FXML
-    TableColumn<BetriebsurlaubsTag, Integer> tcIstBetriebsurlaub;
-    @FXML
-    TableView<BetriebsurlaubsTag> tbTabelle;
+    @FXML Button btSpeichern;
+    @FXML Button btAbbrechen;
+    @FXML Button btUrlaub;
+    @FXML Button btArbeit;
+    @FXML Button btVorigerMonat;
+    @FXML Button btNaechesterMonat;
+    @FXML ComboBox<String> comboBoxMonatAuswahl;
+    @FXML ComboBox<Integer> comboBoxJahrAuswahl;
+    @FXML DatePicker dpVon;
+    @FXML DatePicker dpBis;
+    @FXML TableColumn<BetriebsurlaubsTag, LocalDate> tcDatum;
+    @FXML TableColumn<BetriebsurlaubsTag, Integer> tcIstBetriebsurlaub;
+    @FXML TableView<BetriebsurlaubsTag> tbTabelle;
     @FXML
     protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
@@ -65,13 +52,16 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     protected void onComboboxJahrAuswahlAction() throws SQLException {
         if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
         handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         updateTableView();
     }
     @FXML
     protected void onComboboxMonatAuswahlAction() {
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
+        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
+
     }
     @FXML
     protected void onBtUrlaubClick() {
@@ -113,8 +103,6 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         updateTableView();
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
-
-
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt
      * den Entsprechenden Boolean das es keine Uungespeicherten daten gibt. Anschließend liest sie anhand des firstOfCurrentMonth
