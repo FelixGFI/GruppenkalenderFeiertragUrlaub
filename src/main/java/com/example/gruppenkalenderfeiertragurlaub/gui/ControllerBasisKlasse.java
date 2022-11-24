@@ -25,8 +25,10 @@ public class ControllerBasisKlasse {
     LocalDate firstOfCurrentMonth;
     Boolean dataHasBeenModified = false;
     Boolean jahrComboboxWurdeSoebenUmgestellt = false;
-    Boolean monatComboboxWurdeSoebenUmgestellt = false;
-    Boolean scrollWurdeSoebenDurchgeführt = false;
+    //Boolean monatComboboxWurdeSoebenUmgestellt = false;
+    //Boolean scrollWurdeSoebenDurchgeführt = false;
+    Boolean dpVonOnActionCalledFromUpdateDatepickers = false;
+    Boolean dpBisOnActionCalledFromUpdateDatepickers = false;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -441,6 +443,10 @@ public class ControllerBasisKlasse {
      * @param tbTabelle
      */
     protected void handleDatePickerVon(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        if(dpVonOnActionCalledFromUpdateDatepickers) {
+            dpVonOnActionCalledFromUpdateDatepickers = false;
+            return;
+        }
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(vonDatum == null) {
             return;
@@ -469,6 +475,10 @@ public class ControllerBasisKlasse {
      * @param tbTabelle
      */
     protected void handleDatePickerBis(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        if(dpBisOnActionCalledFromUpdateDatepickers) {
+            dpBisOnActionCalledFromUpdateDatepickers = false;
+            return;
+        }
         LocalDate bisDatum = leseDatumAusDatePicker(dpBis);
         LocalDate vonDatum = leseDatumAusDatePicker(dpVon);
         if(bisDatum == null || vonDatum == null) {
@@ -597,6 +607,8 @@ public class ControllerBasisKlasse {
      * @param tbTabelle Tabelle deren Auswahl entfernt werdne soll
      */
     protected void updateDatpickers(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
+        dpVonOnActionCalledFromUpdateDatepickers = true;
+        dpBisOnActionCalledFromUpdateDatepickers = true;
         dpBis.setValue(firstOfCurrentMonth);
         dpVon.setValue(firstOfCurrentMonth);
         tbTabelle.getSelectionModel().clearSelection();
