@@ -314,9 +314,9 @@ public class ControllerBasisKlasse {
      * erhält eine TableColumn<GruppenKalenderTag, Integer> und configuriert diese sodas sie die GruppeID enthält
      * verwendet außerdem eine CellFactory um für Jede gruppenID, aus der Übergebenen ArrayList, den Richtigen
      * Gruppennamen auszulesen und besagten in der Tabelle anzuzeigen.
-     * @param tcGruppenBezeichung
-     * @param columnAttributeName
-     * @param gruppenListe
+     * @param tcGruppenBezeichung zu Configurierende TableColumn<GruppenKalenderTag, Integer>
+     * @param columnAttributeName Name des in der Colum anzuzeigenden Attributs in der Anzuzeigenden Klasse
+     * @param gruppenListe liste aller Gruppen sodas der Name der Gruppe mit der Entsprechenden Nummer ermittelt werden kann
      */
     public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
@@ -385,7 +385,7 @@ public class ControllerBasisKlasse {
     /**
      * erhält einen DatePicker und versucht aus diesem ein LocalDate auszulesen. Ist dies erfolgreich so gibt die Methode
      * besagtes datum zurück, ist dies nicht erfolgreich gibt die Methode null zurück
-     * @param dp
+     * @param dp DatePicker aus welchem ddas Datum ausgelesen werden soll
      * @return ausgelesenes LocalDate wenn erfolgreich, Null wenn nicht erfolgreich
      */
     protected LocalDate leseDatumAusDatePicker(DatePicker dp) {
@@ -401,6 +401,7 @@ public class ControllerBasisKlasse {
      * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
      * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
      * @param firstWerktagOfMonth
+     * @param tbTabelle
      */
     protected void scrollToSelectedMonth(LocalDate firstWerktagOfMonth, TableView tbTabelle) {
         String month = firstWerktagOfMonth.getMonth().toString();
@@ -418,6 +419,9 @@ public class ControllerBasisKlasse {
      * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
      * onActions dieser Comboboxen Ausgelöst werden)
      * @param changeNumber
+     * @param comboBoxJahrAuswahl
+     * @param comboBoxMonatAuswahl
+     * @param firstOfCurrentMonth
      */
     protected LocalDate changeMonthBackOrForthBy(Integer changeNumber, LocalDate firstOfCurrentMonth, ComboBox comboBoxMonatAuswahl, ComboBox comboBoxJahrAuswahl) {
         // Set new date
@@ -495,8 +499,9 @@ public class ControllerBasisKlasse {
     /**
      * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
      * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
-     * @param titel
+     * @param titel titel des Fensters
      * @param fxmlReccouse
+     * @param parentStage
      */
     protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlReccouse) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
