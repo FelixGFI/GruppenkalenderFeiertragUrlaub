@@ -400,8 +400,8 @@ public class ControllerBasisKlasse {
     /**
      * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
      * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
-     * @param firstWerktagOfMonth
-     * @param tbTabelle
+     * @param firstWerktagOfMonth Datum zu welchem gescrollt werden soll
+     * @param tbTabelle Tabelle in der gescrollt wird.
      */
     protected void scrollToSelectedMonth(LocalDate firstWerktagOfMonth, TableView tbTabelle) {
         String month = firstWerktagOfMonth.getMonth().toString();
@@ -418,10 +418,10 @@ public class ControllerBasisKlasse {
      * der übergebenen ChangNumber Entspricht. Passt die Comboboxen comboBoxMonatAuswahl und gegebenen Falls die
      * comboBoxJahrAuswahl entsprchend dem Verändertne firstOfCurrentMonth an (wodruch die entsprechenden
      * onActions dieser Comboboxen Ausgelöst werden)
-     * @param changeNumber
-     * @param comboBoxJahrAuswahl
-     * @param comboBoxMonatAuswahl
-     * @param firstOfCurrentMonth
+     * @param changeNumber Anzahl der Monate die nach Vorne (positive Zahl) oder nach hinten (Negative zahl) geschoben werden sollen
+     * @param comboBoxJahrAuswahl Combobox Jahrauswahl in denen das evtl. Geänderte jahr angezeigt werden soll
+     * @param comboBoxMonatAuswahl Combobox Monat auswahl in der der Abgeänderte Monat angezeigt werden soll
+     * @param firstOfCurrentMonth Datum von dem aus die änderung vorgenommen wird
      */
     protected LocalDate changeMonthBackOrForthBy(Integer changeNumber, LocalDate firstOfCurrentMonth, ComboBox comboBoxMonatAuswahl, ComboBox comboBoxJahrAuswahl) {
         // Set new date
@@ -441,10 +441,10 @@ public class ControllerBasisKlasse {
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
      * dpVon und dpBis aus und ruft je nach Inhalt der Selben entweder Methoden zum Markieren eines Eizigen Datums oder mehrere Daten in der
      * übergebenen TableView tbTabelle auf oder returned ohne etwas zu tun.
-     * @param firstOfCurrentMonth
-     * @param dpVon
-     * @param dpBis
-     * @param tbTabelle
+     * @param firstOfCurrentMonth akktuelles Datum des Programms um ausgelesene Daten damit vergleichen zu können
+     * @param dpVon Erster Datepicker
+     * @param dpBis Zweiter Datepicker
+     * @param tbTabelle TableView in der Zellen markiert werden sollen
      */
     protected void handleDatePickerVon(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         if(dpVonOnActionCalledFromUpdateDatepickers) {
@@ -473,10 +473,10 @@ public class ControllerBasisKlasse {
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
      * dpVon und dpBis aus und ruft je nach Inhalt der Selben entweder eine Methode zum Markieren mehrerer Daten in der
      * übergebenen TableView tbTabelle auf oder returned ohne etwas zu tun.
-     * @param firstOfCurrentMonth
-     * @param dpVon
-     * @param dpBis
-     * @param tbTabelle
+     * @param firstOfCurrentMonth akktuelles Datum des Programms um ausgelesene Daten damit vergleichen zu können
+     * @param dpVon Erster Datepicker
+     * @param dpBis Zweiter Datepicker
+     * @param tbTabelle TableView in der Zellen markiert werden sollen
      */
     protected void handleDatePickerBis(LocalDate firstOfCurrentMonth, DatePicker dpVon, DatePicker dpBis, TableView tbTabelle) {
         if(dpBisOnActionCalledFromUpdateDatepickers) {
@@ -500,8 +500,7 @@ public class ControllerBasisKlasse {
      * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
      * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
      * @param titel titel des Fensters
-     * @param fxmlResource
-     * @param parentStage
+     * @param fxmlResource String welcher das zu öffnende FXML file enthält
      */
     protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlResource) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
@@ -562,8 +561,8 @@ public class ControllerBasisKlasse {
     /**
      * Überpfrüft ob ausgehend vom Übergebenen Datum aus gerechnet, eine veränderung des Monats um den gegebenen Integer
      * monthChange eine Änderung des Jahres zur folge hätte
-     * @param firstOfCurrentMonth
-     * @param monthChange
+     * @param firstOfCurrentMonth datum von dem ausgehend die verschiebung geprüft wird
+     * @param monthChange anzahl an Monaten für die Überprüft werdnen soll ob eine Datumsverschiebung das jahr ändern würde
      * @return true wenn eine Jahresanderung der Fall wäre. False wenn nicht
      */
     protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
