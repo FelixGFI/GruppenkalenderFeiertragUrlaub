@@ -85,7 +85,7 @@
                      </FlowPane.margin>
                   </Button>
                </children></FlowPane>
-            <TableView fx:id="tbTabelle" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <TableView fx:id="tbTabelle" onScrollFinished="#onScrollFinished" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="tcDatum" prefWidth="225.0" text="Datum" />
                 <TableColumn fx:id="tcIstBetriebsurlaub" prefWidth="225.0" text="Betriebsurlaub" />

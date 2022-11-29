@@ -4,6 +4,7 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -89,7 +90,14 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML protected void onDpBisAction() {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
+    @FXML void onScrollFinished(ScrollEvent event) {
+        System.out.println("BetriebsurlaubController.onScrollFinish()");
+    }
     public void initialize() throws SQLException {
+
+        System.out.println("BetriebsurlaubController.initialize() hfjhfjdslakfhsjk");
+
+
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
         configureIntegerTableColum(tcIstBetriebsurlaub, "isCurrentlyBetriebsurlaub");

@@ -500,11 +500,11 @@ public class ControllerBasisKlasse {
      * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
      * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
      * @param titel titel des Fensters
-     * @param fxmlReccouse
+     * @param fxmlResource
      * @param parentStage
      */
-    protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlReccouse) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlReccouse));
+    protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlResource) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
         Scene newScene;
         try {
             newScene = new Scene(loader.load());
