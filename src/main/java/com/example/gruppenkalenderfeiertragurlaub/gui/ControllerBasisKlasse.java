@@ -502,8 +502,8 @@ public class ControllerBasisKlasse {
      * @param titel titel des Fensters
      * @param fxmlResource String welcher das zu öffnende FXML file enthält
      */
-    protected void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlResource) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource));
+    protected static void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlResource) {
+        FXMLLoader loader = new FXMLLoader(ControllerBasisKlasse.class.getResource(fxmlResource));
         Scene newScene;
         try {
             newScene = new Scene(loader.load());
@@ -511,13 +511,15 @@ public class ControllerBasisKlasse {
             // TODO: handle error
             return;
         }
-        Stage childStage = new Stage();
-        childStage.initOwner(parentStage);
-        childStage.setScene(newScene);
-        childStage.setTitle(titel);
-        childStage.initModality(Modality.APPLICATION_MODAL);
-        childStage.showAndWait();
+        Stage stage = new Stage();
+        stage.initOwner(parentStage);
+        stage.setScene(newScene);
+        stage.setTitle(titel);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
+
+
     /**
      * erzeugt eine AlertBox welche den Nutzer fragte ob er Die Änderungen wirklcih verwerfen möchte. Liest die Antwort des
      * Nutzers ein und gibt Entsprechend true odre false zurück
@@ -619,14 +621,12 @@ public class ControllerBasisKlasse {
     }
     //TODO add Documentation
     protected void handleScrollEvent(ScrollEvent event, ComboBox comboBoxMonatAuswahl) {
-        System.out.println("BetriebsurlaubController.handleScrollEvent() handle reached");
         try{
             TableCell cell = (TableCell) event.getTarget();
             TagBasisKlasse tag = (TagBasisKlasse) cell.getTableRow().getItem();
             firstOfCurrentMonth = firstOfCurrentMonth.withMonth(tag.getDatum().getMonthValue());
             scrollWasJustHandeld = true;
             comboBoxMonatAuswahl.getSelectionModel().select(firstOfCurrentMonth.getMonthValue() - 1);
-            System.out.println("BetriebsurlaubController.handleScrollEvent()" + tag.getDatum().getMonthValue());
         } catch (Exception e) {
             return;
         }
