@@ -2,7 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 import java.time.LocalDate;
 
-public class TagBasisKlasse {
+public class Tag {
     protected LocalDate datum;
     public LocalDate getDatum() {
         return datum;

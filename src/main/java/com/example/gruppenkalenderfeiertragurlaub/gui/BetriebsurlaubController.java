@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class BetriebsurlaubController extends ControllerBasisKlasse {
+public class BetriebsurlaubController extends Controller {
     @FXML Button btSpeichern;
     @FXML Button btAbbrechen;
     @FXML Button btUrlaub;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ControllerBasisKlasse {
+public class Controller {
     LocalDate firstOfCurrentMonth;
     Boolean dataHasBeenModified = false;
     Boolean jahrComboboxWurdeSoebenUmgestellt = false;
@@ -161,7 +161,7 @@ public class ControllerBasisKlasse {
         for determening the format in which the data (which are set using CellVlaueFactory) is displayed
          */
         tableColumnBoolean.setCellFactory(colum -> {
-            TableCell<TagBasisKlasse, Boolean> cell = new TableCell<>();
+            TableCell<Tag, Boolean> cell = new TableCell<>();
 
              /* Because during at this point there are no Values in the table yet, because this is called during the
                initialize method, we add a Listener on the cell which we are setting the format on
@@ -190,7 +190,7 @@ public class ControllerBasisKlasse {
     public static void configureIntegerTableColum(TableColumn tableColumnInteger, String columAttributeName) {
         tableColumnInteger.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
         tableColumnInteger.setCellFactory(colum -> {
-            TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
+            TableCell<Tag, Integer> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newIntegerVal) -> {
                 if (newIntegerVal != null) {
                     if(newIntegerVal == 0) {cell.setText("Nein");}
@@ -223,7 +223,7 @@ public class ControllerBasisKlasse {
         should work with updating things as well I assume)
          */
         tableColumnLocalDate.setCellFactory(colum -> {
-            TableCell<TagBasisKlasse, LocalDate> cell = new TableCell<>();
+            TableCell<Tag, LocalDate> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
                     cell.setText(newVal.format(DateTimeFormatter
@@ -332,7 +332,7 @@ public class ControllerBasisKlasse {
     public static void configureGruppenBezeichnungTableColum(TableColumn tcGruppenBezeichung, String columnAttributeName, ArrayList<GruppeFuerKalender> gruppenListe) {
         tcGruppenBezeichung.setCellValueFactory(new PropertyValueFactory<>(columnAttributeName));
         tcGruppenBezeichung.setCellFactory(colum -> {
-            TableCell<TagBasisKlasse, Integer> cell = new TableCell<>();
+            TableCell<Tag, Integer> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
                     cell.setText("");
@@ -359,9 +359,9 @@ public class ControllerBasisKlasse {
      */
     protected void markAllRowsVonBis(LocalDate vonDatum, LocalDate bisDatum, TableView tbTabelle) {
         tbTabelle.getSelectionModel().clearSelection();
-        ObservableList<TagBasisKlasse> tabellenEintraege = tbTabelle.getItems();
+        ObservableList<Tag> tabellenEintraege = tbTabelle.getItems();
         boolean istErstesGefundenesDatum = true;
-        for(TagBasisKlasse tag : tabellenEintraege) {
+        for(Tag tag : tabellenEintraege) {
             LocalDate tagesDatum = tag.getDatum();
             boolean tagIsInIbetweenRange = (tagesDatum.isAfter(vonDatum) && tagesDatum.isBefore(bisDatum));
             boolean tagIsVonOrBisDatum = (tagesDatum.toString().equals(vonDatum.toString()) || tagesDatum.toString().equals(bisDatum.toString()));
@@ -383,9 +383,9 @@ public class ControllerBasisKlasse {
      */
     protected void markRowsOfOneDate(LocalDate vonDatum, TableView tbTabelle) {
         tbTabelle.getSelectionModel().clearSelection();
-        ObservableList<TagBasisKlasse> tabellenEintraege = tbTabelle.getItems();
+        ObservableList<Tag> tabellenEintraege = tbTabelle.getItems();
         boolean istErstesGefundenesDatum = true;
-        for (TagBasisKlasse tag : tabellenEintraege) {
+        for (Tag tag : tabellenEintraege) {
             if(tag.getDatum().toString().equals(vonDatum.toString())) {
                 tbTabelle.getSelectionModel().select(tag);
                 if(istErstesGefundenesDatum) {
@@ -420,8 +420,8 @@ public class ControllerBasisKlasse {
      */
     protected void scrollToSelectedMonth(LocalDate firstWerktagOfMonth, TableView tbTabelle) {
         String month = firstWerktagOfMonth.getMonth().toString();
-        ObservableList<TagBasisKlasse> items = tbTabelle.getItems();
-        for(TagBasisKlasse tag : items) {
+        ObservableList<Tag> items = tbTabelle.getItems();
+        for(Tag tag : items) {
             if(tag.getDatum().getMonth().toString().equals(month)) {
                 tbTabelle.scrollTo(items.indexOf(tag));
                 break;
@@ -522,7 +522,7 @@ public class ControllerBasisKlasse {
      * @param fxmlResource String welcher das zu öffnende FXML file enthält
      */
     protected static void openWindow(Stage parentStage, String titel, String fxmlResource) {
-        FXMLLoader loader = new FXMLLoader(ControllerBasisKlasse.class.getResource(fxmlResource));
+        FXMLLoader loader = new FXMLLoader(Controller.class.getResource(fxmlResource));
         Scene newScene;
         try {
             newScene = new Scene(loader.load());
@@ -544,7 +544,7 @@ public class ControllerBasisKlasse {
      * @return true wenn Nutzerbestätigung erteilt wurde, false wenn nicht
      */
     protected Boolean getNutzerBestaetigung() {
-        Boolean executeRequestedAction = false;
+        boolean executeRequestedAction = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Beschtätigen");
@@ -655,7 +655,7 @@ public class ControllerBasisKlasse {
     protected void handleScrollEvent(ScrollEvent event, ComboBox comboBoxMonatAuswahl) {
         try{
             TableCell cell = (TableCell) event.getTarget();
-            TagBasisKlasse tag = (TagBasisKlasse) cell.getTableRow().getItem();
+            Tag tag = (Tag) cell.getTableRow().getItem();
             firstOfCurrentMonth = firstOfCurrentMonth.withMonth(tag.getDatum().getMonthValue());
             scrollWasJustHandeld = true;
             comboBoxMonatAuswahl.getSelectionModel().select(firstOfCurrentMonth.getMonthValue() - 1);

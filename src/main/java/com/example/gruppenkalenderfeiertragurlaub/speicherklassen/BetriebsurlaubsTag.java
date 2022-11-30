@@ -2,7 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.speicherklassen;
 
 import java.time.LocalDate;
 
-public class BetriebsurlaubsTag extends TagBasisKlasse {
+public class BetriebsurlaubsTag extends Tag {
     private Integer isCurrentlyBetriebsurlaub;
     private Boolean beganAsBetriebsurlaub;
 

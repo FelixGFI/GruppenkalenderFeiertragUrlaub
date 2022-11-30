@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class GruppenKalenderController extends ControllerBasisKlasse{
+public class GruppenKalenderController extends Controller {
     @FXML Button btSpeichern;
     @FXML Button btAbbrechen;
     @FXML Button btUebernehmen;

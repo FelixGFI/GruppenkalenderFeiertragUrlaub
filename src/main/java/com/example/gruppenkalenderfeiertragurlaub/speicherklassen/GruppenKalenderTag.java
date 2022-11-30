@@ -5,7 +5,7 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConsta
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class GruppenKalenderTag  extends TagBasisKlasse {
+public class GruppenKalenderTag  extends Tag {
     private final Integer gruppenID;
     private Character gruppenstatus;
     private Boolean kuecheGeoeffnet;
