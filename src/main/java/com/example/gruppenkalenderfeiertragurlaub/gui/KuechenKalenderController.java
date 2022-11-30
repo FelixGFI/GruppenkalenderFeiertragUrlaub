@@ -4,6 +4,7 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -78,6 +79,10 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
+        if(scrollWasJustHandeld) {
+            scrollWasJustHandeld = false;
+            return;
+        }
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -94,6 +99,8 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
         updateTableView();
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
+                handleScrollEvent(event, comboBoxMonatAuswahl));
     }
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt

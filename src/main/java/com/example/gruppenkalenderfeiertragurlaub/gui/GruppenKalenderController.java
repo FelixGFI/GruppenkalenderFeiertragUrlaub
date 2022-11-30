@@ -7,6 +7,7 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalende
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -88,6 +89,10 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
+        if(scrollWasJustHandeld) {
+            scrollWasJustHandeld = false;
+            return;
+        }
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
@@ -149,5 +154,7 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         firstOfCurrentMonth = firstOfCurrentMonth.withDayOfMonth(1);
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
+                handleScrollEvent(event, comboBoxMonatAuswahl));
     }
 }

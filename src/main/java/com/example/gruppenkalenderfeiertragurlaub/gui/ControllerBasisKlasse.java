@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
@@ -25,10 +26,9 @@ public class ControllerBasisKlasse {
     LocalDate firstOfCurrentMonth;
     Boolean dataHasBeenModified = false;
     Boolean jahrComboboxWurdeSoebenUmgestellt = false;
-    //Boolean monatComboboxWurdeSoebenUmgestellt = false;
-    //Boolean scrollWurdeSoebenDurchgeführt = false;
     Boolean dpVonOnActionCalledFromUpdateDatepickers = false;
     Boolean dpBisOnActionCalledFromUpdateDatepickers = false;
+    Boolean scrollWasJustHandeld = false;
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -616,5 +616,19 @@ public class ControllerBasisKlasse {
         dpBis.setValue(firstOfCurrentMonth);
         dpVon.setValue(firstOfCurrentMonth);
         tbTabelle.getSelectionModel().clearSelection();
+    }
+    //TODO add Documentation
+    protected void handleScrollEvent(ScrollEvent event, ComboBox comboBoxMonatAuswahl) {
+        System.out.println("BetriebsurlaubController.handleScrollEvent() handle reached");
+        try{
+            TableCell cell = (TableCell) event.getTarget();
+            TagBasisKlasse tag = (TagBasisKlasse) cell.getTableRow().getItem();
+            firstOfCurrentMonth = firstOfCurrentMonth.withMonth(tag.getDatum().getMonthValue());
+            scrollWasJustHandeld = true;
+            comboBoxMonatAuswahl.getSelectionModel().select(firstOfCurrentMonth.getMonthValue() - 1);
+            System.out.println("BetriebsurlaubController.handleScrollEvent()" + tag.getDatum().getMonthValue());
+        } catch (Exception e) {
+            return;
+        }
     }
 }

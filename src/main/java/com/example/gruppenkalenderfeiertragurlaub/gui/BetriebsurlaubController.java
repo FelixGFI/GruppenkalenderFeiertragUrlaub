@@ -58,6 +58,10 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     }
     @FXML
     protected void onComboboxMonatAuswahlAction() {
+        if(scrollWasJustHandeld) {
+            scrollWasJustHandeld = false;
+            return;
+        }
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
@@ -104,17 +108,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         updateTableView();
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
-                handleScrollEvent(event));
-    }
-
-    private void handleScrollEvent(ScrollEvent event) {
-        //System.out.println("handle reached");
-        try{
-            BetriebsurlaubsTag tag = (BetriebsurlaubsTag)((TableCell) event.getTarget()).getItem();
-            System.out.println(tag.getDatum());
-        } catch (Exception e) {
-            return;
-        }
+                handleScrollEvent(event, comboBoxMonatAuswahl));
     }
 
     /**
