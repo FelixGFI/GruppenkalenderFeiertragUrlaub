@@ -29,6 +29,7 @@ public class ControllerBasisKlasse {
     Boolean dpVonOnActionCalledFromUpdateDatepickers = false;
     Boolean dpBisOnActionCalledFromUpdateDatepickers = false;
     Boolean scrollWasJustHandeld = false;
+
     /**
      * fügt in die Übergebene Combobox<Integer> alle in der verwendeten Arraylist enthalten Jahre hinzu
      * (at the time of writing alle Jahre von 2022 bis einschließlich 2040) wählt das akktuelle Jahra ls
@@ -39,6 +40,7 @@ public class ControllerBasisKlasse {
         comboBoxJahrAuswahl.getItems().addAll(UsefulConstants.getJahreList());
         comboBoxJahrAuswahl.getSelectionModel().select(UsefulConstants.getJahreList().indexOf(LocalDate.now().getYear()));
     }
+
     /**
      * Fügt alle Zwölf Monat in dem Format wie die Klasse LocalDate diese Verwendet (englisch und Capslock "JANUARY") in
      * die übergebene Combobox<String> hinzu.
@@ -75,6 +77,7 @@ public class ControllerBasisKlasse {
         //Setzt den Akktuellen Monat/das Aktuelle Jahr als Vorauswahl
         comboBoxMonatAuswahl.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
     }
+
     /**
      * fügt der übergbenen Combobox<Character> Character hinzu welche die auswählbaren Gruppenstatuse representieren
      * (d. h. was eine Gruppe an einem Bestimmten Tag laut kalender tut, Ausgenommen Gesetzliche Feiertage
@@ -109,6 +112,7 @@ public class ControllerBasisKlasse {
             }
         });
     }
+
     /**
      * Die Methode bekommt einen Gruppenstatus (welcher Anzeigt was eine Gruppe an einem bestimmten Tag tut)
      * in Form eines Characters. Für diesen Character wird ein Text erzeugt, der in der Gui angezeigt werden kann.
@@ -119,6 +123,7 @@ public class ControllerBasisKlasse {
         int statusIndex = UsefulConstants.getStatusListCharacterFormat().indexOf(aktivitaetsStatus);
         return (statusIndex != -1) ? UsefulConstants.getStatusListDisplayFormat().get(statusIndex) : "";
     }
+
     /**
      * konvertiert einen String welcher einen Monat in dem Format enthält wie die Classe LocalDate diesen Zurückgibt
      * (Monatsname in Capslock "JANUARY") in einen für String für die Gui Ausgabe.
@@ -129,6 +134,7 @@ public class ControllerBasisKlasse {
         int monatsIndex = UsefulConstants.getMonateListInLocalDateFormat().indexOf(localDateMonat);
         return (monatsIndex != -1) ? UsefulConstants.getMonatListAsDisplayText().get(monatsIndex) : "";
     }
+
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Boolean> so das der als String übergebene Attributname
      * als anzuzeigendes Attribut festgelegt wird. stellt sicher das in jeder Zelle der TableColum für den
@@ -173,6 +179,7 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
+
     /**
      * Konfiguriert die Übergebene TableColumn<Klassenname, Integer> so dass das als String übergebene Attribut der
      * anzuzeigenenden Klasse eingefügt wird. Sorgt dafür das für den Integer 0 "Ja", für 1 "Nein" und für
@@ -194,6 +201,7 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
+
     /**
      * Konfiguriert für die Übergebene TabelColum<Klassenname, LocalDate> das als String übergebenen Attributnamen
      * als das in dieser Colum anzuzeigende Attribut. Formatiert das anzuzeigende LocalDate entsprechend dem in Deutschland
@@ -225,6 +233,7 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
+
     /**
      * Konfiguriert die Übergebene TableColum<Klassenname, Character>. Setzt den Übergebenen String als anzuzeigendes
      * Attribut und findet für Jeden angezeigten Character, welcher den Gruppenstatus definiert
@@ -252,6 +261,7 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
+
     /**
      * Erhält eine Combobox<Object>. Füllt die ArrayList<GruppenFamileienFuerkalender> gruppenFamilienListe mit Allen Gruppenfamilien aus der Datenbank
      * In den Gruppenfamilien sind alle zu ihnen Gehörigen Gruppen bereits enthalten. Fügt der Combobox alle Gruppenfamilien sowie die zugehörigen
@@ -310,6 +320,7 @@ public class ControllerBasisKlasse {
 
         return gruppenFamilienListe;
     }
+
     /**
      * erhält eine TableColumn<GruppenKalenderTag, Integer> und configuriert diese sodas sie die GruppeID enthält
      * verwendet außerdem eine CellFactory um für Jede gruppenID, aus der Übergebenen ArrayList, den Richtigen
@@ -336,6 +347,7 @@ public class ControllerBasisKlasse {
             return cell;
         });
     }
+
     /**
      * Die Methode soll in der Tabelle eine Reihe von einträgen welche Zwischen zwei LocalDate Daten liegen auswählen
      * (einschließlich der Zwei Daten selbst). Hierfür überprüft es bei Jedem Objekt in der Tabelle ob dessen datum Entweder
@@ -362,6 +374,7 @@ public class ControllerBasisKlasse {
             }
         }
     }
+
     /**
      * erhält ein Einzelnes LocalDate und selected in der Tabelle alle Zeilen deren GruppenKalenderTag Objekte dieses Datum enhalten.
      * Scrollt zum Ersten Gefundenen Reihe mit diesem Datum.
@@ -382,6 +395,7 @@ public class ControllerBasisKlasse {
             }
         }
     }
+
     /**
      * erhält einen DatePicker und versucht aus diesem ein LocalDate auszulesen. Ist dies erfolgreich so gibt die Methode
      * besagtes datum zurück, ist dies nicht erfolgreich gibt die Methode null zurück
@@ -397,6 +411,7 @@ public class ControllerBasisKlasse {
         }
         return datum;
     }
+
     /**
      * erhält ein Datum. liest den Monat dieses Datums aus und sucht darauf hin der der Tabelle nach dem ersten Tag
      * mit einem Datum in diesem Monat. scrollt zu diesem Tag in der Tabelle.
@@ -413,6 +428,7 @@ public class ControllerBasisKlasse {
             }
         }
     }
+
     /**
      * Erhält einen Integer changeNumber und verändert das Datum firstOfCurrentMonth um eine Anzahl von Monaten die
      * der übergebenen ChangNumber Entspricht. Passt die Comboboxen comboBoxMonatAuswahl und gegebenen Falls die
@@ -436,6 +452,7 @@ public class ControllerBasisKlasse {
         }
         return firstOfCurrentMonth;
     }
+
     /**
      * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpVon aufgerufen zu
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
@@ -468,6 +485,7 @@ public class ControllerBasisKlasse {
             markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
         }
     }
+
     /**
      * Die Methode ist dazu gedacht von Allen Drei Controllern Innerhalb eines OnAction auf dem DatePicker mit dem Namen dpBis aufgerufen zu
      * werden da der Code hinter diesem In allen Drei Controller Klassen gleich ist. Die Methode liest die Übergebenen datePicker
@@ -496,13 +514,14 @@ public class ControllerBasisKlasse {
         }
         markAllRowsVonBis(vonDatum, bisDatum, tbTabelle);
     }
+
     /**
      * öffnet ein neues Fenster als subfenster des Hauptmenüs, aus dem fxmlFile dessen Pfad als String übergeben wurde.
      * das Neu geöffnete Fenster muss erst geschlossen werden bis wieder mit dem Hauptmenü fenster interagiert werden kann
      * @param titel titel des Fensters
      * @param fxmlResource String welcher das zu öffnende FXML file enthält
      */
-    protected static void openSubwindowFromButtonClick(Stage parentStage, String titel, String fxmlResource) {
+    protected static void openWindow(Stage parentStage, String titel, String fxmlResource) {
         FXMLLoader loader = new FXMLLoader(ControllerBasisKlasse.class.getResource(fxmlResource));
         Scene newScene;
         try {
@@ -518,7 +537,6 @@ public class ControllerBasisKlasse {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
     }
-
 
     /**
      * erzeugt eine AlertBox welche den Nutzer fragte ob er Die Änderungen wirklcih verwerfen möchte. Liest die Antwort des
@@ -538,6 +556,7 @@ public class ControllerBasisKlasse {
         }
         return executeRequestedAction;
     }
+
     /**
      * Überprüft ob Änderungen an den Daten in der TableView Vorgenommen wurden (anhand der Globalen variable dataHasBeenModified)
      * und ob eine änderung in Monaten um den gegebenen Integer wert monthChange ausgehend vom firstOfCurrentMonth zum Wechsel
@@ -560,6 +579,7 @@ public class ControllerBasisKlasse {
         }
         return true;
     }
+
     /**
      * Überpfrüft ob ausgehend vom Übergebenen Datum aus gerechnet, eine veränderung des Monats um den gegebenen Integer
      * monthChange eine Änderung des Jahres zur folge hätte
@@ -570,6 +590,7 @@ public class ControllerBasisKlasse {
     protected Boolean changingMonthWouldChangeYear(LocalDate firstOfCurrentMonth, Integer monthChange) {
         return (firstOfCurrentMonth.getYear() != firstOfCurrentMonth.plusMonths(monthChange).getYear());
     }
+
     /**
      * Die Methode überprüft welcher Code Abschnitt durchgeführt werden muss. Ist der Boolean jahrComboboxWurdeSoebenUmgestellt
      * true so bedeutet dies das die Methode als consequenz einer Automatischen zurückstellung des jahres nach verweigerter Nutzer
@@ -594,6 +615,7 @@ public class ControllerBasisKlasse {
         }
         return true;
     }
+
     /**
      * Ändert das firstOfCurrentMonth datum zum Ausgewählten Jahr. scorllt zum firstOfCurrentMonth in der tabelle
      * @param comboBoxJahrAuswahl die comboboxJahresauswahl für Wleche die Methode aufgerufen wird
@@ -604,6 +626,7 @@ public class ControllerBasisKlasse {
         firstOfCurrentMonth = firstOfCurrentMonth.withYear(year);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
+
     /**
      * ändert das Ausgewählte Datum der Übregebenen Datpicker auf das Übergebene LocalDate. Dies hat zur Folge das durch OnAction
      * methoden in der TabelleView eine auswahl getrofen wird, deswegen wird besagte Auswahl am ende der Methode entfernt.
@@ -619,7 +642,16 @@ public class ControllerBasisKlasse {
         dpVon.setValue(firstOfCurrentMonth);
         tbTabelle.getSelectionModel().clearSelection();
     }
-    //TODO add Documentation
+
+    /**
+     * wird aufgerufen wenn von einem EventFilter in einem der Drei Abgeleiteten Klassen von ControllerBasisKlasse ein ScrollEvent
+     * aufgegriffen wird. ermittelt zu welcem Tag in der Tabelle gescrollt wurde, passt die Globale Variable FirstOfCurrentMonth so
+     * an das ihr Monat dem des Tages entspricht zu dem Gescrollt wurde, passt die ComboboxMonatAuswahl entsprechend an d. h. wählt
+     * den richtigen Monat aus. Damit der dadurch Ausgelöste ActionHandler auf der Combobox Weis das er nicht tätig werden muss
+     * setzt sie den Boolean scrolLWasJustHandeld auf true.
+     * @param event scroll Event für welches die Methode aufgerufen wrude
+     * @param comboBoxMonatAuswahl zu akktualisierende Combobox zur Monatauswahl
+     */
     protected void handleScrollEvent(ScrollEvent event, ComboBox comboBoxMonatAuswahl) {
         try{
             TableCell cell = (TableCell) event.getTarget();

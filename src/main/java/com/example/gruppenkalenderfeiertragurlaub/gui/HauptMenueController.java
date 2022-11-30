@@ -31,15 +31,15 @@ public class HauptMenueController {
     }
     @FXML
     protected void onBtKalenderplanungClick() {
-        GruppenKalenderController.openSubwindowFromButtonClick(stage, "Kalenderplanung","gruppenKalenderView.fxml");
+        GruppenKalenderController.openWindow(stage, "Kalenderplanung","gruppenKalenderView.fxml");
     }
     @FXML
     protected void onBtKuechenplanungClick() {
-        KuechenKalenderController.openSubwindowFromButtonClick(stage, "Küchenplanung", "kuechenKalenderView.fxml");
+        KuechenKalenderController.openWindow(stage, "Küchenplanung", "kuechenKalenderView.fxml");
     }
     @FXML
     protected void onBtBetriebsurlaubsplanungClick() {
-        BetriebsurlaubController.openSubwindowFromButtonClick(stage, "Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
+        BetriebsurlaubController.openWindow(stage, "Betriebsurlaubsplanung", "betriebsurlaubView.fxml");
     }
     @FXML
     protected void onBtTeilnehmerverwaltungClick() {
