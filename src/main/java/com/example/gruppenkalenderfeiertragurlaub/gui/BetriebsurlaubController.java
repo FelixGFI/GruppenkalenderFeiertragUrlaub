@@ -90,14 +90,7 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
     @FXML protected void onDpBisAction() {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
-    @FXML void onScrollFinished(ScrollEvent event) {
-        System.out.println("BetriebsurlaubController.onScrollFinish()");
-    }
     public void initialize() throws SQLException {
-
-        System.out.println("BetriebsurlaubController.initialize() hfjhfjdslakfhsjk");
-
-
         //Wichtig! FXML object (wie table Colums, Table View, Buttons etc. Nicht neu initialisieren/überschreiben
         //Weil das FXML object im code ja schon ein UI element referenziert.
         configureIntegerTableColum(tcIstBetriebsurlaub, "isCurrentlyBetriebsurlaub");
@@ -110,7 +103,20 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         firstOfCurrentMonth = DatenbankCommunicator.getNextWerktag(firstOfCurrentMonth);
         updateTableView();
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
+                handleScrollEvent(event));
     }
+
+    private void handleScrollEvent(ScrollEvent event) {
+        //System.out.println("handle reached");
+        try{
+            BetriebsurlaubsTag tag = (BetriebsurlaubsTag)((TableCell) event.getTarget()).getItem();
+            System.out.println(tag.getDatum());
+        } catch (Exception e) {
+            return;
+        }
+    }
+
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt
      * den Entsprechenden Boolean das es keine Uungespeicherten daten gibt. Anschließend liest sie anhand des firstOfCurrentMonth
