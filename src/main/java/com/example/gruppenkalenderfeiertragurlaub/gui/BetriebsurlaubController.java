@@ -2,6 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
@@ -109,6 +110,16 @@ public class BetriebsurlaubController extends ControllerBasisKlasse {
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
                 handleScrollEvent(event, comboBoxMonatAuswahl));
+        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            Platform.runLater(() -> {
+                Stage stage = (Stage) newScene.getWindow();
+                stage.setOnCloseRequest(e -> {
+                    if(dataHasBeenModified) {
+                        if(!getNutzerBestaetigung()) e.consume();
+                    }
+                });
+            });
+        });
     }
 
     /**

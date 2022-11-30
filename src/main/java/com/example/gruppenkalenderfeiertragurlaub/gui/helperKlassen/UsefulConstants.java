@@ -53,5 +53,4 @@ public class UsefulConstants {
         return tageListInLocalDateFormat;
     }
     public static Character getDefaultStatus() {return defaultStatus;}
-
 }

@@ -2,6 +2,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.KuechenKalenderTag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
@@ -101,6 +102,17 @@ public class KuechenKalenderController extends ControllerBasisKlasse {
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
                 handleScrollEvent(event, comboBoxMonatAuswahl));
+        //TODO figure out how/why the code below works
+        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            Platform.runLater(() -> {
+                Stage stage = (Stage) newScene.getWindow();
+                stage.setOnCloseRequest(e -> {
+                    if(dataHasBeenModified) {
+                        if(!getNutzerBestaetigung()) e.consume();
+                    }
+                });
+            });
+        });
     }
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt

@@ -4,6 +4,7 @@ import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCom
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -156,5 +157,15 @@ public class GruppenKalenderController extends ControllerBasisKlasse{
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
                 handleScrollEvent(event, comboBoxMonatAuswahl));
+        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            Platform.runLater(() -> {
+                Stage stage = (Stage) newScene.getWindow();
+                stage.setOnCloseRequest(e -> {
+                    if(dataHasBeenModified) {
+                        if(!getNutzerBestaetigung()) e.consume();
+                    }
+                });
+            });
+        });
     }
 }

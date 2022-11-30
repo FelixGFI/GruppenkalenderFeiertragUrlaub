@@ -75,7 +75,8 @@ public class HauptMenueController {
     }
     @FXML
     protected void onBtProgrammSchliessenClick() {
-        System.out.println("Klick Programm schließen");
+        Stage stage = (Stage) (btAnwesenheit.getScene().getWindow());
+        stage.close();
     }
     /**
      * zeigt das Hauptmenü Fenster als neues Fenster an. Initialisiert und speichert die stage des Hauptfensters (von welchem diese Klasse
