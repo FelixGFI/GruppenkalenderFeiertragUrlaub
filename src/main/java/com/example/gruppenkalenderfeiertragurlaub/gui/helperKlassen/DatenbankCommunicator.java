@@ -4,19 +4,16 @@ import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.*;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class DatenbankCommunicator {
-
     private static Connection conn;
     private static final String url = "jdbc:mariadb://localhost/verpflegungsgeld";
     private static final String user = "root";
     private static final String password = "";
-
 
     /**
      * Stellt die Verbindng mit der Datenbank her deren daten in Globalen Variable Definiert sind. Verursacht ein Popup
@@ -112,6 +109,7 @@ public class DatenbankCommunicator {
         }
 
     }
+
     /**
      * Überprüft ob in der kuechenplanung tabelle einträge für das übergebene jahr vorhanden sind. Wenn nicht werden diese genneriert
      * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
@@ -153,6 +151,7 @@ public class DatenbankCommunicator {
         }
         return betriebsurlaubsTagListe;
     }
+
     /**
      * Liest alle Einträge für das gegebene Jahr und die gegebene Gruppe bzw Gruppenfamilie
      * aus der Datenbanktabelle Gruppenkalender und speichert diese in einer ArrayListe von
@@ -258,8 +257,6 @@ public class DatenbankCommunicator {
      */
     public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienUndGruppen() throws SQLException {
         ArrayList<GruppenFamilieFuerKalender> gruppenFamilieListe = new ArrayList<>();
-
-
         try(Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("select f.id as 'familienId', f.name as 'familienName', g.id 'gruppeId', g.name as 'gruppeName' \n" +
                     "from gruppenfamilie f inner join gruppe g on f.id = g.gruppenfamilie_id;")){
@@ -287,7 +284,6 @@ public class DatenbankCommunicator {
                 }
             }
         }
-
         return gruppenFamilieListe;
     }
 
@@ -300,7 +296,6 @@ public class DatenbankCommunicator {
      * @param jahr jahr für welches einträge Generiert werden sollen
      * @throws SQLException Wird geworfen wenn fehler beim Ausführne des SQL statments auftreten
      */
-
     static void generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
         if(!tagDatenSatzVorhanden(gr, jahr)) {
             try(Statement stmt = conn.createStatement()) {

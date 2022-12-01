@@ -114,6 +114,7 @@ public class KuechenKalenderController extends Controller {
             });
         });
     }
+
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt
      * den Entsprechenden Boolean das es keine Uungespeicherten daten gibt. Anschließend liest sie anhand des firstOfCurrentMonth

@@ -23,8 +23,7 @@ public class HauptMenueController {
     @FXML Button btPlatzhalterKnopf3;
     @FXML Button btPlatzhalterKnopf4;
     Stage stage;
-    public void initialize() {
-    }
+
     @FXML
     protected void onBtAnwesneheitClick() {
         System.out.println("Klick Anwesneheit");
@@ -78,6 +77,9 @@ public class HauptMenueController {
         Stage stage = (Stage) (btAnwesenheit.getScene().getWindow());
         stage.close();
     }
+    public void initialize() {
+    }
+
     /**
      * zeigt das Hauptmenü Fenster als neues Fenster an. Initialisiert und speichert die stage des Hauptfensters (von welchem diese Klasse
      * die Controller Classe ist) als globale Variable um diese später als parent für Subfenster zu verwenden.

@@ -32,7 +32,11 @@ public class GruppenKalenderController extends Controller {
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
     @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppenBezeichnung;
     @FXML Button btBetriebsurlaubUebernehmen;
+    Object aktuelleGruppeOderGruppenfamilie;
+    Boolean gruppenAuswahlWasJustHandled = false;
 
+    //TODO User bestätigung einholen wenn gruppe Gewechselt wird
+    //TODO Gui layout überarbeiten (abstand zwischen Buttons und dialogende)
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
     @FXML protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
@@ -76,9 +80,22 @@ public class GruppenKalenderController extends Controller {
     @FXML protected void onDpBisAction() {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
-
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
+        if(gruppenAuswahlWasJustHandled) {
+            gruppenAuswahlWasJustHandled = false;
+            return;
+        }
+        if(aktuelleGruppeOderGruppenfamilie != null)  {
+            if(dataHasBeenModified) {
+                if(!getNutzerBestaetigung()){
+                    gruppenAuswahlWasJustHandled = true;
+                    comboBoxGruppenAuswahl.getSelectionModel().select(aktuelleGruppeOderGruppenfamilie);
+                    return;
+                }
+            }
+        }
+        aktuelleGruppeOderGruppenfamilie = comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem();
         updateTableView();
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
@@ -111,6 +128,7 @@ public class GruppenKalenderController extends Controller {
         }
         tbTabelle.refresh();
     }
+
     /**
      * Die Methode überprüft ob die Tabelle Leer ist. Wenn nicht sorgt sie für das speichern aller änderungen setzt
      * den Entsprechenden Boolean das es keine Uungespeicherten daten gibt. Anschließend liest sie anhand des firstOfCurrentMonth
