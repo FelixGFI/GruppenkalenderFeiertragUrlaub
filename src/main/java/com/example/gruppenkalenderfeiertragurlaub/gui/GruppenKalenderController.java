@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
+import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.PDFCreator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
@@ -10,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,7 +38,6 @@ public class GruppenKalenderController extends Controller {
     Object aktuelleGruppeOderGruppenfamilie;
     Boolean gruppenAuswahlWasJustHandled = false;
 
-    //TODO User bestätigung einholen wenn gruppe Gewechselt wird
     //TODO Gui layout überarbeiten (abstand zwischen Buttons und dialogende)
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
     @FXML protected void onBtVorherigerMonatClick() {
@@ -58,9 +60,10 @@ public class GruppenKalenderController extends Controller {
         Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
         stage.close();
     }
-    @FXML protected void onBtSpeichernClick() throws SQLException {
+    @FXML protected void onBtSpeichernClick() throws SQLException, FileNotFoundException {
         System.out.println("Called onBtSpeichernClick()");
         updateTableView();
+        PDFCreator.writePDF();
     }
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();

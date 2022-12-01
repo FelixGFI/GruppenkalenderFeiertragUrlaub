@@ -2,6 +2,8 @@ module com.example.gruppenkalenderfeiertragurlaub {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires layout;
+    requires kernel;
 
 
     opens com.example.gruppenkalenderfeiertragurlaub to javafx.fxml;
