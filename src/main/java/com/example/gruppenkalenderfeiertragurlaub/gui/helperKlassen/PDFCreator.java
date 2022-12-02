@@ -1,6 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
 import com.example.gruppenkalenderfeiertragurlaub.gui.Controller;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -16,10 +17,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 //TODO document all methods in class
 public class PDFCreator {
-    public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage) throws FileNotFoundException {
+    public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage, ArrayList<GruppeFuerKalender> gruppenListe) throws FileNotFoundException {
         if (tagesListe.isEmpty()) return;
         PdfWriter writer = new PdfWriter(getFilename(parentStage));
         // Creating a PdfDocument
@@ -41,7 +44,7 @@ public class PDFCreator {
                 Paragraph paragraph = new Paragraph();
                 paragraph.setFontSize(12);
                 paragraph.setTextAlignment(TextAlignment.CENTER);
-                if (i == 0) paragraph.add(tag.getGruppenID().toString());
+                if (i == 0) paragraph.add(convertGruppenIDToName(tag, gruppenListe));
                 if (i == 1) paragraph.add(tag.getDatum().toString());
                 if (i == 2) paragraph.add(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()));
                 if (i == 3) paragraph.add(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()));
@@ -54,6 +57,15 @@ public class PDFCreator {
         document.add(headline);
         document.add(table);
         document.close();
+    }
+
+    private static String convertGruppenIDToName(GruppenKalenderTag tag, ArrayList<GruppeFuerKalender> gruppenListe) {
+        for (GruppeFuerKalender gr : gruppenListe) {
+            if(gr.getGruppeId() == tag.getGruppenID()) {
+                return gr.getGruppeName();
+            }
+        }
+        return "null";
     }
 
     private static String getFilename(Stage parentStage) {

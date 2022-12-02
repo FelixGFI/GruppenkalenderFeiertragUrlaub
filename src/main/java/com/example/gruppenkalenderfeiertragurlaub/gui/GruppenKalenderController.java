@@ -3,6 +3,7 @@ package com.example.gruppenkalenderfeiertragurlaub.gui;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.DatenbankCommunicator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.PDFCreator;
 import com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen.UsefulConstants;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppeFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenFamilieFuerKalender;
 import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import javafx.application.Platform;
@@ -35,6 +36,7 @@ public class GruppenKalenderController extends Controller {
     @FXML TableColumn<GruppenKalenderTag, Boolean> tcEssenVerfuegbar;
     @FXML TableColumn<GruppenKalenderTag, Integer> tcGruppenBezeichnung;
     @FXML Button btBetriebsurlaubUebernehmen;
+    @FXML Button btPDFErstellen;
     Object aktuelleGruppeOderGruppenfamilie;
     Boolean gruppenAuswahlWasJustHandled = false;
 
@@ -53,18 +55,14 @@ public class GruppenKalenderController extends Controller {
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtAbbrechenClick() {
-        System.out.println("Called onBAbbrechenClick()");
         if(dataHasBeenModified) {
             if(!getNutzerBestaetigung()) return;
         }
         Stage stage = (Stage) (btAbbrechen.getScene().getWindow());
         stage.close();
     }
-    @FXML protected void onBtSpeichernClick() throws SQLException, FileNotFoundException {
-        System.out.println("Called onBtSpeichernClick()");
-        PDFCreator.writePDF(tbTabelle.getItems(), (Stage) this.btSpeichern.getScene().getWindow());
+    @FXML protected void onBtSpeichernClick() throws SQLException {
         updateTableView();
-
     }
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();
@@ -77,6 +75,18 @@ public class GruppenKalenderController extends Controller {
             }
             tbTabelle.refresh();
         }
+    }
+    @FXML protected void onBtPDFErstellenClick() throws FileNotFoundException {
+        System.out.println("Called onBtPDFErstellenClick()");
+        ArrayList<GruppeFuerKalender> gruppenListe = new ArrayList<>();
+        try{
+            GruppenFamilieFuerKalender gruppenFamilie = (GruppenFamilieFuerKalender) comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem();
+            gruppenListe.addAll(gruppenFamilie.getGruppenDerFamilie());
+        } catch (Exception e) {
+            GruppeFuerKalender gruppe = (GruppeFuerKalender) comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem();
+            gruppenListe.add(gruppe);
+        }
+        PDFCreator.writePDF(tbTabelle.getItems(), (Stage) this.btSpeichern.getScene().getWindow(), gruppenListe);
     }
     @FXML protected void onDpVonAction() {
         handleDatePickerVon(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
