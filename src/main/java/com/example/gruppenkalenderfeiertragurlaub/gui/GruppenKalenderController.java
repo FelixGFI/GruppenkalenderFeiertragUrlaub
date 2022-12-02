@@ -62,8 +62,9 @@ public class GruppenKalenderController extends Controller {
     }
     @FXML protected void onBtSpeichernClick() throws SQLException, FileNotFoundException {
         System.out.println("Called onBtSpeichernClick()");
+        PDFCreator.writePDF(tbTabelle.getItems(), (Stage) this.btSpeichern.getScene().getWindow());
         updateTableView();
-        PDFCreator.writePDF();
+
     }
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();

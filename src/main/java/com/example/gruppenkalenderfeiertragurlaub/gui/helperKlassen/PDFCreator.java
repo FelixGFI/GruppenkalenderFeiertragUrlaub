@@ -1,5 +1,7 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
+import com.example.gruppenkalenderfeiertragurlaub.gui.Controller;
+import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.GruppenKalenderTag;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -8,11 +10,17 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class PDFCreator {
-    public static void writePDF() throws FileNotFoundException {
-        PdfWriter writer = new PdfWriter("src/main/resources/PDFs/pdf.pdf");
+    public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage) throws FileNotFoundException {
+        if (tagesListe.isEmpty()) return;
+        PdfWriter writer = new PdfWriter(getFilename(parentStage));
         // Creating a PdfDocument
         PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -25,7 +33,39 @@ public class PDFCreator {
         headline.setTextAlignment(TextAlignment.CENTER);
         headline.add("Monatsplan");
 
-        float [] pointColumnWidths = {200F, 200F, 200F};
+        Table table = constructTableAndColumnHeadlines();
+
+        for (GruppenKalenderTag tag : tagesListe) {
+            for (int i = 0; i < 3; i++) {
+                Paragraph paragraph = new Paragraph();
+                paragraph.setFontSize(12);
+                paragraph.setTextAlignment(TextAlignment.CENTER);
+                if (i == 0) paragraph.add(tag.getDatum().toString());
+                if (i == 1) paragraph.add(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()));
+                if (i == 2) paragraph.add(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()));
+
+                Cell cell = new Cell();
+                ;
+                cell.add(paragraph);
+
+                table.addCell(cell);
+            }
+        }
+        document.add(headline);
+        document.add(table);
+        document.close();
+    }
+
+    private static String getFilename(Stage parentStage) {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Speicherort Auswahl");
+        File file = chooser.showSaveDialog(parentStage);
+        return file.getAbsolutePath();
+        //return "src/main/resources/PDFs/pdf.pdf";
+    }
+
+    private static Table constructTableAndColumnHeadlines() {
+        float[] pointColumnWidths = {200F, 200F, 200F};
         Table table = new Table(pointColumnWidths);
         Paragraph paragraphDatum = new Paragraph();
         paragraphDatum.setFontSize(16);
@@ -51,47 +91,12 @@ public class PDFCreator {
         Cell cellEssenVerfuegbar = new Cell();
         cellEssenVerfuegbar.add(paragraphEssenVerfuegbar);
         table.addCell(cellEssenVerfuegbar);
+        return table;
+    }
 
-        for (int i = 0; i < 500; i++) {
-            Paragraph paragraphCell1 = new Paragraph();
-            paragraphCell1.setFontSize(12);
-            paragraphCell1.setTextAlignment(TextAlignment.CENTER);
-            paragraphCell1.add("cell1");
-
-            Cell cell1 = new Cell();;
-            cell1.add(paragraphCell1);
-
-            table.addCell(cell1);
-        }
-
-        document.add(headline);
-        document.add(table);
-
-        /*Paragraph name = new Paragraph();
-        name.setTextAlignment(TextAlignment.CENTER);
-        name.setFontSize(25);
-        name.add("test");
-
-        Paragraph platzierung = new Paragraph();
-        platzierung.setTextAlignment(TextAlignment.CENTER);
-        Text platz = new Text("Platz ");
-        platz.setFontSize(16);
-        Text platzZahl = new Text("moreTest");
-        platzZahl.setFontSize(50);
-        platzierung.add(platz);
-        platzierung.add(platzZahl);
-
-        Paragraph haupttext = new Paragraph();
-        haupttext.setFontSize(16);
-        haupttext.setTextAlignment(TextAlignment.CENTER);
-        haupttext.add("evene more test" + "\n");
-
-        document.add(platzierung);
-        document.add(paragraphCell1);
-        document.add(name);
-        document.add(haupttext);*/
-
-        // Closing the document
-        document.close();
+    private static String convertEssenVerfuegbar(Boolean essenVerfuegbar) {
+        if (essenVerfuegbar == true) return "Ja";
+        if (essenVerfuegbar == false) return "Nein";
+        return "null";
     }
 }

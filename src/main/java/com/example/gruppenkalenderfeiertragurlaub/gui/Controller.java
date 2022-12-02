@@ -119,7 +119,7 @@ public class Controller {
      * @param aktivitaetsStatus Status als Character für den der Passende String gefunden wwerden soll.
      * @return Text für die Ausgabe in der Gui
      */
-    private static String getDisplayMessageForStatus(Character aktivitaetsStatus) {
+    public static String getDisplayMessageForStatus(Character aktivitaetsStatus) {
         int statusIndex = UsefulConstants.getStatusListCharacterFormat().indexOf(aktivitaetsStatus);
         return (statusIndex != -1) ? UsefulConstants.getStatusListDisplayFormat().get(statusIndex) : "";
     }
