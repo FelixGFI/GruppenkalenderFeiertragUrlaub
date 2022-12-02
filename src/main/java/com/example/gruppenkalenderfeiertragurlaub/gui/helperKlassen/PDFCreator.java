@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+//TODO document all methods in class
 public class PDFCreator {
     public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage) throws FileNotFoundException {
         if (tagesListe.isEmpty()) return;
@@ -36,18 +37,17 @@ public class PDFCreator {
         Table table = constructTableAndColumnHeadlines();
 
         for (GruppenKalenderTag tag : tagesListe) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 Paragraph paragraph = new Paragraph();
                 paragraph.setFontSize(12);
                 paragraph.setTextAlignment(TextAlignment.CENTER);
-                if (i == 0) paragraph.add(tag.getDatum().toString());
-                if (i == 1) paragraph.add(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()));
-                if (i == 2) paragraph.add(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()));
+                if (i == 0) paragraph.add(tag.getGruppenID().toString());
+                if (i == 1) paragraph.add(tag.getDatum().toString());
+                if (i == 2) paragraph.add(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()));
+                if (i == 3) paragraph.add(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()));
 
                 Cell cell = new Cell();
-                ;
                 cell.add(paragraph);
-
                 table.addCell(cell);
             }
         }
@@ -59,38 +59,29 @@ public class PDFCreator {
     private static String getFilename(Stage parentStage) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Speicherort Auswahl");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
         File file = chooser.showSaveDialog(parentStage);
         return file.getAbsolutePath();
         //return "src/main/resources/PDFs/pdf.pdf";
     }
 
     private static Table constructTableAndColumnHeadlines() {
-        float[] pointColumnWidths = {200F, 200F, 200F};
+        float[] pointColumnWidths = {150F, 150F, 150F, 150F};
         Table table = new Table(pointColumnWidths);
-        Paragraph paragraphDatum = new Paragraph();
-        paragraphDatum.setFontSize(16);
-        paragraphDatum.setTextAlignment(TextAlignment.CENTER);
-        paragraphDatum.add("Datum");
-        Paragraph paragraphStatus = new Paragraph();
-        paragraphStatus.setFontSize(16);
-        paragraphStatus.setTextAlignment(TextAlignment.CENTER);
-        paragraphStatus.add("Status");
-        Paragraph paragraphEssenVerfuegbar = new Paragraph();
-        paragraphEssenVerfuegbar.setFontSize(16);
-        paragraphEssenVerfuegbar.setTextAlignment(TextAlignment.CENTER);
-        paragraphEssenVerfuegbar.add("Essen ist Verfügbar");
 
-        Cell cellDatum = new Cell();
-        cellDatum.add(paragraphDatum);
-        table.addCell(cellDatum);
+        for (int i = 0; i < 4; i++) {
+            Paragraph headlineParagraph = new Paragraph();
+            headlineParagraph.setFontSize(16);
+            headlineParagraph.setTextAlignment(TextAlignment.CENTER);
+            if(i == 0) headlineParagraph.add("Gruppe");
+            if(i == 1) headlineParagraph.add("Datum");
+            if(i == 2) headlineParagraph.add("Status");
+            if(i == 3) headlineParagraph.add("Essen Verfügbar");
 
-        Cell cellStatus = new Cell();
-        cellStatus.add(paragraphStatus);
-        table.addCell(cellStatus);
-
-        Cell cellEssenVerfuegbar = new Cell();
-        cellEssenVerfuegbar.add(paragraphEssenVerfuegbar);
-        table.addCell(cellEssenVerfuegbar);
+            Cell headlineCell = new Cell();
+            headlineCell.add(headlineParagraph);
+            table.addCell(headlineCell);
+        }
         return table;
     }
 
