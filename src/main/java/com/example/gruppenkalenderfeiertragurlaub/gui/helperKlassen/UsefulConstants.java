@@ -1,7 +1,5 @@
 package com.example.gruppenkalenderfeiertragurlaub.gui.helperKlassen;
 
-import com.example.gruppenkalenderfeiertragurlaub.speicherklassen.BetriebsurlaubsTag;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,12 +8,12 @@ public class UsefulConstants {
      * diese Klasse enthält eine Reihe von Konstanten für das Programm
      * -
      * TageListeInLocalDateFormat:              die Fünf Arbeitstage der Woche in dem Format wie sie die Klasse LocalDate verwendet
-     * statusListCharacterFormat:               Liste der möglichen Gruppenstatuse (Was eine bestimmte Gruppe/Gruppenfamilie dem Klander
+     * statusListCharacterFormat:               Liste der möglichen Gruppenstatus (Was eine bestimmte Gruppe/Gruppenfamilie dem Kalender
      *                                          entsprechend an einem Tag tut) im Character Format, zur verwendung in Objekten der Klasse
-     *                                          GruppenKalender Tagsowie in der Datenbank.
-     * statusListCharacterFormatOhneFeiertag    beihnahe Identisch zu statusListCharacterFormat mit der Ausnahme das der Character 'F' für
-     *                                          "Feiertag" nicht vorkommt. Diese ArrayList wird für die Configuration der Statusauswahl
-     *                                          Combobox verwendet bei der man aus offensichtlichem Grund nicht den Status gesetzlicher Feirtag
+     *                                          GruppenKalender Tag sowie in der Datenbank.
+     * statusListCharacterFormatOhneFeiertag    Beinahe identisch zu statusListCharacterFormat mit der Ausnahme das der Character 'F' für
+     *                                          "Feiertag" nicht vorkommt. Diese ArrayList wird für die Konfiguration der Statusauswahl
+     *                                          ComboBox verwendet, bei der man aus offensichtlichem Grund nicht den Status gesetzlicher Feiertag
      *                                          einstellen können soll.
      * statusListDisplayFormat:                 liste von Strings zur Anzeige in der Gui welche den Gruppenstatus verständlich beschrieben
      * monateListInLocalDateFormat:             Enthält die Zwölf Monate in dem Format wie sie die Klasse LocalDate verwendet

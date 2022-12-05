@@ -21,14 +21,14 @@ import java.util.ArrayList;
 public class PDFCreator {
 
     /**
-     * erstellt ein PDF dokument und schreibt es an eine vom Nutzer per Filechoser ausgewählte stelle. Fügt dem PDF
+     * Erstellt ein PDF dokument und schreibt es an eine vom Nutzer per FileChooser ausgewählte Stelle. Fügt dem PDF
      * File eine Überschrift, sowie eine Tabelle mit vier spalten, mit je einer Überschrift hinzu. Fügt die in der
      * tagesListe enthaltenen Daten in die Tabelle ein und erhält zusätzliche Informationen aus der Gruppenliste.
      * @param tagesListe Liste der Tage welche in dem PDF ausgedruckt werden sollen
-     * @param parentStage stage auf der der Filechoser aufgerufen werden soll. (stage des aufrufenden Dialogs)
-     * @param gruppenListe liste der Grupppen damit aus der gruppenID in tagen der tagesliste der richtige Gruppenname
-     *                     ermittelt werden kann
-     * @throws FileNotFoundException Wird geworfen wenn der Ausgwählte speicherort nicht gefunden werden konnte.
+     * @param parentStage Stage auf welcher der FileChooser aufgerufen werden soll. (stage des aufrufenden Dialogs)
+     * @param gruppenListe Liste der Gruppen damit aus der gruppenID in Tagen der tagesliste der richtige Gruppenname
+     *                     ermittelt werden kann.
+     * @throws FileNotFoundException Wird geworfen, wenn der ausgewählte speicherort nicht gefunden werden konnte.
      */
     public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage, ArrayList<GruppeFuerKalender> gruppenListe) throws FileNotFoundException {
         if (tagesListe.isEmpty()) return;
@@ -65,10 +65,10 @@ public class PDFCreator {
     }
 
     /**
-     * ließt aus dem übergebenen Tag die GruppenID aus und findet falls vorhanden den namen der Gruppe mit der
+     * Liest aus dem übergebenen Tag die GruppenID aus und findet, falls vorhanden den Namen der Gruppe mit der
      * besagten GruppenID
-     * @param tag tag welcher die Gruppen ID Enthälts
-     * @param gruppenListe liste der Gruppen welche überprüft werden um den richtigen Namen zur ID zu finden
+     * @param tag Tag welcher die Gruppen ID enthält.
+     * @param gruppenListe liste der Gruppen welche überprüft werden, um den richtigen Namen zur ID zu finden
      * @return den Gruppennamen als String falls vorhanden. Sonst "null"
      */
     private static String convertGruppenIDToName(GruppenKalenderTag tag, ArrayList<GruppeFuerKalender> gruppenListe) {
@@ -81,10 +81,10 @@ public class PDFCreator {
     }
 
     /**
-     * ruft einne Filechoser auf in dem der Nutzer auswaählen kann wo das zu erstellende PDF gespeichert werden soll.
-     * Gibt den Filepfad zurück
-     * @param parentStage stage auf der der FileChoser Aufgerufen wird
-     * @return den Filepfad des vom User ausgewählten speicherortes
+     * Ruft einen FileChooser auf in dem der Nutzer auswählen kann, wo das zu erstellende PDF gespeichert werden soll.
+     * Gibt den Pfad des Files zurück, welches der Nutzer für die Speicherung des PDFs ausgewählt hat zurück.
+     * @param parentStage Stage auf welcher der FileChooser aufgerufen wird.
+     * @return den Pfad des vom User ausgewählten Speicherortes (File).
      */
     private static String getSpeicherortVonUser(Stage parentStage) {
         FileChooser chooser = new FileChooser();
@@ -96,11 +96,11 @@ public class PDFCreator {
     }
 
     /**
-     * Erzeugt eine PDF Zelle, setzt die Textgröße auf den Übergebenen Font, schreibt den Übergebenen Text
-     * in die Zelle und fügt diese dan der Übergebenen Tabelle hinzu
+     * Erzeugt eine PDF-Zelle, setzt die Textgröße auf den übergebenen Font, schreibt den übergebenen Text
+     * in die Zelle und fügt diese dan der übergebenen Tabelle hinzu
      * @param cellText text für die Zelle
-     * @param fontSize schriftgrößer für die Zelle
-     * @param table Tabelle in die die erzeugte zelle hinzugefügt werden soll
+     * @param fontSize Schriftgröße für die zu erstellende Zelle.
+     * @param table Tabelle in welche die erzeugte Zelle hinzugefügt werden soll.
      */
     private static void createPDFCell(String cellText, int fontSize, Table table) {
         Paragraph paragraph = new Paragraph();
@@ -113,13 +113,12 @@ public class PDFCreator {
     }
 
     /**
-     * wandelt einen Boolean von true, false und null in Strings "Ja", "Nein", und "null" um
+     * Gibt "Ja" zurück wenn der übergebene Boolean true ist. Ansonsten gibt die Methode "Nein" zurück.
      * @param essenVerfuegbar der zu überprüfende Boolean
-     * @return "Ja" wenn true "Nein" wenn false ansonsten "null"
+     * @return "Ja" wenn true, ansonsten "Nein"
      */
     private static String convertEssenVerfuegbar(Boolean essenVerfuegbar) {
-        if (essenVerfuegbar == true) return "Ja";
-        if (essenVerfuegbar == false) return "Nein";
-        return "null";
+        if (essenVerfuegbar) return "Ja";
+        return "Nein";
     }
 }
