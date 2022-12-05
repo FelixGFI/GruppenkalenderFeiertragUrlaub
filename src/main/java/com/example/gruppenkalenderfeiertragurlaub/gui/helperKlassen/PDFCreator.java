@@ -59,7 +59,6 @@ public class PDFCreator {
             createPDFCell(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()), 16, table);
             createPDFCell(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()), 16, table);
         }
-
         document.add(headline);
         document.add(table);
         document.close();

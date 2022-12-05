@@ -16,7 +16,7 @@ public class DatenbankCommunicator {
     private static final String password = "";
 
     /**
-     * Stellt die Verbindng mit der Datenbank her deren daten in Globalen Variable Definiert sind. Verursacht ein Popup
+     * Stellt die Verbindung mit der Datenbank her deren daten in globalen Variable definiert sind. Verursacht ein Popup
      * sollte die verbindung nicht möglich sein
      */
     public static void establishConnection() {
@@ -36,18 +36,16 @@ public class DatenbankCommunicator {
 
     /**
      * Liest alle werte aus der Tabelle kuechenplanung für das übergebene Jahr und speichert diese in eine ArrayList
-     * von KüchenkalenderTag objekten. Liest außerdem aus ob es sich bei einem Tag um einen Feiertag handelt.
-     * Überprüft ob Daten für diese jahr in der Datenbank vorhanden sind, wenn nicht generiert es diese für das übergebene jahr und
-     * fährt dan mit dem einlesen fort. Übergibt die Eingelesenen Daten als ArrayList von KuechenKalenderTagen.
-     * @param jahr jahr für welches daten Ausgelesen werden sollen
+     * von KüchenkalenderTag objekten. Liest außerdem aus, ob es sich bei einem Tag um einen Feiertag handelt.
+     * Überprüft ob Daten für dieses Jahr in der Datenbank vorhanden sind, wenn nicht, generiert es diese für das übergebene jahr und
+     * fährt dan mit dem einlesen fort. Übergibt die eingelesenen Daten als ArrayList von KuechenKalenderTagen.
+     * @param jahr jahr für welches daten ausgelesen werden sollen
      * @return Liste aller datenbankeinträge in kuechenplanung für das übergebene jahr als
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff Mittels SQL Statement ausgelöst
      */
     public static ArrayList<KuechenKalenderTag> readKuechenKalenderTage(Integer jahr) throws SQLException {
-
         generateKuechenDatensaetzeIfMissing(jahr);
         ArrayList<KuechenKalenderTag> kuechenKalenderTagListe = new ArrayList<>();
-
         kuechenDatenSatzVorhanden(jahr);
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("select k.*, f.datum as 'fdatum' " +
@@ -55,8 +53,8 @@ public class DatenbankCommunicator {
                     "WHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
-                    Boolean kuecheOffen = rs.getBoolean("geoeffnet");
-                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    boolean kuecheOffen = rs.getBoolean("geoeffnet");
+                    boolean isFeiertag = (rs.getDate("fdatum") != null);
                     Integer kuecheOffenAsInteger = 0;
                     if(kuecheOffen) {kuecheOffenAsInteger = 1;}
                     if(isFeiertag) {kuecheOffenAsInteger = 2;}
@@ -69,12 +67,12 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * überprüft Mittels Methodenaufruf ob für en bestimmtes jahr der erste Werktag des jahres in der Datenbanktabelle kuechenplanung vorhandne ist.
-     * wenn dies der Fall ist geht die Methode davon aus das alle nötigen einträge dieses jahres bereits in der Datenbank vorhanden sind.
-     * Wenn nicht generiert die Methode eine ArrayList<LocalDate> von allen Werktagen des Jahres und schreibt zu jedem Datum einen eintrag
+     * Überprüft mittels Methodenaufruf, ob für ein bestimmtes Jahr der erste Werktag des Jahres in der Datenbanktabelle kuechenplanung vorhanden ist.
+     * wenn dies der Fall ist, geht die Methode davon aus, das alle nötigen Einträge dieses Jahres bereits in der Datenbank vorhanden sind.
+     * Wenn nicht, generiert die Methode eine ArrayList<LocalDate> von allen Werktagen des Jahres und schreibt zu jedem Datum einen eintrag
      * in die Tabelle gruppenkalender.
      * @param jahr das Auszulesende Jahr als integer
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff Mittels SQL Statement ausgelöst
      */
     private static void generateKuechenDatensaetzeIfMissing(Integer jahr) throws SQLException {
         if(kuechenDatenSatzVorhanden(jahr)) {
@@ -90,10 +88,10 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * ermittelt den ersten werktag eines Jahres. Überprüft ob ein eintrg für diesen, für dieses Jahr in der Datenbanktabelle kuechenplanung vorhanden ist.
+     * ermittelt den ersten werktag eines Jahres. Überprüft, ob ein Eintrag für diesen, für dieses Jahr in der Datenbanktabelle kuechenplanung vorhanden ist.
      * @param jahr jahr für das überprüft werden soll ob der küchendatensatz vorhanden ist
-     * @return true wenn datensatz für ersten werktag für gegebenes jahr vorhanden ist, false wenn nicht
-     * @throws SQLException
+     * @return True, wenn ein Datensatz für den ersten werktag für das gegebene Jahr vorhanden ist, false wenn nicht.
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff Mittels SQL Statement ausgelöst
      */
     private static Boolean kuechenDatenSatzVorhanden(Integer jahr) throws SQLException {
         LocalDate datum = LocalDate.parse(jahr + "-01-01");
@@ -111,24 +109,21 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * Überprüft ob in der kuechenplanung tabelle einträge für das übergebene jahr vorhanden sind. Wenn nicht werden diese genneriert
-     * Liest für das übergebene Jahr alle einträge in der Spalte datum der kuechenplanung tabelle. Für Jedes Gelesene Datum sucht es in der Tabelle
-     * betriebsurlaub nach einem identischen datum sowie in der Tabelle Feiertag nach einem Feiertag mit entsprechendem Datum.
-     * Wenn ein datum gefunden wird ist klar das es sich bie dem gelesenen Datum um einen bereits festgelgten Betriebsurlaubstag
-     * bzw. einen Feirtag handelt. wird kein entsprechendes Datum gefunden so ist der Tag kein betriebsurlaubstag unda auch kein
-     * Feiertag. Für Jeden Ausgelesenen Tag wird ein Object der Klasse BetriebsurlaubsTag erzeugt. Ob es sich um einen
-     * Betriebsurlaub(1) einen Feiertag(2) oder um keins von beidem(0) handelt wird mittels des Integer attributs betriebsurlaub
-     * gespeichert.
-     *
-     * die Estellten Betriebsurlaubstagsobjekte werden in einer Arraylist zurückgegeben.
-     * @param jahr jahr für welches der betriebsurlaub ausgelesen werden soll
-     * @return Liste aller datenbankeinträge datum aus kuechenplanung und betriebsurlaub für das übergebene jahr
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     * Überprüft ob, in der kuechenplanung tabelle Einträge für das übergebene Jahr vorhanden sind. Wenn nicht, werden diese generiert.
+     * Liest für das übergebene Jahr alle einträge in der Spalte Datum der kuechenplanung tabelle. Für jedes gelesene Datum sucht es in der Tabelle
+     * Betriebsurlaub nach einem identischen Datum sowie in der Tabelle Feiertag nach einem Feiertag mit entsprechendem Datum.
+     * Wenn, ein datum gefunden wird ist klar, das es sich bie dem gelesenen Datum um einen bereits festgelegten Betriebsurlaubstag
+     * bzw. einen Feiertag handelt. Wird kein entsprechendes Datum gefunden, so ist der Tag kein Betriebsurlaubstag und auch kein
+     * Feiertag. Für jeden ausgelesenen Tag wird ein Object der Klasse BetriebsurlaubsTag erzeugt. Ob es sich um einen
+     * Betriebsurlaub(1) einen Feiertag(2) oder um keins von Beidem(0) handelt, wird mittels des Integer attributs Betriebsurlaub
+     * gespeichert. Die erstellten Betriebsurlaubstage werden in einer Arraylist zurückgegeben.
+     * @param jahr Jahr für welches der Betriebsurlaub ausgelesen werden soll
+     * @return Liste aller Datenbankeinträge datum aus kuechenplanung und Betriebsurlaub für das übergebene Jahr
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff mittels SQL Statement ausgelöst
      */
     public static ArrayList<BetriebsurlaubsTag> readBetriebsurlaubTage(Integer jahr) throws SQLException {
         generateKuechenDatensaetzeIfMissing(jahr);
         ArrayList<BetriebsurlaubsTag> betriebsurlaubsTagListe = new ArrayList<>();
-        //TODO evtl. Don't display tag at all if it is a Feiertag
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery(
                     "select k.datum as 'datum', b.datum as 'bdatum', f.datum as 'fdatum' " +
@@ -137,8 +132,8 @@ public class DatenbankCommunicator {
                     "WHERE k.datum >= '" + jahr + "-01-01' AND k.datum <= '" + jahr + "-12-31'")) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
-                    Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
-                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
+                    boolean isFeiertag = (rs.getDate("fdatum") != null);
 
                     Integer isBetriebsurlaubAsInteger = 0;
                     if(isBetriebsurlaub) {isBetriebsurlaubAsInteger = 1;}
@@ -155,14 +150,14 @@ public class DatenbankCommunicator {
     /**
      * Liest alle Einträge für das gegebene Jahr und die gegebene Gruppe bzw Gruppenfamilie
      * aus der Datenbanktabelle Gruppenkalender und speichert diese in einer ArrayListe von
-     * GruppenKalenderTag objekten. Liest außerdme aus, ob ein bestimmter Tag ein Betriebsurlabs- oder Feiertag ist
-     * und speichert diese Daten für jeden eintrag in einem Objekt der Klasse GruppenKalenderTag.
-     * Wenn keine daten für eine Gruppe und das entsprechende Jahr vorhanden sind werdn diese Generiert
+     * GruppenKalenderTag objekten. Liest außerdem aus, ob ein bestimmter Tag ein Betriebsurlaubs- oder Feiertag ist
+     * und speichert diese Daten für jeden Eintrag in einem Objekt der Klasse GruppenKalenderTag.
+     * Wenn, keine Daten für eine Gruppe und das entsprechende Jahr vorhanden sind, werden diese generiert.
      * @param gruppeOderFamilie enthält entweder ein Object GruppeFuerkalender oder GruppenFamilieFuerKalender.
-     *                          Letzeres Enthält eine Arraylist mit allen Gruppen diese Gruppenfamilie.
-     * @param jahr das gegebene jahr als Integer
-     * @return Liste aller datenbankeinträge in gruppenkalender für das übergebene jahr
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     *                          Letzteres enthält eine Arraylist mit allen Gruppen diese Gruppenfamilie.
+     * @param jahr das gegebene Jahr als Integer
+     * @return Liste aller datenbankeinträge in Gruppenkalender für das übergebene Jahr
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff mittels SQL Statement ausgelöst
      */
     public static ArrayList<GruppenKalenderTag> readGruppenKalenderTage(Integer jahr, Object gruppeOderFamilie) throws SQLException {
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
@@ -172,38 +167,33 @@ public class DatenbankCommunicator {
                 generateTageIfMissing(gr, jahr);
             }
         }
-
         StringBuilder gruppeOderFamilieSelectedBedingung = getSQLExpressionChoosingGroups(gruppeOderFamilie);
-
-        ArrayList<GruppenKalenderTag> kalenderTagListe = readGruppenKalenderTageDatenbankzugriff(jahr, gruppeOderFamilieSelectedBedingung);
-
-        return kalenderTagListe;
+        return readGruppenKalenderTageDatenbankzugriff(jahr, gruppeOderFamilieSelectedBedingung);
     }
 
     /**
-     * Der zweck dieser methode ist anhand eines Übergebenen Gruppe oder Gruppenfamilie einen StringBuilder zu erzeugen welcher
-     * SQL Anweisungen enhält welche Spezifizieren für Welche Gruppen Daten Abgerufen werden sollen. Wird eine Gruppe übergeben
-     * so wird diese in der SQL anweisung berücksichtigt, wird eine Gruppenfamilie angegeben so werden alle zu ihr gehörigen Gruppen
-     * Aus der Selben gelesen und in der SQL anweisung berücksichtigt.
+     * Der Zweck dieser Methode ist anhand einer übergebenen Gruppe oder Gruppenfamilie einen StringBuilder zu erzeugen welcher
+     * SQL Anweisungen enthält welche spezifizieren für welche Gruppen Daten abgerufen werden sollen. Wird eine Gruppe übergeben
+     * so wird diese in der SQL Anweisung berücksichtigt, wird eine Gruppenfamilie angegeben so werden alle zu ihr gehörigen Gruppen
+     * aus derselben gelesen und in der SQL Anweisung berücksichtigt.
      * @param gruppeOderFamilie ein Object entweder vom Typ GruppeFuerKalender oder GruppenFamilieFuerKalender. Für diese
-     *                          Übergebene Gruppe oder alle Gruppen die in einer übergebenen Gruppenfamilie enthalten sind
+     *                          übergebene Gruppe oder alle Gruppen die in einer übergebenen Gruppenfamilie enthalten sind
      *                          sollen Daten aus der Datenbank ausgelesen werden
-     * @return StringBuilder welche SQL anweisungen enthält welche Spezifizieren für Welche Gruppen Daten Abegrufen werden sollen
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     * @return StringBuilder welche SQL anweisungen enthält welche spezifizieren für welche Gruppen Daten abgerufen werden sollen
      */
-    private static StringBuilder getSQLExpressionChoosingGroups(Object gruppeOderFamilie) throws SQLException {
+    private static StringBuilder getSQLExpressionChoosingGroups(Object gruppeOderFamilie) {
         StringBuilder gruppeOderFamilieSelectedBedingung = new StringBuilder(" and ");
         if(gruppeOderFamilie.getClass() == GruppeFuerKalender.class) {
             gruppeOderFamilieSelectedBedingung.append("g.gruppe_id = ").append(((GruppeFuerKalender) gruppeOderFamilie).getGruppeId());
         } else {
-            boolean isFirstGruppInArray = true;
+            boolean isFirstGruppeInArray = true;
             gruppeOderFamilieSelectedBedingung.append("(");
             for (GruppeFuerKalender gr : ((GruppenFamilieFuerKalender) gruppeOderFamilie).getGruppenDerFamilie() ) {
-                if(!isFirstGruppInArray) {
+                if(!isFirstGruppeInArray) {
                     gruppeOderFamilieSelectedBedingung.append(" or ");
                 }
                 gruppeOderFamilieSelectedBedingung.append("g.gruppe_id = ").append(gr.getGruppeId());
-                isFirstGruppInArray = false;
+                isFirstGruppeInArray = false;
             }
             gruppeOderFamilieSelectedBedingung.append(")");
         }
@@ -211,20 +201,20 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * Erhält ein jahr sowie einen StringBuilder welcher zusätzlichen SQL bedingungen Enthält welche definieren für Welche gruppe
-     * oder welche Gruppen Daten Ausgelesen werden sollen. Für das Übergebene Jahr und die Spezifizierten Gruppen werden aus der
-     * Datenbank nun alle enträge aus der Tabelle gruppenkalender ausgelesen. Außerdem wird für Jeden Ausgelesenen Eintrag
-     * ob die Küche an dem Entsprechenden Datum als Offen eingetragen ist, sowie ob es sich um einen Feiertag handelt oder
+     * Erhält ein Jahr sowie einen StringBuilder welcher zusätzlichen SQL Bedingungen enthält welche definieren für welche Gruppe
+     * oder welche Gruppen Daten ausgelesen werden sollen. Für das übergebene Jahr und die spezifizierten Gruppen werden aus der
+     * Datenbank nun alle Einträge aus der Tabelle gruppenkalender ausgelesen. Außerdem wird für jeden ausgelesenen Eintrag überprüft,
+     * ob die Küche an dem entsprechenden Datum als offen eingetragen ist, sowie ob es sich um einen Feiertag handelt oder
      * Betriebsurlaub für besagtes Datum angesetzt ist. Aus diesen Daten wird für jeden Eintrag ein GruppenKalenderTag erstellt
-     * und in eine Entsprechende Arralyist hinzugefügt welche zurückgegeben wird.
-     * @param jahr jahr für welches Daten ausgelesen werden sollen
-     * @param gruppeOderFamilieSelectedBedignung String mit bedingungen welche spezifizieren für Weleche Gruppen Daten ausgelesen
-     *                                           werden sollen. Wird ans ende des Strings mit SQL anweisungen des ausgeführten
-     *                                           Statments angehängt.
-     * @return eine ArrayList<GruppenKalenderTag> welche alle Ausgelesenen Tage enthält
-     * @throws SQLException wird bei Fehlern mit dem datenbankzugriff Mittels SQL Statment ausgelöst
+     * und in eine entsprechende Arraylist hinzugefügt welche zurückgegeben wird.
+     * @param jahr Jahr, für welches Daten ausgelesen werden sollen.
+     * @param gruppeOderFamilieSelectedBedingung String mit Bedingungen welche spezifizieren für welche Gruppen Daten ausgelesen
+     *                                           werden sollen. Wird ans Ende des Strings mit SQL Anweisungen des ausgeführten
+     *                                           Statements angehängt.
+     * @return eine ArrayList<GruppenKalenderTag> welche alle ausgelesenen Tage enthält
+     * @throws SQLException wird bei Fehlern mit dem Datenbankzugriff mittels SQL Statement ausgelöst
      */
-    private static ArrayList<GruppenKalenderTag> readGruppenKalenderTageDatenbankzugriff(Integer jahr, StringBuilder gruppeOderFamilieSelectedBedignung) throws SQLException {
+    private static ArrayList<GruppenKalenderTag> readGruppenKalenderTageDatenbankzugriff(Integer jahr, StringBuilder gruppeOderFamilieSelectedBedingung) throws SQLException {
         ArrayList<GruppenKalenderTag> kalenderTagListe = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
             try(ResultSet rs = stmt.executeQuery("" +
@@ -232,13 +222,13 @@ public class DatenbankCommunicator {
                     "left join kuechenplanung k on g.datum = k.datum " +
                     "left join betriebsurlaub b on g.datum = b.datum " +
                     "left join feiertag f on g.datum = f.datum " +
-                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr +"-12-31'" + gruppeOderFamilieSelectedBedignung)) {
+                    "where g.datum >= '" + jahr + "-01-01' and g.datum <= '" + jahr +"-12-31'" + gruppeOderFamilieSelectedBedingung)) {
                 while(rs.next()) {
                     LocalDate datum = LocalDate.parse(rs.getDate("datum").toString());
                     Integer gruppen_id =  rs.getInt("gruppe_id");
                     Character gruppenstatus = rs.getString("gruppenstatus").toCharArray()[0];
                     Boolean isBetriebsurlaub = (rs.getDate("bdatum") != null);
-                    Boolean isFeiertag = (rs.getDate("fdatum") != null);
+                    boolean isFeiertag = (rs.getDate("fdatum") != null);
                     Boolean kuechheOffen = rs.getBoolean("kgeoeffnet");
                     if(isFeiertag) {gruppenstatus = UsefulConstants.getStatusListCharacterFormat().get(6);}
                     GruppenKalenderTag tag = new GruppenKalenderTag(gruppen_id, datum, gruppenstatus, kuechheOffen, isBetriebsurlaub);
@@ -250,9 +240,9 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * Fragt aus der Datenabnk alle Gruppenfamilien und Dazu Gehörigen Gruppen ab, Erstellt aus ihnen GruppenFamilieFuerKalender und GruppeFuerKalender
+     * Fragt aus der Datenbank alle Gruppenfamilien und dazugehörigen Gruppen ab, erstellt aus ihnen GruppenFamilieFuerKalender und GruppeFuerKalender
      * Objekte, schreibt die Gruppen in die Gruppenliste ihrer jeweiligen Familie und die Familien in die Arraylist gruppenFamilieListe
-     * @return eine ArrayListe aller in der Datenbank Vorhandenen Gruppenfamilien (welche die Zugehörigen Gruppen enthalten)
+     * @return eine ArrayListe aller in der Datenbank vorhandenen Gruppenfamilien (welche die zugehörigen Gruppen enthalten)
      * @throws SQLException wird bei Problemen mit dem Datenbankzugriff mittels SQL geworfen
      */
     public static ArrayList<GruppenFamilieFuerKalender> getAllGruppenFamilienUndGruppen() throws SQLException {
@@ -288,13 +278,13 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * überprüft mittels Methodenaufruf ob für ein bestimmtes jahr und eine bestimmte gruppe der Erste Werktag des Jahres in der Datenbanktabelle
-     * gruppenkalender vorhanden ist. Wenn dies der Fall ist geht die Methode davon aus das alle nötigen eitnräge dieses jahres bereits in der
-     * Datenbank sind, wenn nicht generiert die Methode ein ArrayList<LocalDate> von allen Werktagen des jahres und erzeugt mit der Nummer der
+     * Überprüft mittels Methodenaufruf, ob für ein bestimmtes Jahr und eine bestimmte Gruppe der erste Werktag des Jahres in der Datenbanktabelle
+     * gruppenkalender vorhanden ist. Wenn dies der Fall ist, geht die Methode davon aus das alle nötigen Einträge dieses Jahres bereits in der
+     * Datenbank sind, wenn nicht, generiert die Methode ein ArrayList<LocalDate> von allen Werktagen des Jahres und erzeugt mit der Nummer der
      * übergebenen Gruppe alle entsprechenden Einträge in der Datenbank (Tabelle: gruppenkalender)
-     * @param gr Gruppe für die neue Einträge Generiert werden sollen
-     * @param jahr jahr für welches einträge Generiert werden sollen
-     * @throws SQLException Wird geworfen wenn fehler beim Ausführne des SQL statments auftreten
+     * @param gr Gruppe für, die neue Einträge generiert werden sollen
+     * @param jahr jahr für, welches einträge generiert werden sollen
+     * @throws SQLException Wird geworfen, wenn fehler beim Ausführen des SQL Statements Fehler auftreten
      */
     static void generateTageIfMissing(GruppeFuerKalender gr, Integer jahr) throws SQLException {
         if(!tagDatenSatzVorhanden(gr, jahr)) {
@@ -310,7 +300,7 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * ermittelt für das gegebene Jahr alle Werktage als LocalDate und speichert diese in einer ArrayList<LocalDate> die zurückgegeben wird.
+     * Ermittelt für das gegebene Jahr alle Werktage als LocalDate und speichert diese in einer ArrayList<LocalDate> die zurückgegeben wird.
      * @param jahr gegebenes Jahr als Integer
      * @return ArrayList<LocalDate> welches alle Werktage des gegebenen Jahres als LocalDate enthält
      */
@@ -327,13 +317,13 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * Überprüft ob der Erste Werktag des Gegebnen jahres für die gegebne Gruppe als Eintrag in der Datenbank Existiert.
-     * (Das Programm soll nur ganze jahre für eine gruppe gleichzeitig generieren, und nur werktage. Deswegen reicht es aus
-     * nach dem Ersten Werktag des Jahres zu suchen um festzustellen ob daten für das gegebene Jahr in der Datenbank vorhanden sind
-     * @param gr Gruppe für welche das vorhandenseiens eines Datensatzes für den ersten werktag des jahres überprüft werden soll
+     * Überprüft, ob der Erste Werktag des gegebenen Jahres für die gegebene Gruppe als Eintrag in der Datenbank existiert.
+     * (Das Programm soll nur ganze Jahre für eine Gruppe gleichzeitig generieren, und nur Werktage. Deswegen reicht es aus
+     * nach dem ersten Werktag des Jahres zu suchen, um festzustellen, ob daten für das gegebene Jahr in der Datenbank vorhanden sind)
+     * @param gr Gruppe für welche das Vorhandensein eines Datensatzes für den ersten werktag des jahres überprüft werden soll
      * @param jahr jahr für welches sich der erste Werktag bezieht.
-     * @return true wenn der Tag in der Datenbank vorhanden ist, fallse wenn er nicht vorhanden ist
-     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     * @return True, wenn der Tag in der Datenbank vorhanden ist, false, wenn er nicht vorhanden ist
+     * @throws SQLException wird geworfen, wenn Fehler mit der Ausführung des SQL Statements auftreten
      */
     private static Boolean tagDatenSatzVorhanden(GruppeFuerKalender gr, Integer jahr) throws SQLException {
         LocalDate datum = LocalDate.parse(jahr + "-01-01");
@@ -348,10 +338,10 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * ermittelt ob es sich beim Übergebenen LocalDate datum um einen Werktag (tag von Montag bis Freitag) handelt. (Feiertage werden nicht
+     * ermittelt, ob es sich beim übergebenen LocalDate datum um einen Werktag (tag von Montag bis Freitag) handelt. (Feiertage werden nicht
      * berücksichtigt, nur Wochenende)
-     * @param datum Datum für welches Überprüft werden soll ob es sich um einen Werktag handelt
-     * @return true wenn es sich beim Übergebenen LocalDate um einen Werktag handelt (ausgenommen feiertag) False wenn nicht
+     * @param datum Datum für welches Überprüft werden soll, ob es sich um einen Werktag handelt
+     * @return True, wenn es sich beim Übergebenen LocalDate um einen Werktag handelt (ausgenommen feiertag) false, wenn nicht.
      */
     public static Boolean datumIstWerktag(LocalDate datum) {
         return UsefulConstants.getTageListInLocalDateFormat().contains(datum.getDayOfWeek().toString());
@@ -359,10 +349,10 @@ public class DatenbankCommunicator {
 
     /**
      * Erhält eine ArrayList<GruppenFamilieFuerKalender. Jedes GruppenFamilieFuerKalender Object enthält eine ArrayList
-     * welche alle zu diser Gruppenfamilie gehörenden Gruppen enthält. Liest all diese Arraylisten aus den Gruppenfamilien
+     * welche alle zu dieser Gruppenfamilie gehörenden Gruppen enthält. Liest all diese Arraylists aus den Gruppenfamilien
      * aus und fügt alle gruppen aller Familien zu einer ArrayList<GruppeFuerKalender> hinzu.
      * @param gruppenFamilienListe liste von Gruppenfamilien denen Die zu ihnen gehörenden Gruppen entnommen werden sollen
-     * @return ArrayList<GruppeFuerKalender> welche alle gruppen aller Familien in der übergebnen ArrayList enthält.
+     * @return ArrayList<GruppeFuerKalender> welche alle gruppen aller Familien in der übergebenen ArrayList enthält.
      */
     public static ArrayList<GruppeFuerKalender> getAlleGruppenAusFamilien(ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe) {
         ArrayList<GruppeFuerKalender> gruppenListe = new ArrayList<>();
@@ -373,10 +363,10 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * findet heraus welches, vom gegebenen Datum heraus gerechnet der nächste Wekrtag ist (berücksichtigt nicht Feiertage)
-     * Wenn das übergebne Datum ein Werktag ist, gibt die Methode besagtes Datum unverändert zurück, ansonsten den nächsten Gefundenen
+     * Findet heraus welches, vom gegebenen Datum aus gerechnet der nächste Werktag ist (berücksichtigt nicht Feiertage).
+     * Wenn das übergebene Datum ein Werktag ist, gibt die Methode besagtes Datum unverändert zurück, ansonsten den nächsten gefundenen
      * Werktag.
-     * @param datum datum von Welchem aus der Nächste Werktag ermittelt werden soll.
+     * @param datum Datum, von welchem aus der Nächste Werktag ermittelt werden soll.
      * @return den Nächsten Werktag als LocalDate
      */
     public static LocalDate getNextWerktag(LocalDate datum) {
@@ -387,18 +377,18 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * überprüft für jeden Tag in der Liste ob sein orginalzustand mit dem jetztzustand übereinstimmt. ist ein Tag
-     * der Frühre betriebsurlaub war jetzt keiner Mehr so wird sein Eintrag aus der Datenbank gelöscht. Für jeden neuen
-     * Als Betriebsurlaub generierten Tag wird ein neuer Eintrag erzeugt.
-     * @param betriebsurlaubsTagListe ObersvableList aller BetriebsurlaubsTage deren Änderungen Gespeichert werden sollen
-     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     * Überprüft für jeden Tag in der Liste, ob sein Originalzustand mit dem jetzigen Zustand übereinstimmt. Ist ein Tag,
+     * der früher Betriebsurlaub war jetzt keiner mehr, so wird sein Eintrag aus der Datenbank gelöscht. Für jeden neuen
+     * als Betriebsurlaub generierten Tag wird ein neuer Eintrag erzeugt.
+     * @param betriebsurlaubsTagListe ObservableList aller BetriebsurlaubsTage deren Änderungen gespeichert werden sollen
+     * @throws SQLException Wird geworfen, wenn Fehler mit der Ausführung des SQL Statements auftreten
      */
     public static void saveBetriebsurlaub(ObservableList<BetriebsurlaubsTag> betriebsurlaubsTagListe) throws SQLException {
         if(betriebsurlaubsTagListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
         for (BetriebsurlaubsTag tag : betriebsurlaubsTagListe) {
             Boolean beganAsBetriebsurlaub = tag.getBeganAsBetriebsurlaub();
-            Boolean isCurrentlyBetriebsurlaub = (tag.getIsCurrentlyBetriebsurlaub() == 1);
+            boolean isCurrentlyBetriebsurlaub = (tag.getIsCurrentlyBetriebsurlaub() == 1);
             if(isCurrentlyBetriebsurlaub == beganAsBetriebsurlaub) continue;
             if(isCurrentlyBetriebsurlaub) {
                 try{
@@ -422,15 +412,15 @@ public class DatenbankCommunicator {
 
     /**
      * Die Methode erhält eine Liste von KuechenKalenderTagen. Jeder tag an dem während der Bearbeitung durch den Nutzer
-     * änderungen vorgenommen wurden wird in der Datenbank mittels SQL statement upgedated
+     * änderungen vorgenommen wurden, wird in der Datenbank mittels SQL statement aktualisiert.
      * @param kuechenTagesListe Observable List aller vorhanden KuechenKalenderTage deren Änderungen gespeichert werden sollen
-     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     * @throws SQLException Wird geworfen, wenn Fehler mit der Ausführung des SQL Statements auftreten.
      */
     public static void saveKuechenKalender(ObservableList<KuechenKalenderTag> kuechenTagesListe) throws SQLException {
         if(kuechenTagesListe.isEmpty()) return;
         Statement stmt = conn.createStatement();
         for (KuechenKalenderTag tag : kuechenTagesListe) {
-            Boolean kuecheGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
+            boolean kuecheGeoffnet = (tag.getKuecheCurrentlyGeoeffnet() == 1);
             if(!tag.getTagWasEdited()) continue;
             try {
                 stmt.execute("update kuechenplanung set geoeffnet = " + kuecheGeoffnet + " WHERE datum = '" + tag.getDatum().toString() + "'");
@@ -441,10 +431,10 @@ public class DatenbankCommunicator {
     }
 
     /**
-     * erhält eine Liste an GruppenkalenderTagen und überprüft für jeden tag ob besagter editiert worden ist. Wenn ja wird
-     * der entspprechende eintrag in der Datenbank upgedated.
+     * erhält eine Liste an GruppenkalenderTagen und überprüft für jeden tag ob besagter editiert worden ist. Wenn ja, wird
+     * der entsprechende eintrag in der Datenbank aktualisiert.
      * @param gruppenkalnderTagesListe Observable List aller GruppenKalenderTage deren Änderungen gespeichert werden sollen
-     * @throws SQLException wird geworfen wenn Fehler mit der Ausführugn des SQL statments auftreten
+     * @throws SQLException Wird geworfen, wenn Fehler mit der Ausführung des SQL Statements auftreten
      */
     public static void saveGruppenKalender(ObservableList<GruppenKalenderTag> gruppenkalnderTagesListe) throws SQLException {
         if(gruppenkalnderTagesListe.isEmpty()) return;

@@ -67,7 +67,6 @@ public class BetriebsurlaubController extends Controller {
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
-
     }
     @FXML
     protected void onBtUrlaubClick() {
