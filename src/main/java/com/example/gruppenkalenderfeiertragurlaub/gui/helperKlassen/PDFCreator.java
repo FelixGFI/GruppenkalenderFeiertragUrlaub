@@ -14,17 +14,25 @@ import com.itextpdf.layout.property.TextAlignment;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Objects;
 
-//TODO document all methods in class
 public class PDFCreator {
+
+    /**
+     * erstellt ein PDF dokument und schreibt es an eine vom Nutzer per Filechoser ausgewählte stelle. Fügt dem PDF
+     * File eine Überschrift, sowie eine Tabelle mit vier spalten, mit je einer Überschrift hinzu. Fügt die in der
+     * tagesListe enthaltenen Daten in die Tabelle ein und erhält zusätzliche Informationen aus der Gruppenliste.
+     * @param tagesListe Liste der Tage welche in dem PDF ausgedruckt werden sollen
+     * @param parentStage stage auf der der Filechoser aufgerufen werden soll. (stage des aufrufenden Dialogs)
+     * @param gruppenListe liste der Grupppen damit aus der gruppenID in tagen der tagesliste der richtige Gruppenname
+     *                     ermittelt werden kann
+     * @throws FileNotFoundException Wird geworfen wenn der Ausgwählte speicherort nicht gefunden werden konnte.
+     */
     public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage, ArrayList<GruppeFuerKalender> gruppenListe) throws FileNotFoundException {
         if (tagesListe.isEmpty()) return;
-        PdfWriter writer = new PdfWriter(getFilename(parentStage));
+        PdfWriter writer = new PdfWriter(getSpeicherortVonUser(parentStage));
         // Creating a PdfDocument
         PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -37,28 +45,33 @@ public class PDFCreator {
         headline.setTextAlignment(TextAlignment.CENTER);
         headline.add("Monatsplan");
 
-        Table table = constructTableAndColumnHeadlines();
+        float[] pointColumnWidths = {150F, 150F, 150F, 150F};
+        Table table = new Table(pointColumnWidths);
+
+        createPDFCell("Gruppe", 16, table);
+        createPDFCell("Datum", 16, table);
+        createPDFCell("Status", 16, table);
+        createPDFCell("Essen Verfügbar", 16, table);
 
         for (GruppenKalenderTag tag : tagesListe) {
-            for (int i = 0; i < 4; i++) {
-                Paragraph paragraph = new Paragraph();
-                paragraph.setFontSize(12);
-                paragraph.setTextAlignment(TextAlignment.CENTER);
-                if (i == 0) paragraph.add(convertGruppenIDToName(tag, gruppenListe));
-                if (i == 1) paragraph.add(tag.getDatum().toString());
-                if (i == 2) paragraph.add(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()));
-                if (i == 3) paragraph.add(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()));
-
-                Cell cell = new Cell();
-                cell.add(paragraph);
-                table.addCell(cell);
-            }
+            createPDFCell(convertGruppenIDToName(tag, gruppenListe), 16, table);
+            createPDFCell(tag.getDatum().toString(), 16, table);
+            createPDFCell(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()), 16, table);
+            createPDFCell(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()), 16, table);
         }
+
         document.add(headline);
         document.add(table);
         document.close();
     }
 
+    /**
+     * ließt aus dem übergebenen Tag die GruppenID aus und findet falls vorhanden den namen der Gruppe mit der
+     * besagten GruppenID
+     * @param tag tag welcher die Gruppen ID Enthälts
+     * @param gruppenListe liste der Gruppen welche überprüft werden um den richtigen Namen zur ID zu finden
+     * @return den Gruppennamen als String falls vorhanden. Sonst "null"
+     */
     private static String convertGruppenIDToName(GruppenKalenderTag tag, ArrayList<GruppeFuerKalender> gruppenListe) {
         for (GruppeFuerKalender gr : gruppenListe) {
             if(gr.getGruppeId() == tag.getGruppenID()) {
@@ -68,7 +81,13 @@ public class PDFCreator {
         return "null";
     }
 
-    private static String getFilename(Stage parentStage) {
+    /**
+     * ruft einne Filechoser auf in dem der Nutzer auswaählen kann wo das zu erstellende PDF gespeichert werden soll.
+     * Gibt den Filepfad zurück
+     * @param parentStage stage auf der der FileChoser Aufgerufen wird
+     * @return den Filepfad des vom User ausgewählten speicherortes
+     */
+    private static String getSpeicherortVonUser(Stage parentStage) {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Speicherort Auswahl");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
@@ -77,26 +96,28 @@ public class PDFCreator {
         //return "src/main/resources/PDFs/pdf.pdf";
     }
 
-    private static Table constructTableAndColumnHeadlines() {
-        float[] pointColumnWidths = {150F, 150F, 150F, 150F};
-        Table table = new Table(pointColumnWidths);
-
-        for (int i = 0; i < 4; i++) {
-            Paragraph headlineParagraph = new Paragraph();
-            headlineParagraph.setFontSize(16);
-            headlineParagraph.setTextAlignment(TextAlignment.CENTER);
-            if(i == 0) headlineParagraph.add("Gruppe");
-            if(i == 1) headlineParagraph.add("Datum");
-            if(i == 2) headlineParagraph.add("Status");
-            if(i == 3) headlineParagraph.add("Essen Verfügbar");
-
-            Cell headlineCell = new Cell();
-            headlineCell.add(headlineParagraph);
-            table.addCell(headlineCell);
-        }
-        return table;
+    /**
+     * Erzeugt eine PDF Zelle, setzt die Textgröße auf den Übergebenen Font, schreibt den Übergebenen Text
+     * in die Zelle und fügt diese dan der Übergebenen Tabelle hinzu
+     * @param cellText text für die Zelle
+     * @param fontSize schriftgrößer für die Zelle
+     * @param table Tabelle in die die erzeugte zelle hinzugefügt werden soll
+     */
+    private static void createPDFCell(String cellText, int fontSize, Table table) {
+        Paragraph paragraph = new Paragraph();
+        paragraph.setFontSize(fontSize);
+        paragraph.setTextAlignment(TextAlignment.CENTER);
+        paragraph.add(cellText);
+        Cell headlineCell = new Cell();
+        headlineCell.add(paragraph);
+        table.addCell(headlineCell);
     }
 
+    /**
+     * wandelt einen Boolean von true, false und null in Strings "Ja", "Nein", und "null" um
+     * @param essenVerfuegbar der zu überprüfende Boolean
+     * @return "Ja" wenn true "Nein" wenn false ansonsten "null"
+     */
     private static String convertEssenVerfuegbar(Boolean essenVerfuegbar) {
         if (essenVerfuegbar == true) return "Ja";
         if (essenVerfuegbar == false) return "Nein";
