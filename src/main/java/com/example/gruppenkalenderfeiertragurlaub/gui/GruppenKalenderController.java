@@ -44,13 +44,13 @@ public class GruppenKalenderController extends Controller {
     ArrayList<GruppenFamilieFuerKalender> gruppenFamilienListe;
     @FXML protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
-        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
         firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
     @FXML protected void onBtNaechsterMonatClick() {
         Integer monthChange = 1;
-        if (!monthChangeOperationShouldbeContinued(firstOfCurrentMonth, monthChange)) return;
+        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
         firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
         //scrollToSelectedMonth(firstOfCurrentMonth);
     }
@@ -115,20 +115,20 @@ public class GruppenKalenderController extends Controller {
     }
     @FXML protected void onComboboxJahrAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
-        if (!handleComboboxJahrauswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
-        handleOnComboboxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
-        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+        if (!handleComboBoxJahrAuswahlShouldBeContinued(comboBoxJahrAuswahl)) return;
+        handleOnComboBoxJahrAuswahlAction(comboBoxJahrAuswahl, tbTabelle);
+        updateDatePickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
         updateTableView();
     }
     @FXML protected void onComboboxMonatAuswahlAction() {
-        if(scrollWasJustHandeld) {
-            scrollWasJustHandeld = false;
+        if(scrollWasJustHandled) {
+            scrollWasJustHandled = false;
             return;
         }
         int monthIndex = comboBoxMonatAuswahl.getSelectionModel().getSelectedIndex() + 1;
         firstOfCurrentMonth = firstOfCurrentMonth.withMonth(monthIndex);
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
-        updateDatpickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
+        updateDatePickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
         //TODO Warnung das Daten Überschrieben werden
