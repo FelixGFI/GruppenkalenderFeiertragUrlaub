@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -171,6 +172,9 @@ public class GruppenKalenderController extends Controller {
     public void initialize() throws SQLException {
         //IMPORTANT!: gruppenFamilenListe =  configureCBGruppenAuswahl MUST BE CALLED FIRST before configure tcGruppenBeziechnung!
         //Otherwise the needed gruppenFamilienListe will  be empty"!
+        Label lblPlacholderText = new Label("Momentan sind keine Daten ausgewählt.\nBitte wählen Sie eine Gruppe oder Gruppenfamilie in der Dropdownliste aus.");
+        lblPlacholderText.setTextAlignment(TextAlignment.CENTER);
+        tbTabelle.setPlaceholder(lblPlacholderText);
         configureCBMonatAuswahl(comboBoxMonatAuswahl);
         configureCBJahrAuswahl(comboBoxJahrAuswahl);
         configureCBStatusauswahl(comboBoxStatusAuswahl);
