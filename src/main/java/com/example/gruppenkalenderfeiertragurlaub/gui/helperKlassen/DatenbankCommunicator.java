@@ -393,16 +393,13 @@ public class DatenbankCommunicator {
             if(isCurrentlyBetriebsurlaub) {
                 try{
                     stmt.execute("insert into betriebsurlaub (datum) values ('" + tag.getDatum().toString() + "')");
-                    System.out.println("saveBetriebsurlaub() new betriebsurlaub Added");
                 } catch (Exception e) {
                     //TODO Fehlermeldung
                 }
             }
-            System.out.println("saveBetriebsurlaub()" + beganAsBetriebsurlaub);
             if(beganAsBetriebsurlaub){
                 try{
                     stmt.execute("delete from betriebsurlaub where datum = '" + tag.getDatum().toString() + "'");
-                    System.out.println("saveBetriebsurlaub() Alter Betriebsurlaub removed");
                 } catch (Exception e) {
                     //TODO Fehlermeldung
                 }
