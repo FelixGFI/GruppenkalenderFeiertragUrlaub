@@ -1,12 +1,43 @@
-.button {
-	-fx-border-color : EEB647;
-	-fx-border-width : 2;
-	-fx-background-color: white;
+.root
+{
+    /* -fx-base: EEB647; */
+    -fx-background: rgb(245, 245, 245);
 }
-
-.table-view {
-	-fx-background-color: EEB647;
+.button
+{
+    -fx-border-color: EEB647;
+    -fx-text-fill : black;
 }
-.lable {
-	
+.borders
+{
+    -fx-border-color: rgb(103, 100, 78);
+    -fx-border-style: dotted;
+    -fx-border-width: 1.5;
+    -fx-border-insets: -5;
+}
+.lable
+{
+    -fx-text-fill : black;
+}
+.combo-box
+{
+    -fx-text-fill : black;
+    -fx-background-color : EEB647;
+}
+.date-picker
+{
+    -fx-background-color : EEB647;
+}
+.table-view
+{
+    -fx-base: EEB647;
+    -fx-highlight-fill: EEB647;
+    -fx-highlight-text-fill: black;
+}
+.table-column
+{
+    -fx-base: EEB647;
+    -fx-text-fill : black;
+    -fx-highlight-fill: EEB647;
+    -fx-highlight-text-fill: black;
 }
