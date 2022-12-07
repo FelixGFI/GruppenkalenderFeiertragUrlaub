@@ -32,7 +32,10 @@ public class PDFCreator {
      */
     public static void writePDF(ObservableList<GruppenKalenderTag> tagesListe, Stage parentStage, ArrayList<GruppeFuerKalender> gruppenListe) throws FileNotFoundException {
         if (tagesListe.isEmpty()) return;
-        PdfWriter writer = new PdfWriter(getSpeicherortVonUser(parentStage));
+        String speicherortPfad = getSpeicherortVonUser(parentStage);
+        if(speicherortPfad == null) return;
+
+        PdfWriter writer = new PdfWriter(speicherortPfad);
         // Creating a PdfDocument
         PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setDefaultPageSize(PageSize.A4);
@@ -91,6 +94,9 @@ public class PDFCreator {
         chooser.setTitle("Speicherort Auswahl");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
         File file = chooser.showSaveDialog(parentStage);
+        if(file == null) {
+            return null;
+        }
         return file.getAbsolutePath();
         //return "src/main/resources/PDFs/pdf.pdf";
     }

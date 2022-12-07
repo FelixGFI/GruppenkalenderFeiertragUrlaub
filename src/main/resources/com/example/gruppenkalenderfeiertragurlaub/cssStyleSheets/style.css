@@ -7,6 +7,9 @@
 {
     -fx-border-color: EEB647;
     -fx-text-fill : black;
+    -fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
+    -fx-base: white;
 }
 .borders
 {
@@ -22,11 +25,16 @@
 .combo-box
 {
     -fx-text-fill : black;
-    -fx-background-color : EEB647;
+    -fx-base: white;
+    -fx-border-color : EEB647;
+    -fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
 }
 .date-picker
 {
-    -fx-background-color : EEB647;
+    -fx-base: EEB647;
+    -fx-border-radius: 5 5 5 5;
+    -fx-background-radius: 5 5 5 5;
 }
 .table-view
 {
