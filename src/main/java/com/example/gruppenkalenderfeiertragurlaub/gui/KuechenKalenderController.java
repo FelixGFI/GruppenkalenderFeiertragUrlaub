@@ -35,8 +35,7 @@ public class KuechenKalenderController extends Controller {
      */
     @FXML protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**
@@ -48,8 +47,7 @@ public class KuechenKalenderController extends Controller {
      */
     @FXML protected void onBtNaechsterMonatClick() {
         Integer monthChange = 1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**

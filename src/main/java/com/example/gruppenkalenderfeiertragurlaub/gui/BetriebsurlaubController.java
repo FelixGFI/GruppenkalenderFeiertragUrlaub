@@ -35,8 +35,7 @@ public class BetriebsurlaubController extends Controller {
      */
     protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**
@@ -49,8 +48,7 @@ public class BetriebsurlaubController extends Controller {
     @FXML
     protected void onBtNaechsterMonatClick() {
         Integer monthChange = 1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**

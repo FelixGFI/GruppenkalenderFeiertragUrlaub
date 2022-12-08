@@ -50,9 +50,7 @@ public class GruppenKalenderController extends Controller {
      */
     @FXML protected void onBtVorherigerMonatClick() {
         Integer monthChange = -1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
-        //scrollToSelectedMonth(firstOfCurrentMonth);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**
@@ -63,9 +61,7 @@ public class GruppenKalenderController extends Controller {
      */
     @FXML protected void onBtNaechsterMonatClick() {
         Integer monthChange = 1;
-        if (!monthChangeOperationShouldBbeContinued(firstOfCurrentMonth, monthChange)) return;
-        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
-        //scrollToSelectedMonth(firstOfCurrentMonth);
+        incrementOrDecrementMonatViaButton(monthChange, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 
     /**

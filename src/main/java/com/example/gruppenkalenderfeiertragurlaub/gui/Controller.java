@@ -568,14 +568,12 @@ public class Controller {
      * @return True, wenn keine Daten verändert wurden und/oder kein jahreswechsel ansteht oder durch Nutzerbestätigung. false,
      * wenn Nutzerbestätigung angefragt aber nicht gewährt wurde.
      */
-    protected boolean monthChangeOperationShouldBbeContinued(LocalDate firstOfCurrentMonth, Integer monthChange) {
+    protected boolean monthChangeOperationShouldBeContinued(LocalDate firstOfCurrentMonth, Integer monthChange) {
         if(dataHasBeenModified && changingMonthWouldChangeYear(firstOfCurrentMonth, monthChange)) {
             if(!getNutzerBestaetigung()) {
                 return false;
-            } else {
-                dataHasBeenModified = false;
-                return true;
             }
+            return true;
         }
         return true;
     }
@@ -662,5 +660,23 @@ public class Controller {
         } catch (Exception e) {
 
         }
+    }
+
+    /**
+     * Die Methode wird aufgerufen, wenn in einem der abgeleiteten Klassen der btNaechsterMonat oder btVorigerMonat geklickt wird.
+     * Wenn der Button geklickt wird so wird das firstOfCurrentMonth zum vorherigen Monat geändert und entsprechend,
+     * die ComboBox zur Monatsauswahl als auch gegebenenfalls die zur Jahresauswahl angepasst und die damit
+     * verbundenen OnActions ausgeführt (was scrollen zum entsprechenden monat als auch ggf. aktualisieren der Daten der Tabelle beinhaltet).
+     * Sollte das Jahr gewechselt werden, so wird ggf. Nutzerbestätigung eingeholt.
+     * @param monthChange Anzahl um der Monate um die nach vorne oder hinten verschoben werden soll (+1 oder -1)
+     * @param comboBoxMonatAuswahl comboBox zur Monatsauswahl
+     * @param comboBoxJahrAuswahl combBox zur Jahresauswahl
+     */
+    protected void incrementOrDecrementMonatViaButton(Integer monthChange, ComboBox comboBoxMonatAuswahl, ComboBox comboBoxJahrAuswahl) {
+        if (!monthChangeOperationShouldBeContinued(firstOfCurrentMonth, monthChange)) {
+            return;
+        }
+        dataHasBeenModified = false;
+        firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 }
