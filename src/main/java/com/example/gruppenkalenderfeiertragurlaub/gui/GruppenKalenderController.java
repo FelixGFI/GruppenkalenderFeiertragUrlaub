@@ -201,7 +201,17 @@ public class GruppenKalenderController extends Controller {
         tbTabelle.refresh();
     }
 
-    //TODO add Dokumentation
+    /**
+     * Konfiguriert alle im Dialog enthaltenen SQL-Elemente. Etabliert eine Datenbankverbindung. Setzt das firstOfCurrentMonth
+     * auf den ersten Tag des aktuellen Monats. läd die Daten für das aktuelle Jahr aus der Datenbank in die Tabelle. Setzt einen
+     * EventFilter welcher scrollEvents erkennt und darauf reagiert. Setzt mittels eines Listeners auf die Scene des aufgerufenen
+     * Dialogs eine onCloseRequest (methode die Ausgeführt wird, wenn der Dialog mittels des kleinen Kreuzchens oben
+     * links geschlossen wird), welche, sobald versucht wird den Dialog zu mittels Kreuzchen zu schließen
+     * überprüft, ob die Daten in der tabelle vom Nutzer editiert wurden. Wenn ja, so wird Nutzerbestätigung erbeten.
+     * Wird diese gegeben oder wurden keine Daten editiert schließt sich der Dialog, wird diese verweigert so
+     * wird die Methode abgebrochen, indem das durch die Close Request erzeugte Event consumed wird.
+     * @throws SQLException sollte beim Datenbankzugriff ein Fehler auftreten wird diese geworfen.
+     */
     public void initialize() throws SQLException {
         //IMPORTANT!: gruppenFamilenListe =  configureCBGruppenAuswahl MUST BE CALLED FIRST before configure tcGruppenBeziechnung!
         //Otherwise the needed gruppenFamilienListe will  be empty"!
