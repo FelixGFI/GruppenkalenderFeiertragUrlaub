@@ -90,7 +90,12 @@ public class GruppenKalenderController extends Controller {
         updateTableView();
     }
 
-    //TODO add Dokumentation
+    /**
+     * Überprüft, ob in der ComboBox zur Statusauswahl ein Status ausgewählt ist. Wenn nein, wird die Methode beendet.
+     * Nimmt den ausgelesenen Status und setzt ihn für alle in der Tabelle ausgewählten Tage als Status. Bei Änderung
+     * des Gruppenstatus überprüft das Tag Objekt automatisch die verfügbarkeit des Essen, anhand dessen ob die
+     * Küche offen ist und anhand des neuen Status.
+     */
     @FXML protected void onBtUebernehmenClick() {
         Character ausgewaehlerStatus = comboBoxStatusAuswahl.getSelectionModel().getSelectedItem();
         if(ausgewaehlerStatus == null) return;
@@ -104,9 +109,15 @@ public class GruppenKalenderController extends Controller {
         }
     }
 
-    //TODO add Dokumentation
+    /**
+     * Wenn der Knopf btPDFErstellen gedrückt wird, liest die Methode die ausgewählte Gruppe oder
+     * die ausgewählte Gruppenfamilie aus der ComboBox zur Gruppenauswahl aus und holt die Datensätze
+     * aus der tableView. Diese werden dan dem PDFCreator übergeben der aus den gegebenen Daten ein PDF erstellt
+     * so fern Daten vorhanden sind un die Tabelle nicht leer ist.
+     * @throws FileNotFoundException Sollte es ein Problem mit dem Auffinden des Files geben, wohin die Daten als
+     * PDF gespeichert werden sollen, wird diese Exception geworfen.
+     */
     @FXML protected void onBtPDFErstellenClick() throws FileNotFoundException {
-        System.out.println("Called onBtPDFErstellenClick()");
         ArrayList<GruppeFuerKalender> gruppenListe = new ArrayList<>();
         try{
             GruppenFamilieFuerKalender gruppenFamilie = (GruppenFamilieFuerKalender) comboBoxGruppenAuswahl.getSelectionModel().getSelectedItem();
@@ -134,7 +145,16 @@ public class GruppenKalenderController extends Controller {
         handleDatePickerBis(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
 
-    //TODO add Dokumentation
+    /**
+     * Diese methode wird jedes Mal aufgerufen, wenn im Dialog auf der ComboBox zur Gruppenauswahl ein Action event erzeugt
+     * wird. Da dies auch der Fall ist, wenn die ComboBox manuel umgestellt wird, überprüft diese Action Handler Methode
+     *  erst ob der entsprechende Boolean true ist. Ist dies der Fall, fährt die Methode nicht fort. Andernfalls überprüft
+     *  die Methode ob Änderungen an den angezeigten Daten vorgenommen wurden. Ist dies der Fall, erbittet sie per
+     *  Pop-up-Fenster Nutzerbestätigung. Wird diese nicht gewährt, fährt die Methode nicht weiter fort. Wird die
+     *  Nutzerbestätigung verweigert oder es wurden keine Änderungen vorgenommen, so ruft die Methode updateTableView()
+     *  auf um Daten für die neue ausgewählte Gruppe oder Gruppenfamilie anzuzeigen.
+     * @throws SQLException
+     */
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
         if(gruppenAuswahlWasJustHandled) {
@@ -173,7 +193,7 @@ public class GruppenKalenderController extends Controller {
     /**
      * Diese methode wird jedes Mal aufgerufen, wenn im Dialog auf der ComboBox zur Monatsauswahl ein Action event erzeugt
      * wird. Da dies auch der Fall ist, wenn die ComboBox manuel umgestellt wird, überprüft diese Action Handler Methode
-     * erst ob der entsprechende Boolean true ist. Wenn ja, muss die Method nicht weiter aktiv werden. Wenn nein passt
+     * erst ob der entsprechende Boolean true ist. Wenn ja, muss die Method nicht weiter aktiv werden. Wenn nein, passt
      * sie den das firstOfCurrentDate entsprechend der Nutzerauswahl an und scrollt zum ausgewählten Monat.
      */
     @FXML protected void onComboboxMonatAuswahlAction() {
@@ -187,9 +207,10 @@ public class GruppenKalenderController extends Controller {
         updateDatePickers(firstOfCurrentMonth, dpVon, dpBis, tbTabelle);
     }
 
-    //TODO add Dokumentation
+    /**
+     * Übernimmt für die ausgewählten Tage den in der Datenbank für dieses Jahr hinterlegten Betriebsurlaub.
+     */
     @FXML protected void onBtBetriebsurlaubUebernehmenClick () {
-        //TODO Warnung das Daten Überschrieben werden
         for (GruppenKalenderTag tag : tbTabelle.getItems()) {
             if(tag.getGruppenstatus() == UsefulConstants.getStatusListCharacterFormat().get(6)) {
                 continue;

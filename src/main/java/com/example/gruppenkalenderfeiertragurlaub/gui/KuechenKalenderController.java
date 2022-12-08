@@ -78,7 +78,9 @@ public class KuechenKalenderController extends Controller {
         updateTableView();
     }
 
-    //TODO add Dokumentation
+    /**
+     * Legt für die in der Tabelle ausgewählten Tage fest, dass die Küche an diesen geschlossen ist.
+     */
     @FXML protected void onBtGeschlossenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheCurrentlyGeoeffnet() != 2) {
@@ -89,7 +91,9 @@ public class KuechenKalenderController extends Controller {
         tbTabelle.refresh();
     }
 
-    //TODO add Dokumentation
+    /**
+     * Legt für die in der Tabelle ausgewählten Tage fest, dass die Küche an diesen offen ist.
+     */
     @FXML protected void onBtOffenClick() {
         for (KuechenKalenderTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
             if(tag.getKuecheCurrentlyGeoeffnet() != 2) {

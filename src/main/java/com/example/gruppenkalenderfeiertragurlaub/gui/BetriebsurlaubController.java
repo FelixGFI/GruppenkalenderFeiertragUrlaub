@@ -111,7 +111,9 @@ public class BetriebsurlaubController extends Controller {
         scrollToSelectedMonth(firstOfCurrentMonth, tbTabelle);
     }
 
-    //TODO add Dokumentation
+    /**
+     * Legt die ausgewählten Tage in der Tabelle als Betriebsurlaub fest.
+     */
     @FXML
     protected void onBtUrlaubClick() {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
@@ -123,7 +125,9 @@ public class BetriebsurlaubController extends Controller {
         tbTabelle.refresh();
     }
 
-    //TODO add Dokumentation
+    /**
+     * Legt die ausgewählten Tage in der Tabelle als reguläre Abseitstage, nicht Betriebsurlaub fest.
+     */
     @FXML
     protected void onBtArbeitClick() {
         for (BetriebsurlaubsTag tag : tbTabelle.getSelectionModel().getSelectedItems()) {
