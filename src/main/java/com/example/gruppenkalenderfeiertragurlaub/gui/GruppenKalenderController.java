@@ -153,7 +153,7 @@ public class GruppenKalenderController extends Controller {
      *  Pop-up-Fenster Nutzerbestätigung. Wird diese nicht gewährt, fährt die Methode nicht weiter fort. Wird die
      *  Nutzerbestätigung verweigert oder es wurden keine Änderungen vorgenommen, so ruft die Methode updateTableView()
      *  auf um Daten für die neue ausgewählte Gruppe oder Gruppenfamilie anzuzeigen.
-     * @throws SQLException
+     * @throws SQLException sollte beim Datenbankzugriff ein Fehler auftreten wird diese geworfen.
      */
     @FXML protected void onComboboxGruppenAuswahlAction() throws SQLException {
         //Die Reihenfolge der methodenaufrufe sind ESSENZIELL WICHTIG FÜR DIE KORREKTE FUNKTIONSFÄHIGKEIT DES PROGRAMMSES!!!
@@ -257,16 +257,14 @@ public class GruppenKalenderController extends Controller {
         tbTabelle.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
                 handleScrollEvent(event, comboBoxMonatAuswahl));
-        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            Platform.runLater(() -> {
-                Stage stage = (Stage) newScene.getWindow();
-                stage.setOnCloseRequest(e -> {
-                    if(dataHasBeenModified) {
-                        if(!getNutzerBestaetigung()) e.consume();
-                    }
-                });
+        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> Platform.runLater(() -> {
+            Stage stage = (Stage) newScene.getWindow();
+            stage.setOnCloseRequest(e -> {
+                if(dataHasBeenModified) {
+                    if(!getNutzerBestaetigung()) e.consume();
+                }
             });
-        });
+        }));
     }
 
     /**
