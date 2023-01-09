@@ -660,7 +660,7 @@ public class Controller {
             firstOfCurrentMonth = firstOfCurrentMonth.withMonth(tag.getDatum().getMonthValue());
             scrollWasJustHandled = true;
             comboBoxMonatAuswahl.getSelectionModel().select(firstOfCurrentMonth.getMonthValue() - 1);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

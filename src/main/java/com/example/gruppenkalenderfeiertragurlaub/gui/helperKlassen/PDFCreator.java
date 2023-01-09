@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PDFCreator {
 
@@ -59,7 +60,7 @@ public class PDFCreator {
         for (GruppenKalenderTag tag : tagesListe) {
             createPDFCell(convertGruppenIDToName(tag, gruppenListe), 16, table);
             createPDFCell(tag.getDatum().toString(), 16, table);
-            createPDFCell(new Controller().getDisplayMessageForStatus(tag.getGruppenstatus()), 16, table);
+            createPDFCell(Controller.getDisplayMessageForStatus(tag.getGruppenstatus()), 16, table);
             createPDFCell(convertEssenVerfuegbar(tag.getEssenFuerGruppeVerfuegbar()), 16, table);
         }
         document.add(headline);
@@ -76,7 +77,7 @@ public class PDFCreator {
      */
     private static String convertGruppenIDToName(GruppenKalenderTag tag, ArrayList<GruppeFuerKalender> gruppenListe) {
         for (GruppeFuerKalender gr : gruppenListe) {
-            if(gr.getGruppeId() == tag.getGruppenID()) {
+            if(Objects.equals(gr.getGruppeId(), tag.getGruppenID())) {
                 return gr.getGruppeName();
             }
         }

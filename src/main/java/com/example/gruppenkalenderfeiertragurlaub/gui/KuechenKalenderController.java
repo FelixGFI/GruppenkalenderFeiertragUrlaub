@@ -174,16 +174,14 @@ public class KuechenKalenderController extends Controller {
         tbTabelle.addEventFilter(ScrollEvent.SCROLL, event ->
                 handleScrollEvent(event, comboBoxMonatAuswahl));
         //TODO figure out how/why the code below works
-        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            Platform.runLater(() -> {
-                Stage stage = (Stage) newScene.getWindow();
-                stage.setOnCloseRequest(e -> {
-                    if(dataHasBeenModified) {
-                        if(!getNutzerBestaetigung()) e.consume();
-                    }
-                });
+        tbTabelle.sceneProperty().addListener((obs, oldScene, newScene) -> Platform.runLater(() -> {
+            Stage stage = (Stage) newScene.getWindow();
+            stage.setOnCloseRequest(e -> {
+                if(dataHasBeenModified) {
+                    if(!getNutzerBestaetigung()) e.consume();
+                }
             });
-        });
+        }));
     }
 
     /**
