@@ -24,14 +24,24 @@ public class DatenbankCommunicator {
         try {
             conn = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setTitle("Fehler");
-            alert.setHeaderText("Datenbankverbindung Fehlgeschlagen");
-            alert.setContentText("Bitte Stellen Sie sicher das das Programm zugriff auf die Datenbank hat. " +
-                    "[" + url + "]");
-            alert.showAndWait();
+            generateErrorAlert( "Datenbankverbindung Fehlgeschlagen",
+                                "Bitte Stellen Sie sicher das das Programm zugriff auf die Datenbank hat. [" + url + "]");
         }
+    }
+
+    /**
+     * Generiert eine Alertbox vom Typ Error und stattet diese mit dem Übergebenen Header und Content aus.
+     * Zeigt die Fehlermeldung dem Nutzer an.
+     * @param headerText als Header verwendeter Text als String
+     * @param contentText als Content verwendeter Text als String
+     */
+    public static void generateErrorAlert(String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Fehler");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 
     /**
@@ -394,14 +404,18 @@ public class DatenbankCommunicator {
                 try{
                     stmt.execute("insert into betriebsurlaub (datum) values ('" + tag.getDatum().toString() + "')");
                 } catch (Exception e) {
-                    //TODO Fehlermeldung
+                    generateErrorAlert( "Aktualisierung der Daten Fehlgeschlagen",
+                                        "Bei der Speicherung der Änderungen ist ein Fehler aufgetreten" +
+                                                "Bitte Starten sie das Programm neu und Überprüfen sie die Vorgenommenen Änderungen");
                 }
             }
             if(beganAsBetriebsurlaub){
                 try{
                     stmt.execute("delete from betriebsurlaub where datum = '" + tag.getDatum().toString() + "'");
                 } catch (Exception e) {
-                    //TODO Fehlermeldung
+                    generateErrorAlert( "Aktualisierung der Daten Fehlgeschlagen",
+                            "Bei der Speicherung der Änderungen ist ein Fehler aufgetreten" +
+                                    "Bitte Starten sie das Programm neu und Überprüfen sie die Vorgenommenen Änderungen");
                 }
             }
         }
@@ -422,7 +436,9 @@ public class DatenbankCommunicator {
             try {
                 stmt.execute("update kuechenplanung set geoeffnet = " + kuecheGeoffnet + " WHERE datum = '" + tag.getDatum().toString() + "'");
             } catch (Exception e) {
-                //TODO Fehlermeldung
+                generateErrorAlert( "Aktualisierung der Daten Fehlgeschlagen",
+                        "Bei der Speicherung der Änderungen ist ein Fehler aufgetreten" +
+                                "Bitte Starten sie das Programm neu und Überprüfen sie die Vorgenommenen Änderungen");
             }
         }
     }
@@ -443,7 +459,9 @@ public class DatenbankCommunicator {
                         "set essensangebot = " + tag.getEssenFuerGruppeVerfuegbar() + ", gruppenstatus = '" + tag.getGruppenstatus() + "' " +
                         "where gruppe_id = " + tag.getGruppenID() + " and datum = '" + tag.getDatum().toString() + "'");
             } catch (Exception e) {
-                //TODO Fehlermeldung
+                generateErrorAlert( "Aktualisierung der Daten Fehlgeschlagen",
+                        "Bei der Speicherung der Änderungen ist ein Fehler aufgetreten" +
+                                "Bitte Starten sie das Programm neu und Überprüfen sie die Vorgenommenen Änderungen");
             }
         }
     }

@@ -527,7 +527,10 @@ public class Controller {
         try {
             newScene = new Scene(loader.load());
         } catch (IOException ex) {
-            // TODO: handle error
+
+            DatenbankCommunicator.generateErrorAlert(   "Öffnen des Dialogs Fehlgeschlagen",
+                                                        "Beim Laden und Öffnen des Dialogfensters ist ein Fehler Aufgetreten." +
+                                                                "Bitte Starten Sie das Programm neu und überprüfen Sie die Programmfiles");
             return;
         }
         Stage stage = new Stage();
