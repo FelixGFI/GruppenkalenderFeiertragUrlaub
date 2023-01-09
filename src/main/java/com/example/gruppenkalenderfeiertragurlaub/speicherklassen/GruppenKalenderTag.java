@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class GruppenKalenderTag  extends Tag {
     private final Integer gruppenID;
     private Character gruppenstatus;
-    private Boolean kuecheGeoeffnet;
+    private final Boolean kuecheGeoeffnet;
     private Boolean essenFuerGruppeVerfuegbar;
-    private Boolean isBetriebsurlaub;
+    private final Boolean isBetriebsurlaub;
     private Boolean tagWasEdited;
 
     public GruppenKalenderTag(Integer gruppenID, LocalDate datum, Character gruppenstatus, Boolean kuecheGeoeffnet, Boolean isBetriebsurlaub) {
@@ -40,7 +40,7 @@ public class GruppenKalenderTag  extends Tag {
     }
 
     /**
-     * wenn abegrufen, überprüft und akktuallisiert ob für die gruppe Essen verfügbar ist anhand des Gruppenstatus und ob die
+     * wenn abgerufen, überprüft und aktualisiert, ob für die gruppe Essen verfügbar ist anhand des Gruppenstatus und ob die
      * Küche für diesen Tag geöffnet ist.
      */
     protected void aktualisiereEssenFuerGruppeVerfuegbar() {

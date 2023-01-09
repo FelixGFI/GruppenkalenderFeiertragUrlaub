@@ -61,7 +61,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="btKalenderplanug" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtKalenderplanungClick" prefWidth="150.0" text="Kalenderplanung" />
+                  <Button fx:id="btKalenderplanung" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtKalenderplanungClick" prefWidth="150.0" text="Kalenderplanung" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
@@ -91,7 +91,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="btAnwesenheit" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtAnwesneheitClick" prefWidth="150.0" text="Anwesenheit" />
+                  <Button fx:id="btAnwesenheit" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onBtAnwesenheitClick" prefWidth="150.0" text="Anwesenheit" />
                </children>
             </FlowPane>
             <FlowPane alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">

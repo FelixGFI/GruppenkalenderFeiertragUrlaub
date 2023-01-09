@@ -135,7 +135,7 @@ public class KuechenKalenderController extends Controller {
     /**
      * Diese methode wird jedes Mal aufgerufen, wenn im Dialog auf der ComboBox zur Monatsauswahl ein Action event erzeugt
      * wird. Da dies auch der Fall ist, wenn die ComboBox manuel umgestellt wird, überprüft diese Action Handler Methode
-     * erst ob der entsprechende Boolean true ist. Wenn ja, muss die Method nicht weiter aktiv werden. Wenn nein passt
+     * erst ob der entsprechende Boolean true ist. Wenn ja, muss die Method nicht weiter aktiv werden. Wenn nein, passt
      * sie den das firstOfCurrentDate entsprechend der Nutzerauswahl an und scrollt zum ausgewählten Monat.
      */
     @FXML protected void onComboboxMonatAuswahlAction() {

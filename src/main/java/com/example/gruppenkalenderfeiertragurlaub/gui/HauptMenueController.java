@@ -11,7 +11,7 @@ import java.io.IOException;
 public class HauptMenueController {
     @FXML Button btProgrammSchliessen;
     @FXML Button btAnwesenheit;
-    @FXML Button btKalenderplanug;
+    @FXML Button btKalenderplanung;
     @FXML Button btKuechenplanung;
     @FXML Button btBetriebsurlaubsplanung;
     @FXML Button btTeilnehmerverwaltung;
@@ -25,8 +25,8 @@ public class HauptMenueController {
     Stage stage;
 
     @FXML
-    protected void onBtAnwesneheitClick() {
-        System.out.println("Klick Anwesneheit");
+    protected void onBtAnwesenheitClick() {
+        System.out.println("Klick Anwesenheit");
     }
     @FXML
     protected void onBtKalenderplanungClick() {
@@ -82,8 +82,8 @@ public class HauptMenueController {
 
     /**
      * zeigt das Hauptmenü Fenster als neues Fenster an. Initialisiert und speichert die stage des Hauptfensters (von welchem diese Klasse
-     * die Controller Classe ist) als globale Variable um diese später als parent für Subfenster zu verwenden.
-     * @throws IOException
+     * die Controller Klasse ist) als globale Variable um diese später als parent für Subfenster zu verwenden.
+     * @throws IOException Wird geworfen, wenn das zu ladende FXML file nicht gefunden werden kann.
      */
     public void showDialog() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HauptmenueApp.class.getResource("UeberMenueView.fxml"));

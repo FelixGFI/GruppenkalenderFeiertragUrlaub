@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class BetriebsurlaubsTag extends Tag {
     private Integer isCurrentlyBetriebsurlaub;
-    private Boolean beganAsBetriebsurlaub;
+    private final Boolean beganAsBetriebsurlaub;
 
     public BetriebsurlaubsTag(LocalDate datum, Integer isCurrentlyBetriebsurlaub) {
         this.datum = datum;
