@@ -553,6 +553,12 @@ public class Controller {
         alert.setTitle("Bestätigen");
         alert.setHeaderText("Sind sie Sicher?");
         alert.setContentText("Nicht Gespeicherte Daten gehen Verloren");
+        DialogPane pane = alert.getDialogPane();
+        //setzt den Cancle Button als default Button und alle anderen Buttons (in diesem Fall Ok Button) als nicht default
+        for(ButtonType buttonType : alert.getButtonTypes()) {
+            Button button = (Button) pane.lookupButton(buttonType);
+            button.setDefaultButton(buttonType == ButtonType.CANCEL);
+        }
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             executeRequestedAction = true;
