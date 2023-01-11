@@ -685,7 +685,9 @@ public class Controller {
         if (!monthChangeOperationShouldBeContinued(firstOfCurrentMonth, monthChange)) {
             return;
         }
-        dataHasBeenModified = false;
+        if(changingMonthWouldChangeYear(firstOfCurrentMonth, monthChange)) {
+            dataHasBeenModified = false;
+        }
         firstOfCurrentMonth = changeMonthBackOrForthBy(monthChange, firstOfCurrentMonth, comboBoxMonatAuswahl, comboBoxJahrAuswahl);
     }
 }
