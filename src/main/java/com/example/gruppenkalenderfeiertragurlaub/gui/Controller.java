@@ -212,7 +212,7 @@ public class Controller {
     public static void configureLocalDateTableColum(TableColumn tableColumnLocalDate, String columAttributeName) {
         tableColumnLocalDate.setCellValueFactory(new PropertyValueFactory<>(columAttributeName));
         /*
-        This works in a much similar manner then mentioned above. The only difference being
+        This works in a much similar manner as mentioned above. The only difference being
         that instead of setting a text directly based on conditions, this time, once the
         Listener detects an action, it checks if the Value detected in the cell
         is != null and then, assuming it is indeed != null, it takes the value (which is a LocalDate)
@@ -226,8 +226,29 @@ public class Controller {
             TableCell<Tag, LocalDate> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
-                    cell.setText(newVal.format(DateTimeFormatter
-                            .ofPattern("dd.MM.yyy")));
+                    String cellText;
+
+                    switch(newVal.getDayOfWeek().toString().trim()) {
+                        case "MONDAY":
+                            cellText = "Mo,\t";
+                            break;
+                        case "TUESDAY":
+                            cellText = "Di,\t";
+                            break;
+                        case "WEDNESDAY":
+                            cellText = "Mi,\t";
+                            break;
+                        case "THURSDAY":
+                            cellText = "Do,\t";
+                            break;
+                        case "FRIDAY":
+                            cellText = "Fr,\t";
+                            break;
+                        default:
+                            cellText = "";
+                    }
+                    cellText += newVal.format(DateTimeFormatter.ofPattern("dd.MM.yyy"));
+                    cell.setText(cellText);
                 }
             });
             return cell;
@@ -551,8 +572,8 @@ public class Controller {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Bestätigen");
-        alert.setHeaderText("Sind sie Sicher?");
-        alert.setContentText("Nicht Gespeicherte Daten gehen Verloren");
+        alert.setHeaderText("Sind Sie sicher?");
+        alert.setContentText("Nicht gespeicherte Daten gehen verloren.");
         DialogPane pane = alert.getDialogPane();
         //setzt den Cancle Button als default Button und alle anderen Buttons (in diesem Fall Ok Button) als nicht default
         for(ButtonType buttonType : alert.getButtonTypes()) {
